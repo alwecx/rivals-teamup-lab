@@ -1,6 +1,6 @@
-# Rivals S9 Team-Up Lab
+# Rivals S11 Team-Up Lab
 
-An unofficial, single-file team-composition sandbox for **Marvel Rivals Season 9**.
+An unofficial, single-file team-composition sandbox for **Marvel Rivals Season 11**.
 Slot six heroes, see exactly which team-up loadouts go **Enhanced**, and brute-force
 the best comps — all in one HTML file with zero dependencies.
 
@@ -22,8 +22,8 @@ the best comps — all in one HTML file with zero dependencies.
 
 Season 9 reworked team-ups: every hero has **two team-up loadouts**, each with a
 base effect (always on) and an enhanced effect (active when the named partner is
-on your team) — but only **one** loadout equipped per match. Keeping track of 104
-team-ups across 50+ heroes in your head is miserable. This tool doesn't make you.
+on your team) — but only **one** loadout equipped per match. Keeping track of 108
+team-ups across 55 heroes in your head is miserable. This tool doesn't make you.
 
 - **Build board** — six slots, click or drag heroes in. Each card shows the hero's
   two partners as buttons; click one to pin that loadout, or let the auto-equip
@@ -41,6 +41,46 @@ team-ups across 50+ heroes in your head is miserable. This tool doesn't make you
   lives in the URL hash. Copy the address bar, paste it in Discord, argument settled:
   `…#t=thor.vL0,hela.d,deadpool.s1&c=1-3-2`
 - **Mobile friendly** — collapses to a single-column layout with touch-sized controls.
+
+## Sim Lab - fight simulator (`sim.html`)
+
+A competitive-play calculator: put 1-6 heroes on defence (usually your 2-3
+strategists) and 1-6 attackers on the other side, give **every hero their own
+performance level**, and simulate the fight hundreds of times.
+
+- **Performance 0-100 per hero** turns into concrete skill numbers: accuracy
+  (60 → ~54 %, 70 → ~64 %, 100 → every shot), headshot rate, firing uptime,
+  reaction time on abilities and how well area heals/attacks catch people.
+  100 is a robot - perfect but unrealistic. Each number can also be set
+  directly under *Fine-tune skill*. Weapon type matters: beams and splash are
+  easier to land than hitscan, projectiles get harder with range, allies are
+  easier to heal than enemies are to hit, big hitboxes are easier.
+- **Full kits, Season 11 numbers**: primary/secondary fire, every ability,
+  ultimates (tick *Ult ready*), both team-up loadouts with their enhanced
+  versions, passives - healing, self-heals, heal boosts, auras, bonus health,
+  barriers that soak damage until they break, damage reduction, invincibility,
+  stealth, stuns/freezes/knock-ups, anti-heal, lifesteal, falloff, crits, ammo.
+- **Attackers** pick a range (dive 3 m, brawl 10 m, poke 25 m, long 40 m), a
+  focus target and an engage time, so you can test a dive, a poke line or a
+  staggered collapse.
+- **Results**: kill chance and time-to-kill (median and 10-90 % range) for each
+  defender, team wipe chance, attacker deaths, an HP-over-time chart, the fight
+  log, damage/healing breakdown per ability (with hit rates), and **which
+  cooldowns had to be committed before each kill**.
+- **What it takes to kill**: the sustained DPS a defender can out-heal (for 1 s,
+  2 s and your chosen window), and how much *extra* DPS your current attackers
+  still need.
+- **Stack finder**: tries every duelist/vanguard pair (or trio) against your
+  backline and ranks the stacks that kill fastest and most often.
+- **Hero model reference**: every hero's modelled actions, numbers, effects and
+  written assumptions next to the raw official stats.
+
+The engine is `sim-engine.js`; hero models are plain data in `data/sim/*.js`
+(schema: [`data/sim/README.md`](data/sim/README.md)), built from the official
+hero pages (`data/official-stats.js`, refreshed by `tools/sync-stats.ps1`) plus
+the Season 11 balance post. `tools/check-sim-data.ps1` validates the models.
+Movement, line of sight and real decision-making are abstracted - treat the
+numbers as a well-informed model, not the game itself.
 
 ## Using it
 
@@ -67,14 +107,38 @@ set is fine. A fully-firing team literally animates.
 
 Icons in this repo were sourced from the community-maintained
 [Marvel Rivals Wiki](https://marvelrivals.fandom.com/wiki/Avatars).
+`tools/fetch-avatars.ps1` downloads any tier that is missing for a hero in the
+roster (as `.webp`) once the wiki has it, without touching existing files:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\fetch-avatars.ps1
+```
 
 ## Data
 
-Team-up names and base/enhanced descriptions are synced to the official Marvel
-Rivals site's Season 9 team-up pages, **as of July 10, 2026**. Balance patches
-will drift numbers over time, and The Hood's team-up loadouts arrive mid-season —
-the data is one plainly-formatted `RAW` array at the top of the file's script if
-you spot something stale. Corrections welcome via Issues or PRs.
+Team-up names, partners and base/enhanced descriptions are synced to the
+official [Marvel Rivals hero pages](https://www.marvelrivals.com/heroes/index.html)
+plus the [Season 11 balance post](https://www.marvelrivals.com/balancepost/20261110/41667_1319209.html),
+**as of November 11, 2026**. That covers The Hood's loadouts, Gorr the God
+Butcher (Season 10) and the Season 10–11 team-up reworks.
+
+**Nightcrawler** (Season 11 Strategist, launching November 13) is on the roster
+with his team-ups marked TBD until they are revealed. The data is one
+plainly-formatted `RAW` array at the top of the file's script.
+
+### Refreshing the data
+
+`tools/sync-official.ps1` reads every official hero page and merges it into
+`RAW`: new heroes, new or swapped team-ups and partner changes are applied
+automatically, and wording differences are listed for review instead of
+overwriting the hand-checked text. Run it from the repo root on Windows:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\sync-official.ps1 -DryRun   # see what would change
+powershell -ExecutionPolicy Bypass -File tools\sync-official.ps1           # update index.html
+```
+
+Corrections welcome via Issues or PRs.
 
 ## How the optimizer works (for the curious)
 

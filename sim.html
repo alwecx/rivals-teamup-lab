@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<!--
+  Sim Lab - Marvel Rivals Season 11 fight simulator (companion to index.html).
+  Put strategists (or anyone) on defence at chosen performance levels, send
+  divers / poke at them, and see how long they live, what it takes to kill
+  them, and which cooldowns had to be spent.
+
+  Engine: sim-engine.js. Hero models: data/sim/*.js (schema data/sim/README.md),
+  built from the official hero pages (data/official-stats.js) + Season 11
+  balance post. Fan-made tool. Not affiliated with NetEase Games or Marvel.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Unofficial Marvel Rivals S11 fight simulator: strategists vs dive and poke at any performance level - time to kill, DPS checks, cooldowns committed.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+<title>Rivals S11 Sim Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c1020; --panel:#141a30; --panel2:#1a2140; --panel3:#212a50; --ink:#e8ecfa; --dim:#8a93b4; --faint:#5b6383;
+  --line:rgba(140,150,200,.14);
+  --van:#f0a832; --duel:#ff5d5d; --strat:#3fd6b0; --syn:#a78bfa; --grant:#4da6ff;
+  --good:#3fd6b0; --bad:#ff5d5d; --warn:#f0a832;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:radial-gradient(1100px 500px at 75% -10%,rgba(167,139,250,.10),transparent 60%),radial-gradient(800px 400px at 10% 110%,rgba(63,214,176,.06),transparent 60%),var(--bg);
+  color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;
+}
+h1,h2,h3{font-family:"Chakra Petch",system-ui,sans-serif}
+a{color:var(--grant)}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer;background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:6px 11px}
+button:hover{border-color:var(--syn)}
+button.primary{background:linear-gradient(180deg,#7c5cf0,#5b3fd0);border-color:#8f74ff;font-weight:600;letter-spacing:.02em}
+button.primary:disabled{opacity:.5;cursor:wait}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--syn);outline-offset:1px}
+select,input[type=number],input[type=text]{background:#0f1428;border:1px solid var(--line);border-radius:6px;padding:4px 6px;min-width:0}
+input[type=number]{width:62px}
+input[type=range]{accent-color:var(--syn);width:100%}
+.wrap{max-width:1500px;margin:0 auto;padding:14px}
+header.top{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+header.top h1{font-size:22px;letter-spacing:.06em;text-transform:uppercase}
+header.top h1 em{font-style:normal;color:var(--syn)}
+header.top .sub{color:var(--dim);font-size:13px}
+header.top nav{margin-left:auto;display:flex;gap:8px}
+header.top nav a{font-family:"Chakra Petch";font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--dim);border:1px solid var(--line);border-radius:7px;padding:4px 10px}
+header.top nav a.on,header.top nav a:hover{color:var(--ink);border-color:var(--syn)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px;min-width:0}
+.panel h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.panel h2 .grow{flex:1}
+.setup{display:grid;grid-template-columns:1fr 1fr 290px;gap:14px;align-items:start}
+@media(max-width:1200px){.setup{grid-template-columns:1fr 1fr}.setup .settings{grid-column:1/-1}}
+@media(max-width:800px){.setup{grid-template-columns:1fr}}
+.side-def h2{color:var(--strat)} .side-att h2{color:var(--duel)}
+.cards{display:flex;flex-direction:column;gap:8px}
+.card{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--rc,var(--line));border-radius:8px;padding:8px 9px;display:grid;grid-template-columns:52px 1fr;gap:4px 10px}
+.card .pic{grid-row:1/span 3;width:52px;height:52px;border-radius:7px;background:#0f1428;overflow:hidden;display:flex;align-items:center;justify-content:center;font:700 11px "Barlow Condensed";color:var(--dim);text-transform:uppercase;text-align:center}
+.card .pic img{width:100%;height:100%;object-fit:cover}
+.card .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;min-width:0}
+.card .row > select.hero{flex:1;min-width:130px;font-weight:600}
+.card .x{padding:2px 8px;color:var(--dim)}
+.card .perf{display:grid;grid-template-columns:auto 1fr 52px;gap:8px;align-items:center}
+.card .perf label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.card .derived{font-size:11.5px;color:var(--dim)}
+.card .derived b{color:var(--ink);font-weight:600}
+.card .opts{font-size:12px;color:var(--dim);gap:10px}
+.card .opts label{display:flex;align-items:center;gap:4px}
+.card details{grid-column:1/-1;font-size:12px;color:var(--dim)}
+.card details summary{cursor:pointer;width:max-content}
+.card details .ov{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;margin-top:6px}
+.card details .ov label{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.addrow{display:flex;gap:8px;margin-top:8px}
+.settings .grid{display:grid;grid-template-columns:1fr auto;gap:7px 10px;align-items:center;font-size:13px}
+.settings .grid span{color:var(--dim)}
+.settings .grid small{grid-column:1/-1;color:var(--faint);font-size:11px;margin-top:-4px}
+.settings .actions{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.status{font-size:12px;color:var(--dim);min-height:18px;margin-top:6px}
+.bar{height:4px;background:var(--panel2);border-radius:3px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;width:0;background:var(--syn);transition:width .1s}
+
+.results{margin-top:14px;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.results > .panel{grid-column:span 12}
+.results > .half{grid-column:span 6}
+@media(max-width:1000px){.results > .half{grid-column:span 12}}
+.sumgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.sum{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--rc);border-radius:8px;padding:9px 10px}
+.sum .who{font:600 13px "Chakra Petch";display:flex;justify-content:space-between;gap:6px}
+.sum .big{font:700 24px "Chakra Petch";margin-top:2px}
+.sum .big small{font-size:13px;color:var(--dim);font-weight:500}
+.sum .line{font-size:12px;color:var(--dim)}
+.sum .line b{color:var(--ink)}
+.good{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:5px 7px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+th:first-child,td:first-child{text-align:left}
+td.l,th.l{text-align:left;white-space:normal}
+tr.sub td{color:var(--dim);font-size:11.5px}
+tr.sub td:first-child{padding-left:22px}
+.scroll{overflow:auto}
+.chart svg{width:100%;height:auto;display:block}
+.chart .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;margin-top:6px}
+.chart .legend span{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.chart .legend span.off{opacity:.35}
+.chart .legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+.log{max-height:340px;overflow:auto;font-size:12.5px;font-variant-numeric:tabular-nums}
+.log div{padding:2px 4px;border-bottom:1px solid rgba(140,150,200,.07)}
+.log .t{color:var(--faint);display:inline-block;width:48px}
+.log .death{color:var(--bad);font-weight:600}
+.log .ult{color:var(--syn);font-weight:600}
+.log .cc{color:var(--warn)}
+.log .D{color:#9fe8d4} .log .A{color:#ffb3b3}
+.note{font-size:12px;color:var(--faint);line-height:1.55}
+.note b{color:var(--dim)}
+.pill{display:inline-block;padding:1px 7px;border-radius:999px;font-size:11px;border:1px solid var(--line);color:var(--dim)}
+.combo{display:flex;align-items:center;gap:6px}
+.combo img{width:24px;height:24px;border-radius:5px}
+.ref .kit td{vertical-align:top}
+.ref pre{white-space:pre-wrap;font-size:12px;color:var(--dim);background:#0f1428;border-radius:6px;padding:8px;max-height:260px;overflow:auto}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Sim <em>Lab</em></h1>
+    <span class="sub">Marvel Rivals · Season 11 · fight simulator</span>
+    <nav><a href="index.html">Team-Up Lab</a><a class="on" href="sim.html">Sim Lab</a></nav>
+  </header>
+
+  <div class="setup">
+    <section class="panel side-def">
+      <h2>Defenders <span class="grow"></span><span class="pill" id="defCount"></span></h2>
+      <div class="cards" id="defCards"></div>
+      <div class="addrow"><button id="addDef">+ Add defender</button></div>
+    </section>
+    <section class="panel side-att">
+      <h2>Attackers <span class="grow"></span><span class="pill" id="attCount"></span></h2>
+      <div class="cards" id="attCards"></div>
+      <div class="addrow"><button id="addAtt">+ Add attacker</button></div>
+    </section>
+    <aside class="panel settings">
+      <h2>Fight settings</h2>
+      <div class="grid">
+        <span>Fight length (s)</span><input type="number" id="sMax" min="2" max="40" step="1">
+        <span>Monte Carlo runs</span><input type="number" id="sRuns" min="20" max="2000" step="20">
+        <span>Defenders stacked</span><input type="number" id="sClD" min="0" max="1" step="0.05">
+        <small>0-1: chance an area heal/attack also catches each other defender.</small>
+        <span>Kill window (DPS check, s)</span><input type="number" id="sWin" min="0.5" max="15" step="0.5">
+        <span>Headshot multiplier</span><input type="number" id="sCrit" min="1" max="3" step="0.05">
+        <span>Default reload (s)</span><input type="number" id="sReload" min="0" max="5" step="0.1">
+        <small>Used when a weapon's model has no value (official pages don't list reloads or most crit multipliers).</small>
+      </div>
+      <div class="actions">
+        <button class="primary" id="runBtn">Run simulation</button>
+        <button id="shareBtn" title="Copy a link to this exact setup">Copy share link</button>
+      </div>
+      <div class="status" id="status"></div>
+      <div class="bar"><i id="prog"></i></div>
+      <p class="note" style="margin-top:10px"><b>Performance</b> 0-100 per hero. 100 is a robot: every shot lands, every crit, zero reaction time, perfect positioning. Expand <b>Fine-tune</b> on a card to set accuracy, crit rate, uptime, reaction and coverage directly.</p>
+    </aside>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <section class="panel" style="margin-top:14px" id="finder">
+    <h2>Stack finder · which dives kill this backline?</h2>
+    <div class="row" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px">
+      <label>Pool <select id="fPool"><option value="Duelist">Duelists</option><option value="Vanguard">Vanguards</option><option value="both" selected>Duelists + Vanguards</option><option value="all">Everyone</option></select></label>
+      <label>Stack size <select id="fSize"><option>1</option><option selected>2</option><option>3</option></select></label>
+      <label>Performance <input type="number" id="fPerf" value="70" min="0" max="100" style="width:56px"></label>
+      <label>Approach <select id="fMode"><option value="auto">Hero default</option><option value="dive">All dive (3m)</option><option value="brawl">All brawl (10m)</option><option value="poke">All poke (25m)</option></select></label>
+      <label>Target <select id="fTarget"></select></label>
+      <label><input type="checkbox" id="fUlt"> Ults ready</label>
+      <label>Runs/stack <input type="number" id="fRuns" value="12" min="4" max="100" style="width:56px"></label>
+      <button class="primary" id="fRun">Find stacks</button>
+    </div>
+    <div class="status" id="fStatus"></div>
+    <div class="scroll" id="fOut"></div>
+  </section>
+
+  <section class="panel ref" style="margin-top:14px">
+    <h2>Hero model reference <span class="grow"></span><select id="refHero"></select></h2>
+    <div id="refOut"></div>
+  </section>
+
+  <p class="note" style="margin:16px 4px">Numbers: official hero pages (build <span id="buildId">?</span>) + Season 11 balance post (2026-11-10), turned into combat models in <code>data/sim/</code> - every assumption is listed in the reference panel above. A simulation is a model, not the game: movement, line of sight and decision-making are abstracted. Fan-made tool; not affiliated with NetEase Games or Marvel.</p>
+</div>
+
+<script src="data/official-stats.js"></script>
+<script src="sim-engine.js"></script>
+<script src="data/sim/examples.js"></script>
+<script src="data/sim/strategists-a.js"></script>
+<script src="data/sim/strategists-b.js"></script>
+<script src="data/sim/vanguards-a.js"></script>
+<script src="data/sim/vanguards-b.js"></script>
+<script src="data/sim/duelists-a.js"></script>
+<script src="data/sim/duelists-b.js"></script>
+<script>
+(function(){
+"use strict";
+const $=q=>document.querySelector(q);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const RC={Vanguard:"var(--van)",Duelist:"var(--duel)",Strategist:"var(--strat)"};
+const DEF_COLORS=["#3fd6b0","#4da6ff","#a7f070","#7fe3ff","#c4b5fd","#9ef0c8"];
+const ATT_COLORS=["#ff5d5d","#f0a832","#ff8fd0","#ffd166","#ff9a6b","#e879f9"];
+const tick=()=>new Promise(r=>setTimeout(r,0));
+const fmt=(v,d=1)=>v==null||!isFinite(v)?"—":(+v).toFixed(d);
+const pctf=v=>v==null?"—":Math.round(v*100)+"%";
+
+/* ---------- data ---------- */
+const DEFS=SIM.defs().slice().sort((a,b)=>SIM.keyOf(a).localeCompare(SIM.keyOf(b)));
+if(window.OFFICIAL_STATS)$("#buildId").textContent=OFFICIAL_STATS.build+" · synced "+OFFICIAL_STATS.synced;
+const byKey=k=>DEFS.find(d=>SIM.keyOf(d)===k);
+const has=k=>!!byKey(k);
+const firstOf=(...ks)=>ks.find(has)||(DEFS[0]&&SIM.keyOf(DEFS[0]));
+function aviSrc(key){const n=(byKey(key)||{name:key}).name.replace(/[ &]+/g,"_");return `avatars/Hero_Icon_${n}.webp`;}
+function pic(key){return `<img src="${esc(aviSrc(key))}" alt="" onerror="this.replaceWith(document.createTextNode(${esc(JSON.stringify((byKey(key)||{name:key}).name))}))">`;}
+function heroOptions(sel){
+  let h="";
+  for(const role of ["Strategist","Vanguard","Duelist"]){
+    const ds=DEFS.filter(d=>d.role===role);if(!ds.length)continue;
+    h+=`<optgroup label="${role}s">`+ds.map(d=>{const k=SIM.keyOf(d);return `<option value="${esc(k)}"${k===sel?" selected":""}>${esc(k)}</option>`;}).join("")+`</optgroup>`;
+  }
+  if(!has(sel))h=`<option value="${esc(sel)}" selected>${esc(sel)} (no model)</option>`+h;
+  return h;
+}
+function teamups(key){const d=byKey(key);return d?[...new Set(d.actions.filter(a=>a.teamup).map(a=>a.teamup))]:[];}
+// how each hero usually approaches a backline (editable per attacker card)
+const DIVERS=new Set(["Psylocke","Spider-Man","Black Panther","Magik","Venom","Wolverine","Iron Fist","Daredevil","Blade","Black Cat","Star-Lord","Captain America","Thor","Angela","Hulk","Gorr the God Butcher","Mister Fantastic","Rogue","Devil Dinosaur","Deadpool","The Thing","Moon Knight","Squirrel Girl"]);
+const BRAWLERS=new Set(["Magneto","Doctor Strange","Groot","Peni Parker","Emma Frost","The Hood","Scarlet Witch","Human Torch","Phoenix","Elsa Bloodstone","Namor"]);
+function defaultMode(key){
+  const d=byKey(key);if(!d)return"dive";
+  if(DIVERS.has(d.name))return"dive";
+  if(BRAWLERS.has(d.name))return"brawl";
+  const w=d.actions.filter(a=>a.kind==="weapon"&&a.dmg);
+  const r=w.length?Math.max(...w.map(a=>a.range||0)):0;
+  return r<=15?"dive":(d.role==="Vanguard"?"brawl":"poke");
+}
+
+/* ---------- state ---------- */
+const S={
+  defenders:[{hero:firstOf("Luna Snow"),perf:60,ult:false,loadout:"auto"},{hero:firstOf("Invisible Woman","Mantis","Rocket Raccoon"),perf:70,ult:false,loadout:"auto"}],
+  attackers:[{hero:firstOf("Psylocke"),perf:70,mode:"dive",focus:"0",delay:0,ult:false,loadout:"auto"},{hero:firstOf("Venom","Captain America","Spider-Man"),perf:70,mode:"dive",focus:"0",delay:0,ult:false,loadout:"auto"}],
+  settings:{maxTime:12,runs:300,clusterDef:0.6,window:3,critMult:2,reload:1.5},
+};
+// shared link
+try{const m=/[#&]s=([^&]+)/.exec(location.hash);if(m){const o=JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,"+").replace(/_/g,"/")))));if(o&&o.defenders&&o.attackers){Object.assign(S,o);S.settings=Object.assign({maxTime:12,runs:300,clusterDef:0.6,window:3,critMult:2,reload:1.5},o.settings||{});}}}catch(e){console.warn("bad share link",e);}
+function encodeState(){return btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
+
+/* ---------- cards ---------- */
+// expected sustained output of the hero's best weapon at this skill level
+// (hit chance x uptime x crits x ammo/reload), at `dist` metres
+function expectedOutput(key,p,dist){
+  const d=byKey(key);if(!d)return null;
+  let dps=0,hps=0;
+  for(const a of d.actions){
+    if(a.kind!=="weapon"||a.teamup)continue;
+    const pel=a.pellets||1,mag=a.ammo?a.ammo/pel:Infinity;
+    const rel=a.ammo?(a.reload!=null?a.reload:S.settings.reload):0;
+    const duty=isFinite(mag)?(mag*a.cycle)/(mag*a.cycle+rel+a.cycle):1;
+    const rate=pel/a.cycle*duty*p.uptime;
+    if(a.dmg&&(a.range||99)>=dist){
+      const fo=a.falloff?(dist<=a.falloff[0]?1:dist>=a.falloff[1]?a.falloff[2]:1-(1-a.falloff[2])*(dist-a.falloff[0])/(a.falloff[1]-a.falloff[0])):1;
+      const crit=a.crit?1+p.crit*((a.critMult||S.settings.critMult)-1):1;
+      dps=Math.max(dps,a.dmg*fo*crit*rate*SIM.hitChance(p,a.aim,false,dist,1));
+    }
+    if(a.heal)hps=Math.max(hps,a.heal*rate*SIM.hitChance(p,a.aim,true,5,1));
+  }
+  return {dps,hps};
+}
+function derivedLine(slot,side){
+  const p=SIM.perfStats(slot.perf,slot.ov);
+  const dist=side==="A"?(SIM.MODE_DIST[slot.mode]||3):15;
+  const o=expectedOutput(slot.hero,p,dist);
+  const out=o?` · Primary ≈ ${o.hps?`<b>${Math.round(o.hps)}</b> heal/s · `:""}<b>${Math.round(o.dps)}</b> dmg/s${side==="A"?` at ${dist}m`:""}`:"";
+  return `Aim <b>${pctf(p.aim)}</b> · Crit <b>${pctf(p.crit)}</b> · Uptime <b>${pctf(p.uptime)}</b> · React <b>${fmt(p.reaction,2)}s</b> · Coverage <b>${pctf(p.coverage)}</b>${out}`;
+}
+function cardHTML(slot,side,i){
+  const d=byKey(slot.hero);const role=d?d.role:"Duelist";
+  const tus=teamups(slot.hero);
+  const ov=slot.ov||{};
+  const ovIn=(k,lab,step,max)=>`<label>${lab}<input type="number" data-ov="${k}" step="${step}" min="0" max="${max}" placeholder="auto" value="${ov[k]!=null?ov[k]:""}"></label>`;
+  let h=`<div class="card" data-side="${side}" data-i="${i}" style="--rc:${RC[role]}">
+    <div class="pic">${pic(slot.hero)}</div>
+    <div class="row"><select class="hero" data-f="hero" aria-label="Hero">${heroOptions(slot.hero)}</select><button class="x" data-act="rm" title="Remove">✕</button></div>
+    <div class="perf"><label>Perf</label><input type="range" min="0" max="100" step="1" data-f="perf" value="${slot.perf}" aria-label="Performance"><input type="number" min="0" max="100" data-f="perf" value="${slot.perf}"></div>
+    <div class="derived">${derivedLine(slot,side)}</div>
+    <div class="row opts" style="grid-column:1/-1">
+      <label><input type="checkbox" data-f="ult"${slot.ult?" checked":""}> Ult ready</label>
+      <label>Team-up <select data-f="loadout"><option value="auto">Auto</option>${tus.map(t=>`<option${slot.loadout===t?" selected":""}>${esc(t)}</option>`).join("")}<option value="none"${slot.loadout==="none"?" selected":""}>None</option></select></label>`;
+  if(side==="A"){
+    h+=`<label>Range <select data-f="mode">${["dive","brawl","poke","long"].map(m=>`<option value="${m}"${slot.mode===m?" selected":""}>${m} ${SIM.MODE_DIST[m]}m</option>`).join("")}</select></label>
+      <label>Focus <select data-f="focus"><option value="lowest"${slot.focus==="lowest"?" selected":""}>Lowest HP</option>${S.defenders.map((x,j)=>`<option value="${j}"${String(slot.focus)===String(j)?" selected":""}>D${j+1} ${esc(x.hero)}</option>`).join("")}</select></label>
+      <label>Engage at <input type="number" data-f="delay" min="0" max="10" step="0.25" value="${slot.delay||0}" style="width:54px">s</label>`;
+  }
+  h+=`</div><details><summary>Fine-tune skill</summary><div class="ov">
+      ${ovIn("aim","Aim 0-1","0.01",1)}${ovIn("crit","Crit 0-1","0.01",1)}${ovIn("uptime","Uptime 0-1","0.01",1)}${ovIn("reaction","React s","0.05",5)}${ovIn("coverage","Coverage 0-1","0.01",1)}
+    </div></details></div>`;
+  return h;
+}
+function renderCards(){
+  $("#defCards").innerHTML=S.defenders.map((s,i)=>cardHTML(s,"D",i)).join("");
+  $("#attCards").innerHTML=S.attackers.map((s,i)=>cardHTML(s,"A",i)).join("");
+  $("#defCount").textContent=S.defenders.length+"/6";$("#attCount").textContent=S.attackers.length+"/6";
+  $("#addDef").disabled=S.defenders.length>=6;$("#addAtt").disabled=S.attackers.length>=6;
+  const ft=$("#fTarget"),cur=ft.value;
+  ft.innerHTML=`<option value="lowest">Lowest HP</option>`+S.defenders.map((x,j)=>`<option value="${j}">D${j+1} ${esc(x.hero)}</option>`).join("");
+  if(cur)ft.value=cur;
+}
+function listFor(side){return side==="D"?S.defenders:S.attackers;}
+function onCardInput(e){
+  const card=e.target.closest(".card");if(!card)return;
+  const slot=listFor(card.dataset.side)[+card.dataset.i];
+  const f=e.target.dataset.f,ovk=e.target.dataset.ov;
+  if(ovk){slot.ov=slot.ov||{};const v=e.target.value;if(v==="")delete slot.ov[ovk];else slot.ov[ovk]=+v;card.querySelector(".derived").innerHTML=derivedLine(slot,card.dataset.side);return;}
+  if(!f)return;
+  if(f==="perf"){slot.perf=Math.max(0,Math.min(100,+e.target.value||0));card.querySelectorAll('[data-f="perf"]').forEach(x=>{if(x!==e.target)x.value=slot.perf;});card.querySelector(".derived").innerHTML=derivedLine(slot,card.dataset.side);return;}
+  if(f==="ult")slot.ult=e.target.checked;
+  else if(f==="delay")slot.delay=+e.target.value||0;
+  else slot[f]=e.target.value;
+  if(f==="hero"){slot.loadout="auto";if(card.dataset.side==="A")slot.mode=defaultMode(slot.hero);renderCards();}
+}
+document.addEventListener("input",e=>{if(e.target.closest(".cards"))onCardInput(e);});
+document.addEventListener("change",e=>{if(e.target.closest(".cards")&&e.target.type!=="range")onCardInput(e);});
+document.addEventListener("click",e=>{
+  const b=e.target.closest('[data-act="rm"]');if(!b)return;
+  const card=b.closest(".card"),list=listFor(card.dataset.side),i=+card.dataset.i;
+  list.splice(i,1);
+  if(card.dataset.side==="D")for(const a of S.attackers){if(a.focus!=="lowest"){const f=+a.focus;if(f===i)a.focus="lowest";else if(f>i)a.focus=String(f-1);}}
+  renderCards();
+});
+$("#addDef").onclick=()=>{S.defenders.push({hero:firstOf("Mantis","Rocket Raccoon","Luna Snow"),perf:70,ult:false,loadout:"auto"});renderCards();};
+$("#addAtt").onclick=()=>{const h=firstOf("Black Panther","Spider-Man","Psylocke");S.attackers.push({hero:h,perf:70,mode:defaultMode(h),focus:"lowest",delay:0,ult:false,loadout:"auto"});renderCards();};
+const SET_IDS={sMax:"maxTime",sRuns:"runs",sClD:"clusterDef",sWin:"window",sCrit:"critMult",sReload:"reload"};
+for(const id in SET_IDS){const el=$("#"+id);el.value=S.settings[SET_IDS[id]];el.addEventListener("change",()=>{S.settings[SET_IDS[id]]=+el.value;});}
+$("#shareBtn").onclick=async()=>{
+  const url=location.href.split("#")[0]+"#s="+encodeState();
+  try{history.replaceState(null,"",url);await navigator.clipboard.writeText(url);setStatus("Link copied.");}catch(e){setStatus("Link is in the address bar.");}
+};
+
+/* ---------- running ---------- */
+function setStatus(t){$("#status").textContent=t;}
+function setProg(f){$("#prog").style.width=Math.round(f*100)+"%";}
+function config(){
+  const st=S.settings;
+  return {
+    defenders:S.defenders.filter(s=>has(s.hero)).map(s=>({hero:s.hero,perf:s.perf,ov:s.ov,ult:s.ult,loadout:s.loadout})),
+    attackers:S.attackers.filter(s=>has(s.hero)).map(s=>({hero:s.hero,perf:s.perf,ov:s.ov,ult:s.ult,loadout:s.loadout,mode:s.mode,focus:s.focus,delay:s.delay})),
+    settings:{maxTime:st.maxTime,clusterDef:st.clusterDef,critMult:st.critMult,reload:st.reload},
+  };
+}
+let running=false;
+async function runAll(){
+  if(running)return;
+  const cfg=config();
+  if(!cfg.defenders.length||!cfg.attackers.length){setStatus("Add at least one modelled defender and attacker.");return;}
+  running=true;$("#runBtn").disabled=true;setProg(0);
+  try{
+    setStatus(`Simulating ${S.settings.runs} fights…`);await tick();
+    const t0=performance.now();
+    const mc=SIM.monteCarlo(cfg,Math.max(1,S.settings.runs|0));
+    const rep=SIM.run(cfg,mc.repSeed);
+    const ms=performance.now()-t0;
+    setProg(0.35);
+    renderResults(cfg,mc,rep);
+    setStatus(`${mc.n} fights in ${Math.round(ms)} ms. Working out DPS checks…`);await tick();
+    await renderDpsChecks(cfg);
+    setStatus(`Done · ${mc.n} fights in ${Math.round(ms)} ms.`);setProg(1);
+    history.replaceState(null,"",location.href.split("#")[0]+"#s="+encodeState());
+  }catch(e){console.error(e);setStatus("Error: "+e.message);}
+  running=false;$("#runBtn").disabled=false;
+}
+$("#runBtn").onclick=runAll;
+
+/* ---------- results ---------- */
+function colorOf(u){return u.side==="D"?DEF_COLORS[u.idx%6]:ATT_COLORS[u.idx%6];}
+function actionName(key,id){
+  const d=byKey(key);if(!d)return id;
+  const a=d.actions.find(x=>x.id===id);
+  if(a)return a.name+(a.ult?" (ult)":"")+(a.teamup?" (team-up)":"");
+  return {echo:"Echo heal (aura/self)",lifesteal:"Lifesteal",regen:"Regeneration",hot:"Heal over time",dot:"Damage over time",passive:"Passive",effect:"Effect",heal:"Healing"}[id]||id;
+}
+function renderResults(cfg,mc,rep){
+  const R=$("#results");
+  const units=rep.units;
+  const D=units.filter(u=>u.side==="D"),A=units.filter(u=>u.side==="A"&&!u.dummy);
+  let h="";
+  // summary
+  h+=`<section class="panel"><h2>Outcome over ${mc.n} fights <span class="grow"></span><span class="pill">${S.settings.maxTime}s fight</span></h2><div class="sumgrid">`;
+  D.forEach(u=>{
+    const s=mc.defenders[u.idx];const d=byKey(u.key);
+    const cls=s.p>=0.7?"bad":s.p>=0.3?"warn":"good";
+    h+=`<div class="sum" style="--rc:${colorOf(u)}"><div class="who"><span>D${u.idx+1} ${esc(u.key)}</span><span class="pill">${d?d.hp+(d.shield?"+"+d.shield:""):"?"} HP</span></div>
+      <div class="big ${cls}">${pctf(s.p)} <small>killed</small></div>
+      <div class="line">Time to kill: <b>${s.p?fmt(s.p50,2)+"s":"—"}</b> median${s.p?` · ${fmt(s.p10,2)}–${fmt(s.p90,2)}s (10–90%)`:""}</div>
+      <div class="line">Aim ${pctf(u.ps.aim)} · crit ${pctf(u.ps.crit)} · team-up ${esc(u.loadout||"none")}</div></div>`;
+  });
+  h+=`<div class="sum" style="--rc:var(--syn)"><div class="who"><span>Team</span></div>
+    <div class="big ${mc.wipe.p>=0.5?"bad":"good"}">${pctf(mc.wipe.p)} <small>wiped</small></div>
+    <div class="line">First kill: <b>${mc.firstKill.p?fmt(mc.firstKill.p50,2)+"s":"none"}</b> median (in ${pctf(mc.firstKill.p)} of fights)</div>
+    <div class="line">Full wipe: <b>${mc.wipe.p?fmt(mc.wipe.p50,2)+"s":"—"}</b> median</div></div>`;
+  A.forEach(u=>{
+    const s=mc.attackers[u.idx];
+    h+=`<div class="sum" style="--rc:${colorOf(u)}"><div class="who"><span>A${u.idx+1} ${esc(u.key)}</span><span class="pill">attacker</span></div>
+      <div class="big ${s.p>=0.5?"good":""}">${pctf(s.p)} <small>died</small></div>
+      <div class="line">${s.p?"Median death "+fmt(s.p50,2)+"s":"Survives the fight"} · ${esc(cfg.attackers[u.idx].mode)} ${SIM.MODE_DIST[cfg.attackers[u.idx].mode]}m</div></div>`;
+  });
+  h+=`</div></section>`;
+  // DPS check placeholder
+  h+=`<section class="panel" id="dpsBox"><h2>What it takes to kill</h2><div class="note">Calculating…</div></section>`;
+  // timeline
+  h+=`<section class="panel chart"><h2>Health over time · representative fight <span class="grow"></span><span class="pill">median first kill</span></h2>${chartSVG(rep)}<div class="legend" id="legend">${units.filter(u=>!u.dummy).map((u,k)=>`<span data-k="${k}"><i style="background:${colorOf(u)}"></i>${esc(u.label)}${u.alive?"":` ✕ ${fmt(u.deathT,2)}s`}</span>`).join("")}</div>
+    <p class="note" style="margin-top:6px">Line = health + bonus health/shields as % of max health. Dots = abilities used (hover for name), ✕ = elimination.</p></section>`;
+  // cooldowns committed
+  h+=`<section class="panel half"><h2>Cooldowns committed</h2>${cooldownsHTML(rep)}</section>`;
+  // log
+  h+=`<section class="panel half"><h2>Fight log · representative fight</h2><div class="log">${rep.events.map(e=>`<div class="${e.kind==="death"?"death":e.kind==="ult"?"ult":e.kind==="cc"?"cc":""}"><span class="t">${fmt(e.t,2)}s</span><span class="${e.side}">${esc(e.who)}</span> ${esc(e.text)}</div>`).join("")||'<div class="note">Nothing happened.</div>'}</div></section>`;
+  // breakdown
+  h+=`<section class="panel"><h2>Damage &amp; healing breakdown · representative fight</h2><div class="scroll">${breakdownHTML(rep)}</div></section>`;
+  R.innerHTML=h;
+  R.querySelectorAll("#legend span").forEach(sp=>sp.onclick=()=>{sp.classList.toggle("off");R.querySelectorAll(`[data-series="${sp.dataset.k}"]`).forEach(g=>g.style.display=sp.classList.contains("off")?"none":"");});
+}
+function chartSVG(rep){
+  const W=900,H=280,L=40,Rr=10,T=10,B=26;
+  const units=rep.units;const tl=rep.timeline;if(!tl.length)return"";
+  const tMax=Math.max(rep.duration,tl[tl.length-1].t);
+  let yMax=100;
+  tl.forEach(s=>s.u.forEach((v,k)=>{if(!units[k].dummy)yMax=Math.max(yMax,(v[0]+v[1])/units[k].maxHp*100);}));
+  yMax=Math.min(300,Math.ceil(yMax/25)*25);
+  const X=t=>L+(W-L-Rr)*t/tMax,Y=v=>T+(H-T-B)*(1-v/yMax);
+  let g="";
+  for(let v=0;v<=yMax;v+=yMax>150?50:25)g+=`<line x1="${L}" x2="${W-Rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(140,150,200,${v===100?.35:.12})"/><text x="${L-6}" y="${Y(v)+4}" fill="#5b6383" font-size="10" text-anchor="end">${v}%</text>`;
+  for(let s=0;s<=tMax;s+=tMax>20?5:(tMax>8?2:1))g+=`<line x1="${X(s)}" x2="${X(s)}" y1="${T}" y2="${H-B}" stroke="rgba(140,150,200,.08)"/><text x="${X(s)}" y="${H-8}" fill="#5b6383" font-size="10" text-anchor="middle">${s}s</text>`;
+  units.forEach((u,k)=>{
+    if(u.dummy)return;
+    const c=colorOf(u);
+    let pts=[];for(const s of tl){const v=s.u[k];pts.push(`${X(s.t).toFixed(1)},${Y((v[0]+v[1])/u.maxHp*100).toFixed(1)}`);if(!v[2])break;}
+    let el=`<polyline fill="none" stroke="${c}" stroke-width="2" ${u.side==="A"?'stroke-dasharray="5 3"':""} points="${pts.join(" ")}"/>`;
+    const at=t=>{let best=tl[0];for(const s of tl){if(s.t>t)break;best=s;}const v=best.u[k];return Y((v[0]+v[1])/u.maxHp*100);};
+    for(const c2 of u.st.casts)el+=`<circle cx="${X(c2.t)}" cy="${at(c2.t)}" r="${c2.ult?5:3.2}" fill="${c}" stroke="#0c1020" stroke-width="1"><title>${esc(u.label)} · ${esc(c2.name)} @ ${c2.t}s</title></circle>`;
+    if(!u.alive)el+=`<text x="${X(u.deathT)}" y="${Y(0)-2}" fill="${c}" font-size="15" font-weight="700" text-anchor="middle">✕<title>${esc(u.label)} eliminated @ ${u.deathT}s</title></text>`;
+    g+=`<g data-series="${k}">${el}</g>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Health over time">${g}</svg>`;
+}
+function cooldownsHTML(rep){
+  const D=rep.units.filter(u=>u.side==="D"),A=rep.units.filter(u=>u.side==="A"&&!u.dummy);
+  const kills=D.filter(u=>!u.alive).sort((a,b)=>a.deathT-b.deathT);
+  let h="";
+  if(!kills.length)h+=`<p class="note" style="margin-bottom:8px">No defender died in this fight. Everything the attackers spent:</p>`;
+  const windows=kills.length?kills.map((k,i)=>({k,from:i?kills[i-1].deathT:0,to:k.deathT})):[{k:null,from:0,to:Infinity}];
+  for(const w of windows){
+    h+=`<div style="margin-bottom:10px"><div style="font:600 13px 'Chakra Petch';margin-bottom:4px">${w.k?`<span class="bad">✕ ${esc(w.k.label)}</span> at ${fmt(w.to,2)}s`:"Whole fight"}</div><table><tr><th>Hero</th><th class="l">Used before this ${w.k?"kill":"point"}</th></tr>`;
+    for(const u of A.concat(D)){
+      const cs=u.st.casts.filter(c=>c.t>w.from-1e-9&&c.t<=w.to+1e-9);
+      if(!cs.length)continue;
+      h+=`<tr><td style="color:${colorOf(u)}">${esc(u.label)}</td><td class="l">${cs.map(c=>`${c.ult?"<b class='warn'>ULT </b>":""}${esc(c.name)} <span class="note">${fmt(c.t,1)}s</span>`).join(" · ")}</td></tr>`;
+    }
+    h+=`</table></div>`;
+  }
+  return h;
+}
+function breakdownHTML(rep){
+  let h=`<table><tr><th>Hero</th><th>Damage done</th><th>Healing done</th><th>…on self</th><th>Damage taken</th><th>Healing received</th><th>Blocked</th><th>Result</th></tr>`;
+  rep.units.forEach(u=>{
+    if(u.dummy)return;
+    const st=u.st;
+    h+=`<tr><td style="color:${colorOf(u)};font-weight:600">${esc(u.label)}</td><td>${Math.round(st.dmgDone)}</td><td>${Math.round(st.healDone)}</td><td>${Math.round(st.healSelf)}</td><td>${Math.round(st.dmgTaken)}</td><td>${Math.round(st.healTaken)}</td><td>${Math.round(st.absorbed)}</td><td class="${u.alive?"good":"bad"}">${u.alive?"alive":"died "+fmt(u.deathT,2)+"s"}</td></tr>`;
+    const rows=Object.entries(st.byAction).filter(([,r])=>r.dmg>0.5||r.heal>0.5).sort((a,b)=>(b[1].dmg+b[1].heal)-(a[1].dmg+a[1].heal));
+    for(const [id,r] of rows)h+=`<tr class="sub"><td>${esc(actionName(u.key,id))}</td><td>${r.dmg>0.5?Math.round(r.dmg):""}</td><td>${r.heal>0.5?Math.round(r.heal):""}</td><td></td><td colspan="2">${r.shots?`${r.hits}/${r.shots} landed (${pctf(r.hits/r.shots)})`:""}</td><td></td><td></td></tr>`;
+  });
+  return h+`</table>`;
+}
+async function renderDpsChecks(cfg){
+  const box=$("#dpsBox");if(!box)return;
+  const W=S.settings.window;
+  const rows=[];
+  const total=cfg.defenders.length;
+  for(let i=0;i<total;i++){
+    const base={...cfg,attackers:[]};
+    const raw=[];
+    for(const w of [1,2,W===2||W===1?4:W].filter((v,j,a)=>a.indexOf(v)===j)){
+      raw.push([w,SIM.dpsCheck(base,i,w,{n:24})]);setProg(0.35+0.6*(i+raw.length/4)/total);await tick();
+    }
+    const extra=SIM.dpsCheck(cfg,i,W,{n:24});
+    rows.push({i,raw,extra});setProg(0.35+0.6*(i+1)/total);await tick();
+  }
+  const D=cfg.defenders;
+  let h=`<div class="scroll"><table><tr><th>Defender</th><th class="l">Sustained DPS needed on them alone (perfect aim, their team healing back)</th><th class="l">Extra DPS your attackers still need to kill them within ${W}s</th></tr>`;
+  for(const r of rows){
+    const e=r.extra;
+    h+=`<tr><td style="color:${DEF_COLORS[r.i%6]};font-weight:600">D${r.i+1} ${esc(D[r.i].hero)}</td><td class="l">${r.raw.map(([w,v])=>`<b>${isFinite(v)?v:"∞"}</b> dps in ${w}s`).join(" · ")}</td><td class="l">${e===0?`<span class="bad">None - your dive already kills within ${W}s (≥50% of fights)</span>`:isFinite(e)?`<span class="warn">+${e} dps</span> on top of your attackers`:"Not reachable"}</td></tr>`;
+  }
+  h+=`</table></div><p class="note" style="margin-top:8px">Raw check = one perfect source of damage on that defender while their team heals and uses cooldowns as set above (no attackers, so nobody else is pressured). Compare with roughly what one hero sustains: see the reference panel's DPS column. 50% of ${24} runs must end in a kill.</p>`;
+  box.innerHTML=`<h2>What it takes to kill</h2>`+h;
+}
+
+/* ---------- stack finder ---------- */
+function combos(arr,k,start=0,cur=[],out=[]){if(cur.length===k){out.push(cur.slice());return out;}for(let i=start;i<arr.length;i++){cur.push(arr[i]);combos(arr,k,i+1,cur,out);cur.pop();}return out;}
+$("#fRun").onclick=async()=>{
+  if(running)return;
+  const cfg0=config();if(!cfg0.defenders.length){$("#fStatus").textContent="Add defenders first.";return;}
+  const poolSel=$("#fPool").value,size=+$("#fSize").value,perf=+$("#fPerf").value,mode=$("#fMode").value,target=$("#fTarget").value,ult=$("#fUlt").checked,n=Math.max(2,+$("#fRuns").value||12);
+  const pool=DEFS.filter(d=>poolSel==="all"||(poolSel==="both"?d.role!=="Strategist":d.role===poolSel)).map(d=>SIM.keyOf(d));
+  const list=combos(pool,size).filter(c=>new Set(c.map(k=>byKey(k).name)).size===c.length);
+  if(list.length>12000){$("#fStatus").textContent=`${list.length} stacks is too many - narrow the pool or size.`;return;}
+  running=true;$("#fRun").disabled=true;
+  const res=[];const t0=performance.now();
+  for(let i=0;i<list.length;i++){
+    const att=list[i].map(k=>({hero:k,perf,ult,loadout:"auto",mode:mode==="auto"?defaultMode(k):mode,focus:target,delay:0}));
+    const cfg={...cfg0,attackers:att};
+    const mc=SIM.monteCarlo(cfg,n,99);
+    const tIdx=target==="lowest"?null:+target;
+    const tgt=tIdx==null?mc.firstKill:mc.defenders[tIdx];
+    res.push({c:list[i],p:tgt.p,t:tgt.p50,wipe:mc.wipe.p,attDeaths:mc.attackers.reduce((s,a)=>s+a.p,0)});
+    if(i%25===0){$("#fStatus").textContent=`Testing stacks… ${i+1}/${list.length}`;await tick();}
+  }
+  res.sort((a,b)=>(b.p-a.p)||((a.t??99)-(b.t??99))||(b.wipe-a.wipe));
+  const tl=target==="lowest"?"first kill":`D${+target+1} ${S.defenders[+target].hero}`;
+  let h=`<table><tr><th>#</th><th class="l">Stack</th><th>Kills ${esc(tl)}</th><th>Median time</th><th>Team wiped</th><th>Attackers lost (avg)</th><th></th></tr>`;
+  res.slice(0,30).forEach((r,i)=>{h+=`<tr><td>${i+1}</td><td class="l"><span class="combo">${r.c.map(k=>`${pic(k)}<span>${esc(k)}</span>`).join(" + ")}</span></td><td class="${r.p>=0.7?"good":r.p>=0.3?"warn":"bad"}">${pctf(r.p)}</td><td>${r.p?fmt(r.t,2)+"s":"—"}</td><td>${pctf(r.wipe)}</td><td>${fmt(r.attDeaths,2)}</td><td><button data-load="${esc(JSON.stringify(r.c))}">Load</button></td></tr>`;});
+  $("#fOut").innerHTML=h+`</table><p class="note" style="margin-top:6px">${list.length} stacks × ${n} fights in ${Math.round(performance.now()-t0)} ms. "Load" puts that stack into the attackers above.</p>`;
+  $("#fStatus").textContent=`Top ${Math.min(30,res.length)} of ${res.length} stacks against your defenders.`;
+  running=false;$("#fRun").disabled=false;
+};
+$("#fOut").addEventListener("click",e=>{
+  const b=e.target.closest("[data-load]");if(!b)return;
+  const ks=JSON.parse(b.dataset.load);const perf=+$("#fPerf").value,mode=$("#fMode").value,target=$("#fTarget").value,ult=$("#fUlt").checked;
+  S.attackers=ks.map(k=>({hero:k,perf,ult,loadout:"auto",mode:mode==="auto"?defaultMode(k):mode,focus:target,delay:0}));
+  renderCards();window.scrollTo({top:0,behavior:"smooth"});
+});
+
+/* ---------- reference ---------- */
+function effText(e){
+  const to=e.to?` → ${e.to}`:"";const dur=e.dur!=null?` ${e.dur}s`:"";
+  switch(e.t){
+    case"dmg":return`${e.amt} dmg${to}`;case"heal":return`heal ${e.amt}${e.overflow?" (overheal→bonus)":""}${to}`;
+    case"hot":return`heal ${e.hps}/s for ${e.dur}s${to}`;case"dot":return`${e.dps} dmg/s for ${e.dur}s${to}`;
+    case"bonus":return`+${e.amt} bonus HP${dur}${to}`;case"barrier":return`barrier ${e.hp} HP${dur}${to}`;
+    case"cc":return`${e.kind} ${e.dur}s${to}`;case"regen":return`regen ${e.hps}/s after ${e.delay}s`;
+    case"cdr":return`-${e.sec}s cooldown (${e.action})`;case"invuln":case"untargetable":return`${e.t}${dur}${to}`;
+    case"cleanse":return`cleanse${to}`;case"revive":return`revive at ${e.hpPct}%`;
+    default:return`${e.t} ${e.pct!=null?e.pct+"%":""}${dur}${to}`;
+  }
+}
+function renderRef(){
+  const d=byKey($("#refHero").value);if(!d){$("#refOut").innerHTML="";return;}
+  const k=SIM.kitSummary(d);
+  let h=`<p style="margin-bottom:8px"><b>${esc(SIM.keyOf(d))}</b> · ${d.role} · <b>${d.hp}</b> HP${d.shield?` + <b>${d.shield}</b> regenerating shield`:""} · best weapon <b>${k.dps}</b> dps${k.hps?` / <b>${k.hps}</b> hps`:""} at 100% accuracy, no crits</p>`;
+  h+=`<div class="scroll"><table class="kit"><tr><th class="l">Action</th><th>Kind</th><th class="l">Used when</th><th>CD</th><th>Per hit</th><th>Rate</th><th>Max/s</th><th>Range</th><th class="l">Effects</th></tr>`;
+  for(const a of d.actions){
+    const per=[a.dmg?`${a.dmg} dmg`:"",a.heal?`${a.heal} heal`:""].filter(Boolean).join(" / ")+((a.pellets||1)>1?` ×${a.pellets}`:"");
+    const rate=a.cycle?`${fmt(a.cycle,2)}s`:"";
+    const mx=a.cycle?[a.dmg?Math.round(a.dmg*(a.pellets||1)/a.cycle):0,a.heal?Math.round(a.heal*(a.pellets||1)/a.cycle):0].filter(Boolean).join(" / "):"";
+    const effs=["onCast","onHit","tick"].flatMap(f=>(a[f]||[]).map(e=>`<span class="pill">${f==="tick"?"per s: ":f==="onHit"?"on hit: ":""}${esc(effText(e))}</span>`)).join(" ");
+    h+=`<tr><td class="l"><b>${esc(a.name)}</b>${a.ult?' <span class="pill warn">ult</span>':""}${a.teamup?` <span class="pill">team-up${a.enhanced?" · "+esc(a.enhanced.partner):""}</span>`:""}</td><td>${a.kind}${a.dur?" "+a.dur+"s":""}</td><td class="l">${esc(a.use)}</td><td>${a.cd?a.cd+"s":""}${(a.charges||1)>1?" ×"+a.charges:""}</td><td>${per}</td><td>${rate}</td><td>${mx}</td><td>${a.range!=null?a.range+"m":""}</td><td class="l">${effs}${a.crit?' <span class="pill">crit'+(a.critMult?" ×"+a.critMult:"")+"</span>":""}${a.falloff?` <span class="pill">falloff ${a.falloff.join("/")}</span>`:""}</td></tr>`;
+  }
+  h+=`</table></div>`;
+  if(d.passives&&d.passives.length)h+=`<p style="margin-top:6px">Passives: ${d.passives.map(e=>`<span class="pill">${esc(effText(e))}</span>`).join(" ")}</p>`;
+  h+=`<p class="note" style="margin-top:8px"><b>Model notes:</b> ${esc(d.notes||"")}</p>`;
+  const o=window.OFFICIAL_STATS&&OFFICIAL_STATS.heroes[d.name];
+  if(o)h+=`<details style="margin-top:8px"><summary class="note" style="cursor:pointer">Official numbers (raw)</summary><pre>${esc(o.skills.filter(s=>s.type!=="unused").map(s=>`${s.name} [${s.key}]\n`+s.stats.map(([l,v])=>`  ${l}: ${v}`).join("\n")).join("\n\n")+"\n\nTEAM-UPS\n"+o.teamups.map(t=>`${t.name}\n`+t.base.map(([l,v])=>`  ${l}: ${v}`).join("\n")+(t.enhanced.length?"\n  enhanced: "+t.enhanced.map(([l,v])=>`${l} ${v}`).join("; "):"")).join("\n"))}</pre></details>`;
+  $("#refOut").innerHTML=h;
+}
+$("#refHero").innerHTML=heroOptions(firstOf("Luna Snow"));
+$("#refHero").onchange=renderRef;
+
+/* ---------- boot ---------- */
+renderCards();renderRef();
+const missing=window.OFFICIAL_STATS?Object.keys(OFFICIAL_STATS.heroes).filter(n=>!DEFS.some(d=>d.name===n)):[];
+setStatus(`${DEFS.length} hero models loaded${missing.length?` · not modelled yet: ${missing.join(", ")}`:""}. Nightcrawler arrives once his kit is published.`);
+})();
+</script>
+</body>
+</html>
