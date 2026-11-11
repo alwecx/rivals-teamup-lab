@@ -4,7 +4,7 @@ An unofficial, single-file team-composition sandbox for **Marvel Rivals Season 1
 Slot six heroes, see exactly which team-up loadouts go **Enhanced**, and brute-force
 the best comps — all in one HTML file with zero dependencies.
 
-**▶ Try it live: [randolin.github.io/rivals-teamup-lab](https://randolin.github.io/rivals-teamup-lab/)**
+**▶ Try it live: [alwecx.github.io/rivals-teamup-lab](https://alwecx.github.io/rivals-teamup-lab/)** · **[Sim Lab (fight simulator)](https://alwecx.github.io/rivals-teamup-lab/sim.html)**
 
 **The full board** — six slots, live team-up readout, roster intel, and the optimizer, with the avatar pack installed:
 
@@ -86,7 +86,7 @@ numbers as a well-informed model, not the game itself.
 
 No build, no install, no network requirement beyond Google Fonts (which degrades
 gracefully offline). Either use it at
-**[randolin.github.io/rivals-teamup-lab](https://randolin.github.io/rivals-teamup-lab/)**
+**[alwecx.github.io/rivals-teamup-lab](https://alwecx.github.io/rivals-teamup-lab/)**
 or download `index.html` and open it in any modern browser (2023+).
 
 ## Avatars (optional)
