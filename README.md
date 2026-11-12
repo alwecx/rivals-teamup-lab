@@ -123,8 +123,10 @@ plus the [Season 11 balance post](https://www.marvelrivals.com/balancepost/20261
 Butcher (Season 10) and the Season 10–11 team-up reworks.
 
 **Nightcrawler** (Season 11 Strategist, launching November 13) is on the roster
-with his team-ups marked TBD until they are revealed. The data is one
-plainly-formatted `RAW` array at the top of the file's script.
+with both team-ups from his early-access kit: Protective Siblings (Rogue) and
+Demon Disciple (Magik). His official numbers aren't published yet, so in the
+Sim Lab he runs on clearly marked estimates. The data is one plainly-formatted
+`RAW` array at the top of the file's script.
 
 ### Refreshing the data
 

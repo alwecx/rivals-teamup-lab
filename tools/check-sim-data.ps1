@@ -43,7 +43,7 @@ foreach ($file in $Path) {
     try { $h = ConvertFrom-Json $b.Groups[1].Value } catch { & $Err "line ${line}: not strict JSON - $($_.Exception.Message.Split([Environment]::NewLine)[0])"; continue }
     $hn = "$($h.name)$(if (Has $h 'variant') { " ($($h.variant))" })"
     $HLbl = "line $line $hn"
-    if (-not (Has $h 'name') -or -not $heroNames.ContainsKey($h.name)) { & $Err "${HLbl}: name '$($h.name)' is not a hero in official-stats.js" }
+    if (-not (Has $h 'name') -or (-not $heroNames.ContainsKey($h.name) -and -not ((Has $h 'provisional') -and $h.provisional))) { & $Err "${HLbl}: name '$($h.name)' is not a hero in official-stats.js (mark unreleased heroes \"provisional\": true)" }
     if ($seen.ContainsKey($hn)) { & $Err "${HLbl}: defined twice (also in $($seen[$hn]))" } else { $seen[$hn] = [IO.Path]::GetFileName($file) }
     if ('Vanguard','Duelist','Strategist' -notcontains $h.role) { & $Err "${HLbl}: bad role '$($h.role)'" }
     if (-not (Num $h.hp) -or $h.hp -le 0) { & $Err "${HLbl}: hp must be a positive number" }

@@ -37,6 +37,7 @@ SIM_DEF({ ... });
 | field | type | meaning |
 |---|---|---|
 | `name` | string | Exactly the key in `OFFICIAL_STATS.heroes` (e.g. `"Cloak & Dagger"`, `"Gorr the God Butcher"`). |
+| `provisional` | true? | Hero whose kit is known but whose official numbers aren't published yet (not in `official-stats.js`). Every number is an estimate; the Sim Lab labels the hero "(est.)". Remove the flag once the real numbers are in. |
 | `variant` | string? | Only for heroes with several playable roles: `"Deadpool"` gets three defs with `variant` `"Vanguard"`, `"Duelist"`, `"Strategist"`. |
 | `role` | `"Vanguard"` \| `"Duelist"` \| `"Strategist"` | |
 | `hp` | number | Health. For `"150+100 Regenerative Shield"` use `hp: 150` and `shield: 100`. |
