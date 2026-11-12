@@ -139,7 +139,24 @@ header.top .toolnav a.on,header.top .toolnav a:hover{color:var(--ink);border-col
 .scorebar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .scorebar .big{font-family:"Chakra Petch";font-weight:700;font-size:26px;letter-spacing:.03em}
 .scorebar .big b{color:var(--syn)}
-.scorebar .clear{margin-left:auto}
+.scorebar .acts{margin-left:auto;display:flex;gap:8px}
+.scorebar .ctitle{font-family:"Chakra Petch";font-weight:600;font-size:15px;color:var(--dim);max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scorebar .ctitle:empty{display:none}
+button.share{border-color:color-mix(in srgb,var(--syn) 55%,transparent);color:#d9ceff}
+button.share:hover{background:color-mix(in srgb,var(--syn) 18%,var(--panel2))}
+/* ---------- share dialog ---------- */
+dialog.share{margin:auto;max-width:min(760px,calc(100vw - 24px));width:100%;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+dialog.share::backdrop{background:rgba(5,7,15,.72)}
+dialog.share h3{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center}
+dialog.share h3 .x{margin-left:auto;padding:2px 10px}
+dialog.share label{display:block;font-size:12px;color:var(--dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em}
+dialog.share input[type=text]{width:100%;font:inherit;color:var(--ink);background:#0f1428;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+dialog.share canvas{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line);margin:12px 0;background:#0c1020}
+dialog.share .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+dialog.share .row input{flex:1;min-width:200px}
+dialog.share .primary{background:linear-gradient(180deg,#7c5cf0,#5b3fd0);border-color:#8f74ff;font-weight:600}
+dialog.share .msg{font-size:12.5px;color:var(--strat);min-height:18px;margin-top:8px}
+dialog.share .msg.err{color:var(--duel)}
 button{
   font:inherit;color:var(--ink);background:var(--panel2);border:1px solid var(--line);
   border-radius:8px;padding:6px 12px;cursor:pointer;transition:border-color .12s,background .12s;
@@ -281,7 +298,8 @@ svg.links line{stroke:var(--syn);stroke-width:2;opacity:.75;filter:drop-shadow(0
     <div class="panel">
       <div class="scorebar">
         <span class="big"><b id="enhCount">0</b>/<span id="slotCount">0</span> ENHANCED</span>
-        <button class="clear" id="clearBtn">Clear Team</button>
+        <span class="ctitle" id="compTitleView"></span>
+        <span class="acts"><button class="share" id="shareBtn" title="Copy an image or link of this comp">Share</button><button class="clear" id="clearBtn">Clear Team</button></span>
       </div>
       <div class="slotwrap" style="margin-top:12px">
         <svg class="links" id="linkSvg" aria-hidden="true"></svg>
@@ -313,6 +331,20 @@ svg.links line{stroke:var(--syn);stroke-width:2;opacity:.75;filter:drop-shadow(0
     </div>
   </aside>
 </div>
+<dialog class="share" id="shareDlg" aria-labelledby="shareHead">
+  <h3 id="shareHead">Share this comp <button class="x" id="shareClose" aria-label="Close">✕</button></h3>
+  <label for="shareTitle">Title</label>
+  <input type="text" id="shareTitle" maxlength="48" placeholder="e.g. Dive into Luna · Scrim comp #2" autocomplete="off">
+  <canvas id="shareCanvas" width="1200" height="630" aria-label="Preview of the comp image"></canvas>
+  <div class="row">
+    <button class="primary" id="copyImgBtn">Copy image</button>
+    <button id="dlImgBtn">Download PNG</button>
+    <input type="text" id="shareLink" readonly aria-label="Link to this comp">
+    <button id="copyLinkBtn">Copy link</button>
+  </div>
+  <div class="msg" id="shareMsg" role="status"></div>
+</dialog>
+
 <script>
 /* ================= DATA ================= */
 const V="Vanguard",D="Duelist",S="Strategist";
@@ -432,6 +464,7 @@ function aviImg(name,tier,cls){
 
 /* ================= STATE ================= */
 let slots=[null,null,null,null,null,null]; // {id, lock, sel:-1|0|1}
+let compTitle=""; // optional name for the comp (shared in the link and the image)
 const $=q=>document.querySelector(q);
 
 function teamMask(){let lo=0,hi=0;for(const s of slots)if(s){const[a,b]=maskOf(s.id);lo=(lo|a)>>>0;hi=(hi|b)>>>0;}return[lo,hi];}
@@ -839,6 +872,8 @@ function encodeHash(){
   const parts=[];
   if(t)parts.push("t="+t);
   if(c!=="2-2-2")parts.push("c="+c);
+  if(compTitle)parts.push("n="+encodeURIComponent(compTitle));
+  const tv=document.getElementById("compTitleView");if(tv)tv.textContent=compTitle;
   const hash=parts.length?"#"+parts.join("&"):"";
   try{history.replaceState(null,"",hash||location.pathname+location.search);}catch(e){}
 }
@@ -864,9 +899,143 @@ function applyHash(){
       const c=v.split("-").map(Number);
       if(c.length===3&&c.every(x=>Number.isInteger(x)&&x>=0&&x<=6))comp={v:c[0],d:c[1],s:c[2]};
     }
+    if(k==="n"){try{compTitle=decodeURIComponent(v||"").slice(0,48);}catch(e){compTitle="";}}
   }
 }
 window.addEventListener("hashchange",()=>{applyHash();renderAll();});
+
+/* ================= SHARE (image + link) ================= */
+// Draws the current comp onto a canvas: one card per hero with portrait, equipped
+// team-up, partner icon and ENHANCED/BASE badge. Copied as PNG or downloaded.
+const SHARE_C={bg:"#0c1020",panel:"#141a30",panel2:"#1a2140",ink:"#e8ecfa",dim:"#8a93b4",faint:"#5b6383",line:"rgba(140,150,200,0.18)",syn:"#a78bfa",
+  [V]:"#f0a832",[D]:"#ff5d5d",[S]:"#3fd6b0"};
+const IMG_CACHE={};
+function loadImg(src){
+  if(!IMG_CACHE[src])IMG_CACHE[src]=new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src=src;});
+  return IMG_CACHE[src];
+}
+const iconSrc=name=>`avatars/Hero_Icon_${name.replace(/[ &]+/g,"_")}.webp`;
+function rrect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function fit(ctx,text,max){if(ctx.measureText(text).width<=max)return text;let t=text;while(t.length>1&&ctx.measureText(t+"…").width>max)t=t.slice(0,-1);return t+"…";}
+function drawPortrait(ctx,img,name,x,y,s,color){
+  ctx.save();rrect(ctx,x,y,s,s,10);ctx.fillStyle="#0f1428";ctx.fill();ctx.clip();
+  if(img)ctx.drawImage(img,x,y,s,s);
+  else{ctx.fillStyle=color;ctx.font=`700 ${Math.round(s*0.22)}px "Barlow Condensed",sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
+    const words=name.toUpperCase().split(" ");words.forEach((w,i)=>ctx.fillText(w,x+s/2,y+s/2+(i-(words.length-1)/2)*s*0.24));}
+  ctx.restore();
+  ctx.strokeStyle=color;ctx.lineWidth=2;rrect(ctx,x+1,y+1,s-2,s-2,10);ctx.stroke();
+}
+async function drawShareImage(canvas){
+  const filled=slots.filter(Boolean);
+  const [lo,hi]=teamMask();
+  const W=1200,cols=filled.length>3?2:1,rows=Math.max(1,Math.ceil(filled.length/cols));
+  const headH=118,cardH=132,gap=14,pad=28,footH=54;
+  const H_=headH+rows*cardH+(rows-1)*gap+footH+pad;
+  canvas.width=W;canvas.height=H_;
+  try{await Promise.all([document.fonts.load('700 34px "Chakra Petch"'),document.fonts.load('600 18px "Chakra Petch"'),document.fonts.load('700 22px "Barlow Condensed"')]);}catch(e){}
+  const imgs=await Promise.all(filled.map(s=>loadImg(iconSrc(H[s.id].name))));
+  const pimgs=await Promise.all(filled.map(s=>{const h=H[s.id],eq=equipped(s,lo,hi);return eq>=0?loadImg(iconSrc(h.tus[eq].partner)):null;}));
+  const ctx=canvas.getContext("2d");
+  // background
+  const g=ctx.createLinearGradient(0,0,W,H_);g.addColorStop(0,"#121735");g.addColorStop(1,SHARE_C.bg);
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H_);
+  const rg=ctx.createRadialGradient(W*0.8,-40,10,W*0.8,-40,620);rg.addColorStop(0,"rgba(167,139,250,0.22)");rg.addColorStop(1,"rgba(167,139,250,0)");
+  ctx.fillStyle=rg;ctx.fillRect(0,0,W,H_);
+  // header
+  let enh=0;filled.forEach(s=>{const h=H[s.id],eq=equipped(s,lo,hi);if(eq>=0&&partnerIn(h,eq,lo,hi))enh++;});
+  const roles={[V]:0,[D]:0,[S]:0};filled.forEach(s=>roles[H[s.id].role]++);
+  ctx.textBaseline="alphabetic";ctx.textAlign="left";
+  ctx.fillStyle=SHARE_C.ink;ctx.font='700 36px "Chakra Petch",sans-serif';
+  ctx.fillText(fit(ctx,compTitle||"Team Comp",W-pad*2-260),pad,pad+40);
+  ctx.font='600 17px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.dim;
+  ctx.fillText(`MARVEL RIVALS · SEASON 11 · ${roles[V]}-${roles[D]}-${roles[S]} (V-D-S)`,pad,pad+72);
+  // enhanced count (right)
+  ctx.textAlign="right";ctx.font='700 40px "Chakra Petch",sans-serif';
+  const cnt=`${enh}/${filled.length}`;ctx.fillStyle=SHARE_C.syn;ctx.fillText(cnt,W-pad,pad+42);
+  ctx.font='600 15px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.dim;ctx.fillText("TEAM-UPS ENHANCED",W-pad,pad+68);
+  ctx.textAlign="left";
+  ctx.fillStyle=SHARE_C.line;ctx.fillRect(pad,headH-10,W-pad*2,1);
+  // cards
+  const cw=(W-pad*2-(cols-1)*gap)/cols;
+  filled.forEach((s,i)=>{
+    const h=H[s.id],eq=equipped(s,lo,hi),col=i%cols,row=Math.floor(i/cols);
+    const x=pad+col*(cw+gap),y=headH+row*(cardH+gap),rc=SHARE_C[h.role];
+    const on=eq>=0&&partnerIn(h,eq,lo,hi);
+    ctx.save();
+    if(on){ctx.shadowColor="rgba(167,139,250,0.55)";ctx.shadowBlur=18;}
+    rrect(ctx,x,y,cw,cardH,12);ctx.fillStyle=SHARE_C.panel2;ctx.fill();ctx.restore();
+    ctx.strokeStyle=on?SHARE_C.syn:SHARE_C.line;ctx.lineWidth=on?2:1;rrect(ctx,x,y,cw,cardH,12);ctx.stroke();
+    ctx.fillStyle=rc;rrect(ctx,x,y,6,cardH,3);ctx.fill();
+    const ps=cardH-24;drawPortrait(ctx,imgs[i],h.name,x+18,y+12,ps,rc);
+    const tx=x+18+ps+16,tw=cw-(tx-x)-16;
+    ctx.font='700 25px "Barlow Condensed",sans-serif';ctx.fillStyle=rc;ctx.fillText(fit(ctx,h.name.toUpperCase(),tw-110),tx,y+36);
+    ctx.font='600 13px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.faint;ctx.textAlign="right";ctx.fillText(h.role.toUpperCase(),x+cw-16,y+32);ctx.textAlign="left";
+    if(eq<0){ctx.font='600 17px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.dim;ctx.fillText("Team-ups TBD",tx,y+72);return;}
+    const t=h.tus[eq];
+    ctx.font='600 19px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.ink;ctx.fillText(fit(ctx,t.name,tw),tx,y+68);
+    // partner + badge row
+    const py=y+cardH-46,pz=32;
+    drawPortrait(ctx,pimgs[i],t.partner,tx,py,pz,on?SHARE_C.syn:SHARE_C.faint);
+    ctx.font='600 15px "Chakra Petch",sans-serif';ctx.fillStyle=on?SHARE_C.ink:SHARE_C.dim;
+    ctx.fillText(fit(ctx,"w/ "+t.partner,tw-pz-150),tx+pz+10,py+22);
+    const bt=on?"ENHANCED":"BASE";ctx.font='700 13px "Chakra Petch",sans-serif';
+    const bw=ctx.measureText(bt).width+22,bx=x+cw-16-bw;
+    rrect(ctx,bx,py+5,bw,24,12);ctx.fillStyle=on?"rgba(167,139,250,0.22)":"rgba(107,117,145,0.2)";ctx.fill();
+    ctx.strokeStyle=on?SHARE_C.syn:"#6b7591";ctx.lineWidth=1;rrect(ctx,bx,py+5,bw,24,12);ctx.stroke();
+    ctx.fillStyle=on?"#d9ceff":SHARE_C.dim;ctx.fillText(bt,bx+11,py+22);
+  });
+  if(!filled.length){ctx.font='600 20px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.dim;ctx.fillText("Slot some heroes first.",pad,headH+60);}
+  // footer
+  const fy=H_-pad-6;
+  ctx.font='700 16px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.ink;ctx.fillText("TEAM-UP",pad,fy);
+  let fx=pad+ctx.measureText("TEAM-UP ").width;ctx.fillStyle=SHARE_C.syn;ctx.fillText("LAB",fx,fy);
+  ctx.font='500 15px system-ui,sans-serif';ctx.fillStyle=SHARE_C.faint;ctx.textAlign="right";
+  ctx.fillText(location.host?location.host+location.pathname.replace(/index\.html$/,""):"Team-Up Lab",W-pad,fy);ctx.textAlign="left";
+}
+const shareDlg=$("#shareDlg"),shareMsg=$("#shareMsg");
+function shareNote(t,err){shareMsg.textContent=t;shareMsg.classList.toggle("err",!!err);}
+function currentLink(){encodeHash();return location.href;}
+let shareDrawTimer=0;
+function refreshShare(){clearTimeout(shareDrawTimer);shareDrawTimer=setTimeout(()=>drawShareImage($("#shareCanvas")),120);$("#shareLink").value=currentLink();}
+$("#shareBtn").onclick=()=>{
+  if(!slots.some(Boolean)){flashStatus("Slot some heroes first, then share.");return;}
+  $("#shareTitle").value=compTitle;shareNote("");
+  drawShareImage($("#shareCanvas"));$("#shareLink").value=currentLink();
+  shareDlg.showModal?shareDlg.showModal():shareDlg.setAttribute("open","");
+  $("#shareTitle").focus();
+};
+$("#shareClose").onclick=()=>shareDlg.close();
+shareDlg.addEventListener("click",e=>{if(e.target===shareDlg)shareDlg.close();});
+$("#shareTitle").addEventListener("input",e=>{compTitle=e.target.value.trim().slice(0,48);refreshShare();});
+const canvasBlob=()=>drawShareImage($("#shareCanvas")).then(()=>new Promise(r=>$("#shareCanvas").toBlob(r,"image/png")));
+// give up on a clipboard call that never settles (some browsers hang on the permission check)
+const withTimeout=(p,ms)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),ms))]);
+$("#copyImgBtn").onclick=async()=>{
+  shareNote("Copying…");
+  try{
+    if(!window.ClipboardItem||!navigator.clipboard||!navigator.clipboard.write)throw new Error("unsupported");
+    // Promise-valued ClipboardItem keeps Safari's user-gesture window; Chrome/Edge accept it too
+    try{await withTimeout(navigator.clipboard.write([new ClipboardItem({"image/png":canvasBlob()})]),4000);}
+    catch(e){if(e.message==="timeout")throw e;const b=await canvasBlob();await withTimeout(navigator.clipboard.write([new ClipboardItem({"image/png":b})]),4000);}
+    shareNote("Image copied - paste it into Discord, a DM, anywhere.");
+  }catch(e){shareNote("This browser blocked copying the image. Use Download PNG instead.",true);}
+};
+$("#dlImgBtn").onclick=async()=>{
+  const b=await canvasBlob();if(!b){shareNote("Couldn't create the image.",true);return;}
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);
+  a.download=(slug(compTitle||"team-comp")||"team-comp")+".png";document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);shareNote("Image downloaded.");
+};
+$("#copyLinkBtn").onclick=async()=>{
+  const link=currentLink();$("#shareLink").value=link;
+  const ok="Link copied - it opens this exact comp, title included.";
+  try{await withTimeout(navigator.clipboard.writeText(link),3000);shareNote(ok);}
+  catch(e){ // older copy path that still works where the Clipboard API is blocked
+    const el=$("#shareLink");el.focus();el.select();
+    let done=false;try{done=document.execCommand("copy");}catch(_){}
+    shareNote(done?ok:"Press Ctrl+C to copy the selected link.",!done);
+  }
+};
 
 applyHash();
 renderAll();
