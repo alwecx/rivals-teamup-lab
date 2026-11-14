@@ -64,7 +64,8 @@
   }
   function applyLocal(id, path, value) {
     docs[id] = setIn(docs[id] || {}, parts(path), value);
-    cache(id);
+    if (docs[id] == null) ls.del(K_DOC + id); // folder deleted (possibly by someone else): drop the stale copy
+    else cache(id);
     const m = meta(id);
     if (m && docs[id] && docs[id].name && m.name !== docs[id].name) { m.name = docs[id].name; saveIndex(); }
     if (loaded && loaded.root === id) refreshUpdateBtn();
