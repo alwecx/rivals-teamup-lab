@@ -7,5 +7,5 @@
   Example: databaseURL: "https://my-teamup-lab-default-rtdb.firebaseio.com"
 */
 window.CLOUD_CONFIG = {
-  databaseURL: ""
+  databaseURL: "https://marvel-rivals-teams-default-rtdb.firebaseio.com"
 };
