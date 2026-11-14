@@ -81,6 +81,7 @@ header.top .sub{color:var(--dim);font-size:13px}
 header.top .toolnav{margin-left:auto;display:flex;gap:8px}
 header.top .toolnav a{font-family:"Chakra Petch";font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--dim);border:1px solid var(--line);border-radius:7px;padding:4px 10px}
 header.top .toolnav a.on,header.top .toolnav a:hover{color:var(--ink);border-color:var(--syn)}
+header.top .toolnav .libbtn{font-family:"Chakra Petch";font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;color:#d9ceff;border-color:color-mix(in srgb,var(--syn) 55%,transparent)}
 
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px}
 .panel h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
@@ -144,6 +145,8 @@ header.top .toolnav a.on,header.top .toolnav a:hover{color:var(--ink);border-col
 .scorebar .ctitle:empty{display:none}
 button.share{border-color:color-mix(in srgb,var(--syn) 55%,transparent);color:#d9ceff}
 button.share:hover{background:color-mix(in srgb,var(--syn) 18%,var(--panel2))}
+button.share.upd{border-color:var(--strat);color:#bff3e2;background:color-mix(in srgb,var(--strat) 14%,var(--panel2))}
+button[hidden]{display:none!important}
 /* ---------- share dialog ---------- */
 dialog.share{margin:auto;max-width:min(760px,calc(100vw - 24px));width:100%;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 20px 60px rgba(0,0,0,.55)}
 dialog.share::backdrop{background:rgba(5,7,15,.72)}
@@ -201,6 +204,14 @@ svg.links line{stroke:var(--syn);stroke-width:2;opacity:.75;filter:drop-shadow(0
 .scard .head button{width:27px;height:24px;padding:0;font-size:13px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex:none}
 .scard .head button.lock.on{border-color:var(--van);color:var(--van)}
 .slot.dragover{border-color:var(--syn);background:rgba(167,139,250,.08)}
+.scard .head button.orbtn{width:auto;padding:0 6px;font-size:11px;font-family:"Chakra Petch";letter-spacing:.02em;color:var(--dim)}
+.scard .head button.orbtn.on{border-color:var(--grant);color:var(--grant)}
+.slot.filled.altpick{border-color:var(--grant);box-shadow:0 0 0 1px var(--grant),0 0 14px rgba(77,166,255,.45)}
+.alts{position:absolute;bottom:-11px;right:8px;z-index:3;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 16px)}
+.alt{display:inline-flex;align-items:stretch;border:1px solid color-mix(in srgb,var(--ac) 60%,var(--line));border-radius:20px;background:var(--panel);overflow:hidden}
+.alt button{border:none;border-radius:0;background:none;padding:0 6px;font-family:"Barlow Condensed";font-weight:700;font-size:12px;line-height:18px;letter-spacing:.03em;color:var(--ac);white-space:nowrap}
+.alt button.ax{color:var(--faint);padding:0 5px 0 2px;font-size:10px}
+.alt button:hover{background:color-mix(in srgb,var(--ac) 18%,transparent)}
 .partners{display:flex;gap:10px;justify-content:center;align-items:center;flex:1;padding:6px 10px 10px;min-height:0}
 .partners .tbd{color:var(--faint);font-size:10.5px;text-align:center;line-height:1.5}
 .ptile{
@@ -287,7 +298,7 @@ svg.links line{stroke:var(--syn);stroke-width:2;opacity:.75;filter:drop-shadow(0
   <header class="top">
     <h1>Team-Up <em>Lab</em></h1>
     <span class="sub">Marvel Rivals · Season 11</span>
-    <nav class="toolnav"><a class="on" href="index.html">Team-Up Lab</a><a href="sim.html">Sim Lab</a></nav>
+    <nav class="toolnav"><button type="button" id="libraryBtn" class="libbtn" title="Saved teams, folders, notes and comments">📁 Library</button><a class="on" href="index.html">Team-Up Lab</a><a href="sim.html">Sim Lab</a></nav>
   </header>
 
   <section class="panel roster" id="roster">
@@ -299,7 +310,7 @@ svg.links line{stroke:var(--syn);stroke-width:2;opacity:.75;filter:drop-shadow(0
       <div class="scorebar">
         <span class="big"><b id="enhCount">0</b>/<span id="slotCount">0</span> ENHANCED</span>
         <span class="ctitle" id="compTitleView"></span>
-        <span class="acts"><button class="share" id="shareBtn" title="Copy an image or link of this comp">Share</button><button class="clear" id="clearBtn">Clear Team</button></span>
+        <span class="acts"><button class="share upd" id="updateBtn" hidden>Update</button><button class="share" id="saveBtn" title="Save this team into a Library folder">Save</button><button class="share" id="shareBtn" title="Copy an image or link of this comp">Share</button><button class="clear" id="clearBtn">Clear Team</button></span>
       </div>
       <div class="slotwrap" style="margin-top:12px">
         <svg class="links" id="linkSvg" aria-hidden="true"></svg>
@@ -483,6 +494,7 @@ function renderRoster(){
   const el=$("#rosterBody");el.innerHTML="";
   const filled=slots.filter(Boolean);
   const inTeam=new Set(filled.map(s=>H[s.id].name));
+  const altNames=new Set(filled.flatMap(s=>(s.alts||[]).map(a=>H[a].name)));
   const[lo,hi]=teamMask();
   // partners wanted by slotted heroes: equipped loadout (solid) vs their other loadout (hollow)
   const wantedEq={},wantedAlt={};
@@ -506,7 +518,7 @@ function renderRoster(){
     if(!open)continue;
     const g=document.createElement("div");g.className="rgrid";
     for(const h of hs){
-      const slotted=inTeam.has(h.name);
+      const slotted=inTeam.has(h.name)||altNames.has(h.name);
       // gain = this hero's own loadout would go enhanced (their partner is slotted)
       // grant = a slotted hero's equipped loadout wants this hero (solid dot)
       // grant-alt = a slotted hero's OTHER loadout wants this hero (hollow ring)
@@ -544,11 +556,33 @@ function placeHero(id,slotIndex){
   const nm=H[id].name;
   const dupI=slots.findIndex(s=>s&&H[s.id].name===nm);
   if(dupI>=0&&dupI!==slotIndex)slots[dupI]=null;
-  slots[slotIndex]={id,lock:false,sel:-1};
+  // a hero can only be in one place: drop them from any either/or list
+  slots.forEach(s=>{if(s&&s.alts)s.alts=s.alts.filter(a=>H[a].name!==nm);});
+  const keepAlts=slots[slotIndex]&&slots[slotIndex].alts?slots[slotIndex].alts:[];
+  slots[slotIndex]={id,lock:false,sel:-1,alts:keepAlts};
   renderAll();
 }
+// either/or: a slot's `alts` are alternative heroes for that spot. The slot's
+// main `id` stays the active pick for team-up math and the optimizer.
+let altPick=null; // slot index waiting for an alternative to be picked from the roster
+function addAlt(i,id){
+  const s=slots[i];altPick=null;
+  if(!s){renderAll();return;}
+  const nm=H[id].name;
+  if(slots.some(x=>x&&(H[x.id].name===nm||(x.alts||[]).some(a=>H[a].name===nm)))){flashStatus(`${nm} is already on this team.`);renderAll();return;}
+  if((s.alts||[]).length>=3){flashStatus("Up to 3 alternatives per slot.");renderAll();return;}
+  s.alts=(s.alts||[]).concat(id);flashStatus("");renderAll();
+}
+function swapAlt(i,id){
+  const s=slots[i];if(!s||!s.alts)return;
+  s.alts=s.alts.map(a=>a===id?s.id:a);s.id=id;s.sel=-1;renderAll();
+}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&altPick!=null){altPick=null;flashStatus("");renderAll();}});
 function toggleHero(id){
   const nm=H[id].name;
+  if(altPick!=null){addAlt(altPick,id);return;}
+  const ai=slots.findIndex(s=>s&&(s.alts||[]).some(a=>H[a].name===nm));
+  if(ai>=0){slots[ai].alts=slots[ai].alts.filter(a=>H[a].name!==nm);renderAll();return;}
   const i=slots.findIndex(s=>s&&H[s.id].name===nm);
   if(i>=0){slots[i]=null;renderAll();return;}
   const e=slots.findIndex(s=>!s);
@@ -575,7 +609,7 @@ function renderSlots(){
     const isEnh=eq>=0&&partnerIn(h,eq,lo,hi);
     const anyIn=h.tus.some((t,k)=>partnerIn(h,k,lo,hi));
     const heroTier=isEnh?"champ":(anyIn?"lord":"normal");
-    d.className="slot filled"+(isEnh?" enh":"");d.style.setProperty("--rc",RC[h.role]);
+    d.className="slot filled"+(isEnh?" enh":"")+(altPick===i?" altpick":"");d.style.setProperty("--rc",RC[h.role]);
     let pHtml="";
     if(!h.tus.length){pHtml=`<div class="partners"><span class="tbd">Loadouts TBD<br>partner-only for now</span></div>`;}
     else{
@@ -592,9 +626,16 @@ function renderSlots(){
     }
     d.innerHTML=`${aviImg(h.name,heroTier,"havi")}<span class="slotname">${esc(h.name)}</span><div class="scard">
       <div class="head"><div class="role">${h.role}</div>
-      <div class="btns"><button type="button" class="lock ${s.lock?"on":""}" title="Lock into optimizer searches" aria-label="${s.lock?"Unlock":"Lock"} ${esc(h.name)}" aria-pressed="${s.lock}">${s.lock?"🔒":"🔓"}</button><button type="button" class="rm" title="Remove" aria-label="Remove ${esc(h.name)}">✕</button></div></div>
-      ${pHtml}</div>`;
-    d.querySelector(".rm").onclick=()=>{slots[i]=null;renderAll();};
+      <div class="btns"><button type="button" class="orbtn${altPick===i?" on":""}" title="Add an either/or alternative for this spot" aria-label="Add alternative to ${esc(h.name)}">＋or</button><button type="button" class="lock ${s.lock?"on":""}" title="Lock into optimizer searches" aria-label="${s.lock?"Unlock":"Lock"} ${esc(h.name)}" aria-pressed="${s.lock}">${s.lock?"🔒":"🔓"}</button><button type="button" class="rm" title="Remove" aria-label="Remove ${esc(h.name)}">✕</button></div></div>
+      ${pHtml}</div>${(s.alts||[]).length?`<div class="alts">${s.alts.map(a=>`<span class="alt" style="--ac:${RC[H[a].role]}"><button type="button" class="swap" data-a="${a}" title="Swap ${esc(H[a].name)} in as the active pick">or ${esc(H[a].name)}</button><button type="button" class="ax" data-a="${a}" aria-label="Remove alternative ${esc(H[a].name)}">✕</button></span>`).join("")}</div>`:""}`;
+    d.querySelector(".rm").onclick=()=>{if(altPick===i)altPick=null;slots[i]=null;renderAll();};
+    d.querySelector(".orbtn").onclick=()=>{
+      altPick=altPick===i?null:i;
+      flashStatus(altPick===i?`Pick a hero in the roster as the alternative to ${h.name} (Esc to cancel).`:"");
+      renderAll();
+    };
+    d.querySelectorAll(".alt .swap").forEach(b=>b.onclick=()=>swapAlt(i,+b.dataset.a));
+    d.querySelectorAll(".alt .ax").forEach(b=>b.onclick=()=>{s.alts=s.alts.filter(a=>a!==+b.dataset.a);renderAll();});
     d.querySelector(".lock").onclick=()=>{s.lock=!s.lock;renderAll();};
     d.querySelectorAll(".ptile").forEach(b=>b.onclick=()=>{
       const k=+b.dataset.k; s.sel=(s.sel===k?-1:k); renderAll();
@@ -646,7 +687,7 @@ function renderReadout(){
     const t=h.tus[eq],inT=partnerIn(h,eq,lo,hi);
     html+=`<div class="item"><div class="l1">
       <span class="hn" style="--rc:${RC[h.role]}">${esc(h.name)}</span>
-      <span class="tn">${esc(t.name)}</span>${inT?`<span class="pn">w/ ${esc(t.partner)}</span>`:""}
+      <span class="tn">${esc(t.name)}</span>${inT?`<span class="pn">w/ ${esc(t.partner)}</span>`:""}${(s.alts||[]).length?`<span class="pn">· either/or: ${s.alts.map(a=>esc(H[a].name)).join(", ")}</span>`:""}
       <span class="badge ${inT?"enh":"base"}">${inT?"ENHANCED":"BASE"}</span></div>
       <div class="desc">${esc(t.base)}</div>
       ${inT?`<div class="desc"><b>▲ </b>${esc(t.enh)}</div>`:""}
@@ -862,12 +903,31 @@ $("#scanBtn").onclick=()=>{
 // Team + comp live in the URL hash so builds can be shared as links.
 // Format: #t=<slug>.<r>[L][sel],...&c=v-d-s  e.g. #t=thor.vL0,hela.d&c=2-2-2
 // r = role initial (needed because Deadpool exists in all three roles).
+// Either/or alternatives follow the slot with "~": gorr_the_god_butcher.d~daredevil.d
 const BY_SLUGROLE={};H.forEach(h=>{BY_SLUGROLE[slug(h.name)+"."+h.role[0].toLowerCase()]=h.id;});
+const heroKey=id=>slug(H[id].name)+"."+H[id].role[0].toLowerCase();
+function slotsToT(list){
+  return list.filter(Boolean).map(s=>heroKey(s.id)+(s.lock?"L":"")+(s.sel>=0?s.sel:"")+(s.alts||[]).map(a=>"~"+heroKey(a)).join("")).join(",");
+}
+function tToSlots(v){
+  const next=[null,null,null,null,null,null];let n=0;
+  const seen=new Set();
+  for(const entry of String(v||"").split(",")){
+    if(n>=6)break;
+    const [main,...altKeys]=entry.split("~");
+    const m=/^([a-z0-9_]+)\.([vds])(L?)([01]?)$/.exec(main);
+    if(!m)continue;
+    const id=BY_SLUGROLE[m[1]+"."+m[2]];
+    if(id==null||seen.has(H[id].name))continue; // one copy per character
+    seen.add(H[id].name);
+    const alts=[];
+    for(const k of altKeys){const a=BY_SLUGROLE[k];if(a!=null&&!seen.has(H[a].name)&&alts.length<3){alts.push(a);seen.add(H[a].name);}}
+    next[n++]={id,lock:m[3]==="L",sel:m[4]===""?-1:+m[4],alts};
+  }
+  return next;
+}
 function encodeHash(){
-  const t=slots.filter(Boolean).map(s=>{
-    const h=H[s.id];
-    return slug(h.name)+"."+h.role[0].toLowerCase()+(s.lock?"L":"")+(s.sel>=0?s.sel:"");
-  }).join(",");
+  const t=slotsToT(slots);
   const c=`${comp.v}-${comp.d}-${comp.s}`;
   const parts=[];
   if(t)parts.push("t="+t);
@@ -880,21 +940,10 @@ function encodeHash(){
 function applyHash(){
   const raw=location.hash.slice(1);
   if(!raw)return;
+  if(/(^|&)t=/.test(raw)&&!/(^|&)n=/.test(raw))compTitle="";
   for(const part of raw.split("&")){
     const[k,v]=part.split("=");
-    if(k==="t"&&v){
-      const next=[null,null,null,null,null,null];let n=0;
-      for(const entry of v.split(",")){
-        if(n>=6)break;
-        const m=/^([a-z0-9_]+)\.([vds])(L?)([01]?)$/.exec(entry);
-        if(!m)continue;
-        const id=BY_SLUGROLE[m[1]+"."+m[2]];
-        if(id==null)continue;
-        if(next.some(s=>s&&H[s.id].name===H[id].name))continue; // one copy per character
-        next[n++]={id,lock:m[3]==="L",sel:m[4]===""?-1:+m[4]};
-      }
-      slots=next;
-    }
+    if(k==="t"&&v)slots=tToSlots(v);
     if(k==="c"&&v){
       const c=v.split("-").map(Number);
       if(c.length===3&&c.every(x=>Number.isInteger(x)&&x>=0&&x<=6))comp={v:c[0],d:c[1],s:c[2]};
@@ -902,7 +951,10 @@ function applyHash(){
     if(k==="n"){try{compTitle=decodeURIComponent(v||"").slice(0,48);}catch(e){compTitle="";}}
   }
 }
-window.addEventListener("hashchange",()=>{applyHash();renderAll();});
+window.addEventListener("hashchange",()=>{
+  if(/(?:^#|&)f=/.test(location.hash))return; // folder link: library.js opens it
+  applyHash();renderAll();
+});
 
 /* ================= SHARE (image + link) ================= */
 // Draws the current comp onto a canvas: one card per hero with portrait, equipped
@@ -935,6 +987,7 @@ async function drawShareImage(canvas){
   try{await Promise.all([document.fonts.load('700 34px "Chakra Petch"'),document.fonts.load('600 18px "Chakra Petch"'),document.fonts.load('700 22px "Barlow Condensed"')]);}catch(e){}
   const imgs=await Promise.all(filled.map(s=>loadImg(iconSrc(H[s.id].name))));
   const pimgs=await Promise.all(filled.map(s=>{const h=H[s.id],eq=equipped(s,lo,hi);return eq>=0?loadImg(iconSrc(h.tus[eq].partner)):null;}));
+  const aimgs=await Promise.all(filled.map(s=>Promise.all((s.alts||[]).map(a=>loadImg(iconSrc(H[a].name))))));
   const ctx=canvas.getContext("2d");
   // background
   const g=ctx.createLinearGradient(0,0,W,H_);g.addColorStop(0,"#121735");g.addColorStop(1,SHARE_C.bg);
@@ -968,8 +1021,27 @@ async function drawShareImage(canvas){
     ctx.fillStyle=rc;rrect(ctx,x,y,6,cardH,3);ctx.fill();
     const ps=cardH-24;drawPortrait(ctx,imgs[i],h.name,x+18,y+12,ps,rc);
     const tx=x+18+ps+16,tw=cw-(tx-x)-16;
-    ctx.font='700 25px "Barlow Condensed",sans-serif';ctx.fillStyle=rc;ctx.fillText(fit(ctx,h.name.toUpperCase(),tw-110),tx,y+36);
-    ctx.font='600 13px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.faint;ctx.textAlign="right";ctx.fillText(h.role.toUpperCase(),x+cw-16,y+32);ctx.textAlign="left";
+    const alts=s.alts||[];
+    // either/or alternatives: "OR" + mini portraits + names, top right
+    let altW=0;
+    if(alts.length){
+      const az=30;let ax=x+cw-14;
+      ctx.font='700 15px "Barlow Condensed",sans-serif';
+      for(let k=alts.length-1;k>=0;k--){
+        const ah=H[alts[k]],nm=fit(ctx,ah.name.toUpperCase(),alts.length>1?70:120),nw=ctx.measureText(nm).width;
+        ax-=nw;ctx.fillStyle=SHARE_C[ah.role];ctx.fillText(nm,ax,y+33);
+        ax-=az+6;drawPortrait(ctx,aimgs[i][k],ah.name,ax,y+12,az,SHARE_C[ah.role]);
+        ax-=k?12:0;
+        if(k){ctx.fillStyle=SHARE_C.faint;ctx.font='700 13px "Chakra Petch",sans-serif';ctx.fillText("/",ax+2,y+32);ctx.font='700 15px "Barlow Condensed",sans-serif';}
+      }
+      ctx.font='700 13px "Chakra Petch",sans-serif';const ow=ctx.measureText("OR").width;
+      ax-=ow+18;rrect(ctx,ax,y+15,ow+12,22,11);ctx.fillStyle="rgba(77,166,255,0.18)";ctx.fill();
+      ctx.strokeStyle="#4da6ff";ctx.lineWidth=1;rrect(ctx,ax,y+15,ow+12,22,11);ctx.stroke();
+      ctx.fillStyle="#9fd0ff";ctx.fillText("OR",ax+6,y+31);
+      altW=(x+cw-14)-ax+10;
+    }
+    ctx.font='700 25px "Barlow Condensed",sans-serif';ctx.fillStyle=rc;ctx.fillText(fit(ctx,h.name.toUpperCase(),tw-(altW||110)),tx,y+36);
+    if(!alts.length){ctx.font='600 13px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.faint;ctx.textAlign="right";ctx.fillText(h.role.toUpperCase(),x+cw-16,y+32);ctx.textAlign="left";}
     if(eq<0){ctx.font='600 17px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.dim;ctx.fillText("Team-ups TBD",tx,y+72);return;}
     const t=h.tus[eq];
     ctx.font='600 19px "Chakra Petch",sans-serif';ctx.fillStyle=SHARE_C.ink;ctx.fillText(fit(ctx,t.name,tw),tx,y+68);
@@ -1026,6 +1098,9 @@ $("#dlImgBtn").onclick=async()=>{
   a.download=(slug(compTitle||"team-comp")||"team-comp")+".png";document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(a.href),2000);shareNote("Image downloaded.");
 };
+// folder links (#f=<folder>[:<subfolder>]) are handled by library.js; grab them
+// before renderAll() rewrites the address bar with the team state
+window.LIB_LINK=(/(?:^#|&)f=([^&]+)/.exec(location.hash)||[])[1]||null;
 $("#copyLinkBtn").onclick=async()=>{
   const link=currentLink();$("#shareLink").value=link;
   const ok="Link copied - it opens this exact comp, title included.";
@@ -1037,9 +1112,11 @@ $("#copyLinkBtn").onclick=async()=>{
   }
 };
 
-applyHash();
+if(!window.LIB_LINK)applyHash();
 renderAll();
 document.fonts&&document.fonts.ready.then(()=>drawLinks());
 </script>
+<script src="data/cloud-config.js"></script>
+<script src="library.js"></script>
 </body>
 </html>

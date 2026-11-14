@@ -10,6 +10,7 @@ while ($l.IsListening) {
   if (-not $p) { $p = 'index.html' }
   $f = [IO.Path]::GetFullPath((Join-Path $Root $p))
   if ($f.StartsWith([IO.Path]::GetFullPath($Root)) -and (Test-Path $f -PathType Leaf)) {
+    $c.Response.Headers.Add("Cache-Control", "no-store")
     $b = [IO.File]::ReadAllBytes($f)
     $ct = $types[[IO.Path]::GetExtension($f).ToLower()]; if ($ct) { $c.Response.ContentType = $ct }
     $c.Response.OutputStream.Write($b, 0, $b.Length)

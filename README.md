@@ -40,7 +40,64 @@ team-ups across 55 heroes in your head is miserable. This tool doesn't make you.
 - **Shareable links** — the full board state (heroes, locks, loadout picks, comp)
   lives in the URL hash. Copy the address bar, paste it in Discord, argument settled:
   `…#t=thor.vL0,hela.d,deadpool.s1&c=1-3-2`
+- **Either/or picks** — press **＋or** on a hero card, then click another hero in
+  the roster: that spot becomes "Gorr *or* Daredevil". Click an "or …" chip to swap
+  which one is active (team-up math follows the active pick). Alternatives show on
+  the share image and travel in links: `…#t=gorr_the_god_butcher.d~daredevil.d,…`
+- **Share** — title the comp and copy (or download) an image of it with every
+  hero's equipped team-up and partner, or copy a link that opens the exact comp.
+- **Library** — **Save** teams into folders and subfolders, with notes and
+  comments on every team, then **Load** them back onto the board. Change a loaded
+  team and an **Update "name"** button appears next to Save to write the changes
+  back (or use **↻ Update** on any saved team). Everything saves as you go. With live
+  folders switched on (below), **🔗 Share** on a folder gives a link anyone can
+  open: teams, notes and comments added by anyone appear for everyone instantly.
 - **Mobile friendly** — collapses to a single-column layout with touch-sized controls.
+
+### Live folders (shared, real-time) - one-time setup
+
+Out of the box the Library saves to each visitor's browser. To share folders
+live, connect a free Firebase Realtime Database (about 5 minutes, needs a
+Google account). Once connected, every change saves online automatically, and
+folders people made earlier in their browser upload themselves the next time
+they open the site:
+
+1. Go to [console.firebase.google.com](https://console.firebase.google.com),
+   **Create a project** (any name; Google Analytics not needed).
+2. In the project: **Build → Realtime Database → Create database**, pick a
+   location, choose **Start in locked mode**.
+3. Open the **Rules** tab, replace everything with the rules below, **Publish**.
+4. Copy the database URL from the **Data** tab
+   (`https://<project>-default-rtdb.firebaseio.com` or similar) into
+   [`data/cloud-config.js`](data/cloud-config.js) as `databaseURL`, commit and push.
+
+```json
+{
+  "rules": {
+    "folders": {
+      "$folder": {
+        ".read": "$folder.length >= 20",
+        ".write": "$folder.length >= 20",
+        "name": { ".validate": "newData.isString() && newData.val().length <= 60" },
+        "folders": { "$sub": { "name": { ".validate": "newData.isString() && newData.val().length <= 60" } } },
+        "teams": {
+          "$team": {
+            "name":  { ".validate": "newData.isString() && newData.val().length <= 48" },
+            "t":     { ".validate": "newData.isString() && newData.val().length <= 1500" },
+            "notes": { ".validate": "newData.isString() && newData.val().length <= 4000" },
+            "comments": { "$c": { "text": { ".validate": "newData.isString() && newData.val().length <= 1000" } } }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+How it's protected: nobody can list folders; each folder lives under a random
+20-character id, so only people with its link can open it - and anyone with
+the link can view, add, edit and comment (like a shared doc link). Keep links
+to private strategy folders among your team.
 
 ## Sim Lab - fight simulator (`sim.html`)
 
@@ -122,11 +179,9 @@ plus the [Season 11 balance post](https://www.marvelrivals.com/balancepost/20261
 **as of November 11, 2026**. That covers The Hood's loadouts, Gorr the God
 Butcher (Season 10) and the Season 10–11 team-up reworks.
 
-**Nightcrawler** (Season 11 Strategist, launching November 13) is on the roster
-with both team-ups from his early-access kit: Protective Siblings (Rogue) and
-Demon Disciple (Magik). His official numbers aren't published yet, so in the
-Sim Lab he runs on clearly marked estimates. The data is one plainly-formatted
-`RAW` array at the top of the file's script.
+**Nightcrawler** (Season 11 Strategist) is in both tools with his official
+numbers and team-ups: Protective Siblings (Rogue) and Demon Disciple (Magik).
+The data is one plainly-formatted `RAW` array at the top of the file's script.
 
 ### Refreshing the data
 

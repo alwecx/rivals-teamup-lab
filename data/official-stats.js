@@ -2,7 +2,7 @@
 window.OFFICIAL_STATS = {
   "source":"https://www.marvelrivals.com/heroes/index.html",
   "build":"20261012144108",
-  "synced":"2026-11-11",
+  "synced":"2026-11-13",
   "heroes":{
     "Adam Warlock":{
       "id":"366w78k4i4gap",
@@ -47,7 +47,7 @@ window.OFFICIAL_STATS = {
           "key":"E",
           "type":"ability",
           "desc":"Target an ally for a bouncing stream of healing energy, which also heals himself upon casting; self-targets if no ally is selected",
-          "stats":[["CASTING","Targeted"],["SPECIAL EFFECT","Bouncing target does not include Adam Warlock"],["HEALING AMOUNT","95"],["HEALING AMOUNT (SELF)","35"],["NUMBER OF BOUNCES","2"],["RANGE","20m spherical radius"],["COOLDOWN","2 charges, with each charge taking 6s to recharge; when a critical hit lands on an enemy, reduce the cooldown time of Avatar Life Stream by 1s."]]
+          "stats":[["CASTING","Targeted"],["SPECIAL EFFECT","Bouncing target does not include Adam Warlock"],["HEALING AMOUNT","55"],["HEALING AMOUNT (SELF)","35"],["NUMBER OF BOUNCES","4"],["RANGE","20m spherical radius"],["COOLDOWN","2 charges, with each charge taking 6s to recharge; when a critical hit lands on an enemy, reduce the cooldown time of Avatar Life Stream by 1s."]]
         },
         {
           "name":"COSMIC CLUSTER",
@@ -68,7 +68,7 @@ window.OFFICIAL_STATS = {
           "key":"F",
           "type":"unused",
           "desc":"Storm channels her elemental power into Adam Warlock. When Adam uses Soaring Surge, his movement speed is increased. While flying, Adam leaves behind a storm-charged trail that heals and speeds up allies within it",
-          "stats":[["MOVEMENT BOOST","5m/s"],["MAXIMUM ENERGY","120"],["ENERGY COST","30/s"],["ENERGY RECOVERY SPEED","8/s"],["TRAIL WIDTH","4m"],["TRAIL DURATION","5s"],["HEALING AMOUNT","35/s"],["MOVEMENT BOOST","0.25"]]
+          "stats":[["SOARING SURGE SPEED BOOST PERCENTAGE (WHEN STORM IS SELECTED)","100%"],["MAXIMUM ENERGY","120"],["ENERGY COST","30/s"],["ENERGY RECOVERY SPEED","8/s"],["TRAIL WIDTH","4m"],["TRAIL DURATION","5s"],["HEALING AMOUNT","35/s"],["MOVEMENT BOOST","0.25"]]
         }
       ],
       "teamups":[
@@ -77,7 +77,7 @@ window.OFFICIAL_STATS = {
           "key":"shift",
           "desc":"Base Effect: Teammates linked by Soul Bond receive a Speed Boost.\nEnhanced Effect: When teaming up with Storm, linked teammates additionally gain a Damage Boost.",
           "base":[["MOVEMENT BOOST","20%"],["SOUL BOND RANGE INCREASE","5m"]],
-          "enhanced":[["DAMAGE BOOST","12%"],["MOVEMENT BOOST","30%"]]
+          "enhanced":[["DAMAGE BOOST","8%"],["MOVEMENT BOOST","30%"]]
         },
         {
           "name":"FLAWLESS DESIGN",
@@ -110,7 +110,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Alternate powerful strikes forward with twin axes, dealing increased damage as Attack Charge grows. The fourth strike propels you forward in a swift dash",
-          "stats":[["CASTING","Melee"],["DAMAGE","First three strikes: 30; the forth strike: 50."],["CHARGE-DAMAGE CONVERSION RATIO","45%"],["MAXIMUM DISTANCE","4m"],["ATTACK INTERVAL","First three strikes: 0.4s per hit; the forth strike: 0.6s per hit."],["SPECIAL EFFECT","The fourth strike propels you forward in a swift dash."]]
+          "stats":[["CASTING","Melee"],["DAMAGE","First three strikes: 35; the forth strike: 50."],["CHARGE-DAMAGE CONVERSION RATIO","50%"],["MAXIMUM DISTANCE","4m"],["ATTACK INTERVAL","First three strikes: 0.4s per hit; the forth strike: 0.6s per hit."],["SPECIAL EFFECT","The fourth strike propels you forward in a swift dash."]]
         },
         {
           "name":"SHIELDED STANCE",
@@ -130,8 +130,8 @@ window.OFFICIAL_STATS = {
           "name":"DIVINE JUDGEMENT",
           "key":"E",
           "type":"ability",
-          "desc":"Dive downward, switch to twin axes and infuse the ground with Ichors to create a Divine Judgement Zone upon impact. Within the zone, gain enhanced Speed and attacks grant Bonus Health to self and nearby allies",
-          "stats":[["DAMAGE","Hit damage: 30; damage over time: 12.5/s"],["DAMAGE OVER TIME SPELL FIELD RANGE","A cylindrical spell field with a radius of 8m and a height of 2m."],["COOLDOWN","12s"],["MOVEMENT BOOST (SELF)","35%"],["SPELL FIELD DURATION","6s"],["BONUS HEALTH","Within the Divine Judgement zone, Angela’s each Axes of Ichors hit grants 50 Bonus Health to herself and 25 Bonus Health to allies within the area."],["BONUS MAX HEALTH","200"]]
+          "desc":"Dive downward, switch to twin axes and infuse the ground with Ichors to create a Divine Judgement Zone upon impact. Upon activation, gain enhanced Speed and attacks grant Bonus Health to self and nearby allies for 6s, without needing to remain within the zone. Using Wingblade Ascent during this time removes these buffs",
+          "stats":[["DAMAGE","Hit damage: 30; damage over time: 15/s"],["DAMAGE OVER TIME SPELL FIELD RANGE","A cylindrical spell field with a radius of 8m and a height of 2m."],["COOLDOWN","12s"],["MOVEMENT BOOST (SELF)","35%"],["SPELL FIELD DURATION","6s"],["BONUS HEALTH","During the 6s buff after activating Divine Judgement, Angela’s each Axes of Ichors hit grants 55 Bonus Health to herself and 25 Bonus Health to allies within the area. She does not need to remain within the zone; using Wingblade Ascent removes the buff."],["BONUS MAX HEALTH","200"]]
         },
         {
           "name":"WINGBLADE ASCENT",
@@ -377,7 +377,7 @@ window.OFFICIAL_STATS = {
           "key":"passive",
           "type":"ability",
           "desc":"Steal a set amount of Fortunewhenever your attacks hit an enemy",
-          "stats":[["FORTUNE GAINED PER TARGET HIT (FELINE FURY)","50, up to 50"],["FORTUNE GAINED PER TARGET HIT (CLAW WHIP)","50, up to 100"],["FORTUNE GAINED PER TARGET HIT (PHANTOM PURSUIT)","125, up to 125"],["FORTUNE GAINED PER HIT (TURN OF FORTUNE)","300"],["FORTUNE GAINED PER HIT (CALLING CARD)","300"],["FORTUNE LOST UPON DEATH","Lose 50% of Fortune when defeated, with a minimum deduction of 200"],["FORTUNE GAINED PER HIT (FELINE ALLIANCE)","50, up to 100"]]
+          "stats":[["FORTUNE GAINED PER TARGET HIT (FELINE FURY)","50, up to 75"],["FORTUNE GAINED PER TARGET HIT (CLAW WHIP)","50, up to 100"],["FORTUNE GAINED PER TARGET HIT (PHANTOM PURSUIT)","125, up to 125"],["FORTUNE GAINED PER HIT (TURN OF FORTUNE)","300"],["FORTUNE GAINED PER HIT (CALLING CARD)","300"],["FORTUNE LOST UPON DEATH","Lose 50% of Fortune when defeated, with a minimum deduction of 200"],["FORTUNE GAINED PER HIT (FELINE ALLIANCE)","100, up to 200"]]
         }
       ],
       "teamups":[
@@ -385,7 +385,7 @@ window.OFFICIAL_STATS = {
           "name":"FELINE ALLIANCE",
           "key":"C",
           "desc":"Base Effect: Taking damage accumulates Vibranium Energy. Upon reaching a specific threshold, Black Cat can unleash a violent explosion, damaging and Knocking back surrounding enemies while gaining a brief Speed Boost and Bonus Health.\nEnhanced Effect: When teaming up with Black Panther, this explosion is no longer restricted by the energy threshold and can be triggered at any time.",
-          "base":[["COOLDOWN","12s"],["DAMAGE TAKEN THRESHOLD","50"],["SPELL FIELD RANGE","8m spherical radius spell field"],["SPELL FIELD DAMAGE","45"],["MOVEMENT BOOST","3 m/s, decaying to 0 over 3s"],["BONUS HEALTH","25"]],
+          "base":[["COOLDOWN","12s"],["DAMAGE TAKEN THRESHOLD","50"],["SPELL FIELD RANGE","8m spherical radius spell field"],["SPELL FIELD DAMAGE","45"],["MOVEMENT BOOST","3 m/s, decaying to 0 over 3s"],["BONUS HEALTH","50"]],
           "enhanced":[["SPECIAL EFFECT","No longer limited by energy accumulation ratio; can be cast anytime"]]
         },
         {
@@ -517,7 +517,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-right",
           "type":"ability",
           "desc":"Fire an electro-plasma round forward. Upon hitting the environment or an enemy, it explodes and applies a Slow effect",
-          "stats":[["CASTING","Charged release, with delayed projectiles."],["COOLDOWN","10s"],["PROJECTILE SPEED","100 m/s"],["EXPLOSION RANGE","3.5m to 5m radius spherical spell field"],["EXPLOSION DAMAGE","50~70"],["SLOW RATE","-0.40"],["MAXIMUM CHARGE TIME","1s"]]
+          "stats":[["CASTING","Charged release, with delayed projectiles."],["COOLDOWN","10s"],["PROJECTILE SPEED","100 m/s"],["EXPLOSION RANGE","3.5m to 5m radius spherical spell field"],["EXPLOSION DAMAGE","55~75"],["SLOW RATE","-0.40"],["MAXIMUM CHARGE TIME","1s"]]
         },
         {
           "name":"EDGE DANCER",
@@ -538,15 +538,15 @@ window.OFFICIAL_STATS = {
         {
           "name":"ALLIED AGENTS",
           "key":"passive",
-          "desc":"Base Effect: Landing hits with Red Room Rifle builds Focus. At three stacks, enter a Focused state where the next bullet gains the Hunter's Sight effect, granting Damage Boost and pierce effects.\nEnhanced Effect: When teaming up with Hawkeye, landing a critical hit prevents the Focused state from expiring, allowing continuous enhanced fire until missing a crit.",
-          "base":[["FOCUS GAINED ON CRIT","2 stacks"],["FOCUS GAINED ON RED ROOM RIFLE HIT","1 stack"],["FOCUSED STATE BULLET DAMAGE","55 damage per round"]],
+          "desc":"Base Effect: Landing hits with Red Room Rifle builds Focus. At three stacks, enter a Focused state where the next bullet gains the Hunter's Sight effect, granting Damage Boost and pierce effects. Black Widow gains Bonus Health equal to 50% of the damage dealt by a Focused bullet, up to 75.\nEnhanced Effect: When teaming up with Hawkeye, landing a critical hit prevents the Focused state from expiring, allowing continuous enhanced fire until missing a crit.",
+          "base":[["FOCUS GAINED ON CRIT","2 stacks"],["FOCUS GAINED ON RED ROOM RIFLE HIT","1 stack"],["FOCUSED STATE BULLET DAMAGE","55 damage per round"],["DAMAGE-TO-BONUS HEALTH CONVERSION","50%, up to 75"]],
           "enhanced":[["SPECIAL EFFECT","Landing a critical hit prevents the Focused state from expiring, allowing continuous enhanced fire until missing a crit."]]
         },
         {
           "name":"BURNING BULLETS",
           "key":"passive",
           "desc":"Base Effect: Activation grants the Red Room Rifle a Fire Rate Boost. Additionally, the Plasma Cannon projectile becomes a hitscan laser that no longer requires charging. Enhanced Effect: When teaming up with Phoenix, her Plasma Cannon gains a second ability charge.",
-          "base":[["FIRE RATE INCREASE","15%"],["PLASMA CANNON DAMAGE","70"],["PLASMA CANNON COOLDOWN","10s"],["PLASMA CANNONRANGE","5m spherical radius"],["PLASMA CANNON SLOW EFFECT","40% for 3s"]],
+          "base":[["FIRE RATE INCREASE","15%"],["PLASMA CANNON DAMAGE","75"],["PLASMA CANNON COOLDOWN","10s"],["PLASMA CANNONRANGE","5m spherical radius"],["PLASMA CANNON SLOW EFFECT","40% for 3s"]],
           "enhanced":[["SPECIAL EFFECT","Plasma Cannon has 2 charges"]]
         }
       ]
@@ -738,7 +738,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Inflict continuous damage on an enemy",
-          "stats":[["CASTING","Cylindrical Spell Field"],["SPECIAL EFFECT","Attacks will target the nearest enemy to the crosshair, dealing damage"],["DAMAGE","80/s"],["RANGE","20m"],["AMMO","∞"],["CRITICAL HIT","No"]]
+          "stats":[["CASTING","Cylindrical Spell Field"],["SPECIAL EFFECT","Attacks will target the nearest enemy to the crosshair, dealing damage"],["DAMAGE","85/s"],["RANGE","20m"],["AMMO","∞"],["CRITICAL HIT","No"]]
         },
         {
           "name":"ETERNAL BOND",
@@ -759,7 +759,7 @@ window.OFFICIAL_STATS = {
           "key":"E",
           "type":"ability",
           "desc":"Deploy a Veil of Darkforce to damage enemies upon touch, applying Blind to narrow their sight and Vulnerability to amplify damage received",
-          "stats":[["CASTING","Spell Field"],["SPECIAL EFFECT","The spell field advances along the casting path"],["DAMAGE","55"],["BLINDING DURATION","1.5s"],["RANGE","Visibility is obstructed beyond 10m"],["VULNERABILITY","20%"],["VULNERABILITY DURATION","3s"],["RANGE","Width: 6m, Height: 4.5m"],["MOVEMENT SPEED","20m/s"],["MAXIMUM DISTANCE","25m"],["COOLDOWN","Veil of Lightforce & Terror Cape share charges, capped out at 2 with each taking 10s to recharge. After using either, both abilities enter a 2s cooldown"]]
+          "stats":[["CASTING","Spell Field"],["SPECIAL EFFECT","The spell field advances along the casting path"],["DAMAGE","55"],["BLINDING DURATION","1s"],["RANGE","Visibility is obstructed beyond 10m"],["VULNERABILITY","20%"],["VULNERABILITY DURATION","3s"],["RANGE","Width: 6m, Height: 4.5m"],["MOVEMENT SPEED","35m/s"],["MAXIMUM DISTANCE","25m"],["COOLDOWN","Veil of Lightforce & Terror Cape share charges, capped out at 2 with each taking 10s to recharge. After using either, both abilities enter a 2s cooldown"]]
         },
         {
           "name":"DARK TELEPORTATION",
@@ -801,21 +801,21 @@ window.OFFICIAL_STATS = {
           "key":"E",
           "type":"ability",
           "desc":"Deploy a Veil of Lightforce to heal allies upon touch and grant them a Healing Boost",
-          "stats":[["CASTING","Spell Field"],["SPECIAL EFFECT","The spell field advances along the casting path"],["HEALING AMOUNT","50"],["HEALING BOOST","20%"],["DURATION","4s"],["RANGE","Width: 6m, Height: 4.5m"],["MOVEMENT SPEED","20m/s"],["MAXIMUM DISTANCE","25m"],["COOLDOWN","Veil of Lightforce & Terror Cape share charges, capped out at 2 with each taking 10s to recharge. After using either, both abilities enter a 2s cooldown"]]
+          "stats":[["CASTING","Spell Field"],["SPECIAL EFFECT","The spell field advances along the casting path"],["HEALING AMOUNT","50"],["HEALING BOOST","20%"],["DURATION","4s"],["RANGE","Width: 6m, Height: 4.5m"],["MOVEMENT SPEED","35m/s"],["MAXIMUM DISTANCE","25m"],["COOLDOWN","Veil of Lightforce & Terror Cape share charges, capped out at 2 with each taking 10s to recharge. After using either, both abilities enter a 2s cooldown"],["SPECIAL EFFECT","Each ally or enemy hit reduces Dagger Storm's cooldown by 0.6s."]]
         },
         {
           "name":"DAGGER STORM",
           "key":"mouse-right",
           "type":"ability",
           "desc":"Launch a volley of daggers, creating a Healing Over Time field in the impact area",
-          "stats":[["CASTING","Single-cast projectile with delayed impact that also generates a spell field"],["HEALING AMOUNT","50/s"],["DURATION","6s"],["RANGE","5m spherical radius"],["COOLDOWN","12s"],["SPECIAL EFFECT","When a Spell Field is created, allies in range get a One-Time Healing of 60"]]
+          "stats":[["CASTING","Single-cast projectile with delayed impact that also generates a spell field"],["HEALING AMOUNT (ALLY)","50/s"],["DURATION","6s"],["RANGE","5m spherical radius"],["COOLDOWN","15s"],["SPECIAL EFFECT","When a Spell Field is created, allies in range get a One-Time Healing of 60"]]
         }
       ],
       "teamups":[
         {
           "name":"OBLIVION SHROUD",
           "key":"E",
-          "desc":"Base Effect: Veil of Lightforce and Terror Cape are warped by hellfire energy, changing into Veil of Light and Veil of Darkness while retaining their original effects. After traveling a set distance, the veils halt in place. Enemy damage passing through the Veil of Light is weakened, while enemy healing passing through the Veil of Darkness suffers Healing Reduction.\nEnhanced Effect: When teaming up with The Hood, the width of both the Veil of Light and Veil of Darkness expands. Additionally, allies passing through the veils are empowered by hellfire energy, gaining Damage Boost for a duration.",
+          "desc":"Base Effect: Veil of Lightforce and Terror Cape are warped by hellfire energy, changing into Veil of Light and Veil of Darkness while retaining their original effects. Both veils knock back enemies hit along their path. After traveling a set distance, the veils halt in place. Enemy damage passing through the Veil of Light is weakened, while enemy healing passing through the Veil of Darkness suffers Healing Reduction.\nEnhanced Effect: When teaming up with The Hood, the width of both the Veil of Light and Veil of Darkness expands. Additionally, allies passing through the veils are empowered by hellfire energy, gaining Damage Boost for a duration.",
           "base":[["LIGHT VEIL ENEMY DAMAGE REDUCTION","20%"],["DARK VEIL ENEMY HEALING REDUCTION","20%"],["VEIL DURATION","4s"],["VEIL RANGE","6m wide, 4.5m tall"]],
           "enhanced":[["DAMAGE BOOST","15%"],["VEIL RANGE","8m wide, 6m tall"]]
         },
@@ -1126,8 +1126,8 @@ window.OFFICIAL_STATS = {
           "name":"THE BIG TEST",
           "key":"Q",
           "type":"ability",
-          "desc":"Wake the #!&% up, hero! We've got a game to win! Speed and healing buffs for starters, bonus Hazardous Hijinks for me, and extra HP for me and my nearby friends. Hit enough baddies with the right abilities exactly as I ask, and you unlock mega speed and healing, plus reset my Healing Factor cooldown!. Team protection mode: activated!",
-          "stats":[["ABILITY DURATION","The challenge lasts 12s. The buff lasts 6s after you complete it."],["BOOST SPELL FIELD RANGE","6m radius spherical spell field"],["BONUS HEALTH","Self: 350; allies: 50"],["HEALING OVER TIME","Upon activation: 50/s; challenge completed: 100/s"],["MOVEMENT BOOST","Upon activation: 15%; challenge completed: 30%"],["COOLDOWN","60s"]]
+          "desc":"Wake the #!&% up, hero! We've got a game to win! Speed and healing buffs for starters, bonus Hazardous Hijinks for me, and extra HP for me. Hit enough baddies with the right abilities exactly as I ask, and you unlock mega speed and healing, plus reset my Healing Factor cooldown!. Team protection mode: activated!",
+          "stats":[["ABILITY DURATION","The challenge lasts 12s. The buff lasts 6s after you complete it."],["BOOST SPELL FIELD RANGE","6m radius spherical spell field"],["BONUS HEALTH","Self: 400"],["HEALING OVER TIME","Upon activation: 50/s; challenge completed: 100/s"],["MOVEMENT BOOST","Upon activation: 15%; challenge completed: 30%"],["COOLDOWN","60s"]]
         },
         {
           "name":"HAZARDOUS HIJINKS - VANGUARD",
@@ -1217,8 +1217,8 @@ window.OFFICIAL_STATS = {
           "name":"THE BIG TEST - UPGRADED",
           "key":"Q",
           "type":"ability",
-          "desc":"Hey, player! Warm-up's over, time for the main event! Speed, healing, dashes, for me, and bonus HP for all! Smash enough baddies with the skills I say, and you unlock super buffs (massive speed and healing), plus Healing Factor resets. For some time after, each hit means more HP for the crew and you. Don't mess this up!",
-          "stats":[["ABILITY DURATION","The challenge lasts 12s. The buff lasts 8s after you complete it."],["BOOST SPELL FIELD RANGE","6m radius spherical spell field"],["BONUS HEALTH","Self: 350; allies: 50"],["HEALING OVER TIME","Upon activation: 50/s; challenge completed: 100/s"],["MOVEMENT BOOST","Upon activation: 15%; challenge completed: 30%"],["COOLDOWN","60s"],["DAMAGE/HEALTH CONVERSION","100%"]]
+          "desc":"Hey, player! Warm-up's over, time for the main event! Speed, healing, dashes, for me, and bonus HP for me! Smash enough baddies with the skills I say, and you unlock super buffs (massive speed and healing), plus Healing Factor resets. For some time after completing the challenge, 150% of the damage I deal is converted into my own Bonus Health, no longer granting Bonus Health to nearby allies. Don't mess this up!",
+          "stats":[["ABILITY DURATION","The challenge lasts 12s. The buff lasts 8s after you complete it."],["BOOST SPELL FIELD RANGE","6m radius spherical spell field"],["BONUS HEALTH","Self: 400"],["HEALING OVER TIME","Upon activation: 50/s; challenge completed: 100/s"],["MOVEMENT BOOST","Upon activation: 15%; challenge completed: 30%"],["COOLDOWN","60s"],["DAMAGE/HEALTH CONVERSION","150%"]]
         },
         {
           "name":"THE BAN HAMMER - UPGRADED",
@@ -1644,8 +1644,8 @@ window.OFFICIAL_STATS = {
           "name":"BUDDY BARRIER",
           "key":"E",
           "type":"ability",
-          "desc":"Activate the heart-shaped generator to expand a spherical shield that blocks incoming damage. Enemies caught within are Slowed",
-          "stats":[["COOLDOWN","12s"],["SUMMONS MAX HEALTH","450"],["MAXIMUM DURATION FOR SUMMONS","6s"],["SLOW EFFECT","15% for 2s"]]
+          "desc":"Activate the heart-shaped generator to expand a spherical shield that blocks incoming damage.",
+          "stats":[["COOLDOWN","12s"],["SUMMONS MAX HEALTH","400"],["MAXIMUM DURATION FOR SUMMONS","4s"]]
         },
         {
           "name":"SAVAGE PREDATION",
@@ -1673,7 +1673,7 @@ window.OFFICIAL_STATS = {
           "key":"passive",
           "type":"ability",
           "desc":"Gain Bonus Health when you inflict Bleeding upon an enemy",
-          "stats":[["BONUS HEALTH","150% of Bleed Damage Dealt"]]
+          "stats":[["BONUS HEALTH","125% of Bleed Damage Dealt"]]
         },
         {
           "name":"DEVIL-BEAST RAMPAGE",
@@ -1695,7 +1695,7 @@ window.OFFICIAL_STATS = {
           "name":"PRIMAL PUNISHMENT",
           "key":"C",
           "desc":"Base Effect: Adds a new ability. Upon activation, Primal Bite is replaced. Devil Dinosaur gains 2 magnetic cannons that can be fired forward; the cannonballs detonate when hitting enemies or the environment.\nEnhanced Effect: When teaming up with The Punisher, the duo can request an interaction. Once accepted, The Punisher rides atop Devil Dinosaur, restricting him to only Adjudication/Deliverance and Scourge Grenade while disabling other abilities. While mounted, The Punisher gains Damage Reduction; Devil Dinosaur absorbs a portion of all damage inflicted on The Punisher.",
-          "base":[["COOLDOWN","12s"],["DURATION","8s"],["FIRE RATE","0.25s per hit"],["PROJECTILE DAMAGE","5"],["SPELL FIELD DAMAGE","20"],["SPELL FIELD RANGE","3m spherical radius"],["SPECIAL EFFECT","The explosion applies a Bleed effect to targets"]],
+          "base":[["COOLDOWN","18s"],["DURATION","8s"],["FIRE RATE","0.25s per hit"],["PROJECTILE DAMAGE","5"],["SPELL FIELD DAMAGE","20"],["SPELL FIELD RANGE","3m spherical radius"],["SPECIAL EFFECT","The explosion applies a Bleed effect to targets"]],
           "enhanced":[["DAMAGE REDUCTION","25%"],["DAMAGE CONVERSION RATE","50%"]]
         },
         {
@@ -1757,7 +1757,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-right",
           "type":"ability",
           "desc":"Create a protective barrier against damage",
-          "stats":[["CASTING","Channeled"],["MAXIMUM SHIELD VALUE","850"],["RECOVERY SPEED","60/s"],["DELAYED RECOVERY AFTER RELEASE","1s"],["COOLDOWN AFTER DESTROYED","3s"]]
+          "stats":[["CASTING","Channeled"],["MAXIMUM SHIELD VALUE","800"],["RECOVERY SPEED","50/s"],["DELAYED RECOVERY AFTER RELEASE","1s"],["COOLDOWN AFTER DESTROYED","3s"]]
         },
         {
           "name":"PRICE OF MAGIC",
@@ -1777,8 +1777,8 @@ window.OFFICIAL_STATS = {
           "name":"PSIONIC VORTEX",
           "key":"E",
           "type":"unused",
-          "desc":"Invisible Woman enhances Doctor Strange's Maelstrom of Madness with a psionic explosion. The explosion damages and pulls enemies toward Doctor Strange. Based on the explosion's damage, Doctor Strange and nearby allies gain Bonus Health",
-          "stats":[["COOLDOWN","6s"],["DAMAGE","Each point of energy deals 1.3 damage."],["RANGE","8m spherical radius spell field"],["SELF BONUS HEALTH CONVERSION","0.3"],["ALLY BONUS HEALTH CONVERSION","0.2"],["BONUS MAX HEALTH","75"],["SPECIAL EFFECT","The spell field pulls enemies in range toward Doctor Strange"]]
+          "desc":"Invisible Woman enhances Doctor Strange's Maelstrom of Madness with a psionic explosion. The explosion damages and pulls enemies toward Doctor Strange. Based on the explosion's damage, Doctor Strange gains Bonus Health, no longer granting Bonus Health to nearby allies",
+          "stats":[["COOLDOWN","6s"],["DAMAGE","Each point of energy deals 1.3 damage."],["RANGE","8m spherical radius spell field"],["SELF BONUS HEALTH CONVERSION","0.7"],["BONUS MAX HEALTH","75"],["SPECIAL EFFECT","The spell field pulls enemies in range toward Doctor Strange"]]
         }
       ],
       "teamups":[
@@ -1787,14 +1787,14 @@ window.OFFICIAL_STATS = {
           "key":"E",
           "desc":"Base Effect: Upgrade Maelstrom of Madness to Gamma Maelstrom. This drastically boosts energy charge rates and removes the Anti-Heal curse.\nEnhanced Effect: When teaming up with Hulk, releasing Gamma Maelstrom retains some energy, and stored Gamma energy doesn't decay over time.",
           "base":[["DAMAGE","Each point of Dark Magic deals 1.3 damage."],["RANGE","10m spherical radius spell field"],["COOLDOWN","6s"]],
-          "enhanced":[["MINIMUM ENERGY","50"]]
+          "enhanced":[["MINIMUM ENERGY","25"]]
         },
         {
           "name":"PSIONIC VORTEX",
           "key":"E",
           "desc":"Base Effect: Upgrade Maelstrom of Madness to Psionic Vortex. Enemies caught in are Launched toward you. Shield of the Seraphim also gains increased shield value.\nEnhanced Effect: When teaming up with Invisible Woman, any damage dealt by Psionic Vortex provides proportional Bonus Health for Doctor Strange.",
-          "base":[["DAMAGE","Each point of Dark Magic deals 1.3 damage."],["RANGE","8m spherical radius spell field"],["COOLDOWN","6s"],["SHIELD OF THE SERAPHIM HEALTH BOOST","150"],["SPECIAL EFFECT","The spell field pulls enemies within range toward itself"]],
-          "enhanced":[["BONUS HEALTH (SELF)","0.5"],["ALLY BONUS HEALTH CONVERSION FACTOR","0.3"],["MAX BONUS HEALTH","150"]]
+          "base":[["DAMAGE","Each point of Dark Magic deals 1.3 damage."],["RANGE","8m spherical radius spell field"],["COOLDOWN","6s"],["SHIELD OF THE SERAPHIM HEALTH BOOST","100"],["SPECIAL EFFECT","The spell field pulls enemies within range toward itself"]],
+          "enhanced":[["BONUS HEALTH (SELF)","0.7"],["MAX BONUS HEALTH","150"]]
         }
       ]
     },
@@ -1813,7 +1813,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Fire your shotgun forward",
-          "stats":[["CASTING","Shotgun projectiles that hit instantly"],["DAMAGE","4.5 per round"],["DAMAGE FALLOFF","Falloff begins at 20m, decreasing to 70% at 30m"],["BULLETS FIRED EACH CAST","10"],["CROSSHAIR SPREAD RADIUS(AT 10M)","0.13m"],["FIRE RATE","The firing interval between shots is 0.12s, with an interval of 0.8s between each round of shooting"],["AMMO","12"],["CRITICAL HIT","Yes"]]
+          "stats":[["CASTING","Shotgun projectiles that hit instantly"],["DAMAGE","4.5 per round"],["DAMAGE FALLOFF","Falloff begins at 10m, decreasing to 70% at 30m"],["BULLETS FIRED EACH CAST","10"],["CROSSHAIR SPREAD RADIUS(AT 10M)","0.13m"],["FIRE RATE","The firing interval between shots is 0.12s, with an interval of 0.8s between each round of shooting"],["AMMO","12"],["CRITICAL HIT","Yes"]]
         },
         {
           "name":"MONSTER-PIERCER",
@@ -1876,9 +1876,9 @@ window.OFFICIAL_STATS = {
         {
           "name":"PREHISTORIC TRAP",
           "key":"F",
-          "desc":"Base Effect: After deploying the Smoky Snare trap, Diablo will monitor the area. If enemies approach, Diablo Immobilizes and Damages them. He also releases a lethal gas, causing continuous area damage.\nEnhanced Effect: When teaming up with Devil Dinosaur, Elsa can store and deploy two Smoky Snares.",
+          "desc":"Base Effect: After deploying the Smoky Snare trap, Diablo will monitor the area. If enemies approach, Diablo Immobilizes and Damages them. He also releases a lethal gas, causing continuous area damage.\nEnhanced Effect: When teaming up with Devil Dinosaur and activating Prehistoric Trap, Smoky Snare no longer gains an additional ability charge; its cooldown is reduced from 15s to 12s.",
           "base":[["COOLDOWN","15s"],["TRAP TRIGGER RANGE","5m radius"],["TRAP DAMAGE","30"],["LETHAL GAS RANGE","3m radius"],["LETHAL GAS DURATION","2s"],["LETHAL GAS DAMAGE","35/s"]],
-          "enhanced":[["SPECIAL EFFECT","Up to 2 Smoky Snares can exist on the field simultaneously"]]
+          "enhanced":[["SMOKY SNARE COOLDOWN AFTER ACTIVATING PREHISTORIC TRAP","12s (no longer grants an additional ability charge)"]]
         },
         {
           "name":"LOUDMOUTH MERCS",
@@ -1911,14 +1911,14 @@ window.OFFICIAL_STATS = {
           "key":"mouse-right",
           "type":"ability",
           "desc":"Create a levitating barrier at the designated location",
-          "stats":[["CASTING","Deployable Shield"],["MAXIMUM SHIELD VALUE","400"],["RECOVERY SPEED","80/s"],["DELAYED RECOVERY AFTER RELEASE","2s"],["REPOSITION COOLDOWN","1s"],["COOLDOWN AFTER DESTROYED","4s"]]
+          "stats":[["CASTING","Deployable Shield"],["MAXIMUM SHIELD VALUE","350"],["RECOVERY SPEED","65/s"],["DELAYED RECOVERY AFTER RELEASE","2s"],["REPOSITION COOLDOWN","1s"],["COOLDOWN AFTER DESTROYED","4s"]]
         },
         {
           "name":"PSYCHIC SPEAR",
           "key":"E",
           "type":"ability",
           "desc":"Seize control of an enemy's sentience—damage dealt to the sentience cascades to the physical form and can be pierced by Telepathic Pulse. When the sentience shatters, it unleashes extra damage on its owner",
-          "stats":[["CASTING","Single-cast delayed projectile"],["PROJECTILE SPEED","80m/s"],["MAXIMUM DISTANCE","24m"],["SENTIENCE HEALTH","Target's 25% Current Health"],["DAMAGE","Deal 5 damage per direct hit. When the sentience shatters, it deals damage to the target, which is equal to 25% of the target's maximum health"],["SPECIAL EFFECT","When the distance between the target and its sentience is more than 15m, their linkage can be broken"]]
+          "stats":[["CASTING","Single-cast delayed projectile"],["PROJECTILE SPEED","80m/s"],["MAXIMUM DISTANCE","24m"],["SENTIENCE HEALTH","Target's 25% Current Health"],["DAMAGE","Deal 5 damage per direct hit. When the sentience shatters, it deals damage to the target, which is equal to 60 + 10% of the target's maximum health"],["SPECIAL EFFECT","When the distance between the target and its sentience is more than 15m, their linkage can be broken"]]
         },
         {
           "name":"DIAMOND FORM",
@@ -1960,7 +1960,7 @@ window.OFFICIAL_STATS = {
           "key":"C",
           "type":"unused",
           "desc":"Luna Snow grants Winter's Chill to Iron Fist and Emma Frost. When Iron Fist activates Harmony Recovery, he can heal nearby allies with Lunar Chi. Emma Frost can project ice energy forward, dealing damage and slowing enemies. She can also enhance her diamond form, condensing frost into an Absolute Zero Diamond barrier that blocks enemy attacks and movement",
-          "stats":[["SUMMONS' HEALTH","250"],["SPELL FIELD RANGE","A fan-shaped spell field with a radius of 12m, a height of 3m, and an angle of 60°"],["SPELL FIELD DAMAGE","60"],["SLOW RATE","45%"],["SLOW DURATION","3s"],["COOLDOWN","20s"]]
+          "stats":[["SUMMONS' HEALTH","300"],["SPELL FIELD RANGE","A fan-shaped spell field with a radius of 12m, a height of 3m, and an angle of 60°"],["SPELL FIELD DAMAGE","60"],["SLOW RATE","45%"],["SLOW DURATION","3s"],["COOLDOWN","20s"]]
         }
       ],
       "teamups":[
@@ -1975,7 +1975,7 @@ window.OFFICIAL_STATS = {
           "name":"ICED OUT DIAMOND",
           "key":"C",
           "desc":"Base Effect: Emma Frost releases winter energy forward, dealing damage and Slowto enemies. She can also enhance her diamond form, condensing frost in front of her to form Zero Diamondthat blocks enemy attacks and movement.\nEnhanced Effect: When Emma Frost teams up with Luna Snow, after activating Diamond Form, all ability damage applies Slow, and Soul Wavealso applies Slow.",
-          "base":[["SUMMONS' HEALTH","350"],["SPELL FIELD RANGE","8m radius, 3m tall, 60° cone spell field"],["SPELL FIELD DAMAGE","50"],["SLOW RATE","25% for 2s"],["COOLDOWN","12s"]],
+          "base":[["SUMMONS' HEALTH","300"],["SPELL FIELD RANGE","8m radius, 3m tall, 60° cone spell field"],["SPELL FIELD DAMAGE","50"],["SLOW RATE","25% for 2s"],["COOLDOWN","12s"]],
           "enhanced":[["DIAMOND FORM DAMAGE SLOW AMOUNT","20% for 2s"],["TELEPATHIC PULSE ADDED SLOW EFFECT","Scales with energy, up to 10% at 100 energy"]]
         }
       ]
@@ -1999,7 +1999,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Launch three kinetic-charged cards in an arc ahead. Each card detonates on impact, creating a single-target explosion that damages enemies and heals allies",
-          "stats":[["CASTING","Projectile that fires in a straight trajectory"],["CARDS LAUNCHED PER UNLEASH","3 cards per unleash"],["ANGLE BETWEEN THE SIDE CARDS AND THE CENTER CARD","2°"],["CARD DAMAGE","20 damage per round"],["CARD HEALING","30 health per round"],["FIRE RATE","0.45s per round"],["AMMO","21"],["CRITICAL HIT","No"],["PROJECTILE SPEED","150 m/s"],["MAXIMUM DISTANCE","60m"]]
+          "stats":[["CASTING","Projectile that fires in a straight trajectory"],["CARDS LAUNCHED PER UNLEASH","3 cards per unleash"],["ANGLE BETWEEN THE SIDE CARDS AND THE CENTER CARD","3°"],["CARD DAMAGE","20 damage per round"],["CARD HEALING","30 health per round"],["FIRE RATE","0.45s per round"],["AMMO","21"],["CRITICAL HIT","No"],["PROJECTILE SPEED","150 m/s"],["MAXIMUM DISTANCE","60m"]]
         },
         {
           "name":"RAGIN' ROYAL FLUSH",
@@ -2020,7 +2020,7 @@ window.OFFICIAL_STATS = {
           "key":"E",
           "type":"ability",
           "desc":"Conjure a Heart card by consuming one stack of Sleight of Hand to Heal and switch to the Healing Hearts deck",
-          "stats":[["COOLDOWN","4 charges, with each charge taking 7s to recharge."],["SELF HEALING","Heal 30 health per second within duration"],["MAXIMUM DURATION","6s"],["SPECIAL EFFECT","Within the duration, consume one stack of Sleight of Hand to use Bridge Boost and Purifying Pick-Up."]]
+          "stats":[["COOLDOWN","4 charges, with each charge taking 7s to recharge."],["SELF HEALING","Heal 20 health per second within duration"],["MAXIMUM DURATION","6s"],["SPECIAL EFFECT","Within the duration, consume one stack of Sleight of Hand to use Bridge Boost and Purifying Pick-Up."]]
         },
         {
           "name":"BREAKING SPADES",
@@ -2195,14 +2195,14 @@ window.OFFICIAL_STATS = {
           "key":"shift",
           "type":"ability",
           "desc":"Target a location and grow a Thornlash Wall. When Awakened, it strikes nearby enemies attacked by Groot and his allies",
-          "stats":[["CASTING","Targeted"],["MAXIMUM DISTANCE","18m"],["THORNLASH WALL HEALTH","250"],["COOLDOWN","2 charges, with each charge taking 6s to recharge"],["SPECIAL EFFECT","Thornlash Wall deals 60 damage every 0.5s"]]
+          "stats":[["CASTING","Targeted"],["MAXIMUM DISTANCE","18m"],["THORNLASH WALL HEALTH","250"],["COOLDOWN","2 charges, with each charge taking 6s to recharge"],["SPECIAL EFFECT","Thornlash Wall deals 65 damage every 0.5s"]]
         },
         {
           "name":"IRONWOOD WALL",
           "key":"E",
           "type":"ability",
           "desc":"Target a location and grow an Ironwood Wall. When the wall is Awakened, damage dealt by Groot and nearby allies grants Groot Bonus Health. Groot gains Unstoppable while near Ironwood Walls",
-          "stats":[["CASTING","Targeted"],["MAXIMUM DISTANCE","10m"],["THORNLASH WALL HEALTH","600"],["COOLDOWN","12s"],["SPECIAL EFFECT","Ironwood Wall heals 50 Bonus Health per second, up to 250 Bonus Health; gain Unstoppable status when within 15m of Awakened Ironwood Walls"]]
+          "stats":[["CASTING","Targeted"],["MAXIMUM DISTANCE","10m"],["THORNLASH WALL HEALTH","550"],["COOLDOWN","12s"],["SPECIAL EFFECT","Ironwood Wall heals 50 Bonus Health per second, up to 250 Bonus Health; gain Unstoppable status when within 15m of Awakened Ironwood Walls"]]
         },
         {
           "name":"SPORE BOMB",
@@ -2229,7 +2229,7 @@ window.OFFICIAL_STATS = {
           "name":"WILD WALL",
           "key":"C",
           "type":"unused",
-          "desc":"Mantis enhances Groot's wooden walls and Loki's Rune Stones with life energy. Groot can additionally unleash a Flower Wall, which, when in Flora Colossus state, restores health to random nearby allies and grants them Damage Reduction. Loki's Rune Stones grant allies within Regeneration Domain a Damage Boost",
+          "desc":"Mantis enhances Groot's wooden walls and Loki's Rune Stones with life energy. Groot can additionally unleash a Flower Wall, which, when in Flora Colossus state, restores health to random nearby allies and grants them Damage Reduction. Wild Wall is now also affected by the Flora Colossus passive, with the same effect as Thornlash Wall",
           "stats":[["CASTING","Targeted"],["COOLDOWN","10s"],["FLOWER WALL HEALTH","150"],["RANGE","10m spherical radius spell field"],["MAXIMUM UNLEASH DISTANCE","7m"],["HEALING AMOUNT","40/s"]]
         }
       ],
@@ -2237,7 +2237,7 @@ window.OFFICIAL_STATS = {
         {
           "name":"WILD WALL",
           "key":"C",
-          "desc":"Base Effect: Summon a Wild Wall that provides Continuous Healing and Bonus Health to allies within its range.\nEnhanced Effect: When teaming up with Mantis, the Wild Wall evolves after providing a certain amount of healing, increasing its healing",
+          "desc":"Base Effect: Summon a Wild Wall that provides Continuous Healing and Bonus Health to allies within its range. Wild Wall is also affected by the Flora Colossus passive, with the same effect as Thornlash Wall.\nEnhanced Effect: When teaming up with Mantis, the Wild Wall evolves after providing a certain amount of healing, increasing its healing",
           "base":[["COOLDOWN","10s"],["WILD WALL RANGE","15m radius"],["BUFF FREQUENCY","Once per second"],["BUFF DURATION PER APPLICATION","6s"],["HEALING AMOUNT","20/s"],["BONUS HEALTH","10/hit"],["WILD WALL HEALTH","200"]],
           "enhanced":[["HEALING REQUIRED TO ENHANCE","200"],["ENHANCED HEALING","35/s"],["HEALTH INCREASE PER UPGRADE","50"]]
         },
@@ -2363,7 +2363,7 @@ window.OFFICIAL_STATS = {
           "key":"Q",
           "type":"ability",
           "desc":"Soar into the sky and unleash Nastrond Crows from each hand at will",
-          "stats":[["CASTING","Straight-line projectile that generates a spell field upon impact"],["DURATION","10s"],["NASTROND CROW HEALTH","1000"],["FIRE RATE","1 rounds per second"],["PROJECTILE SPEED","80 m/s"],["EXPLOSION RANGE","6m spherical radius"],["EXPLOSION DAMAGE","125"],["EXPLOSION DAMAGE FALLOFF","32% falloff at 4m."],["ENERGY COST","4000"]]
+          "stats":[["CASTING","Straight-line projectile that generates a spell field upon impact"],["DURATION","10s"],["NASTROND CROW HEALTH","1200"],["FIRE RATE","1 rounds per second"],["PROJECTILE SPEED","80 m/s"],["EXPLOSION RANGE","6m spherical radius"],["EXPLOSION DAMAGE","140"],["EXPLOSION DAMAGE FALLOFF","Damage falls off to 40% beyond 4m"],["ENERGY COST","4000"]]
         },
         {
           "name":"ASTRAL FLOCK",
@@ -2384,14 +2384,14 @@ window.OFFICIAL_STATS = {
           "key":"mouse-right",
           "type":"ability",
           "desc":"Fire multiple Nightsword thorns that detonate after a delay",
-          "stats":[["CASTING","Straight-line projectile that generates a spell field upon impact"],["NUMBER OF PROJECTILES","4"],["PROJECTILE SPEED","80 m/s"],["PROJECTILE DAMAGE","10"],["EXPLOSION DELAY","3s"],["RANGE","3m spherical radius"],["SPELL FIELD DAMAGE","35 damage per round"],["COOLDOWN","8s"],["SPECIAL EFFECT","Projectiles stick to enemies on hit"]]
+          "stats":[["CASTING","Straight-line projectile that generates a spell field upon impact"],["NUMBER OF PROJECTILES","4"],["PROJECTILE SPEED","80 m/s"],["PROJECTILE DAMAGE","10"],["EXPLOSION DELAY","2s"],["RANGE","3m spherical radius"],["SPELL FIELD DAMAGE","35 damage per round"],["COOLDOWN","8s"],["SPECIAL EFFECT","Projectiles stick to enemies on hit"]]
         },
         {
           "name":"NASTROND CROWSTORM",
           "key":"passive",
           "type":"ability",
           "desc":"Defeating an enemy will generate a Nastrond Crow, exploding after a duration",
-          "stats":[["DELAY","1.8s"],["RANGE","5m spherical radius"],["DAMAGE","80"]]
+          "stats":[["DELAY","1.8s"],["RANGE","5m spherical radius"],["DAMAGE","90"]]
         },
         {
           "name":"HEL'S DESCENT",
@@ -2615,7 +2615,7 @@ window.OFFICIAL_STATS = {
           "name":"FIRE CLUSTER",
           "key":"mouse-left",
           "type":"normal",
-          "desc":"Launch forward a splittable fireball",
+          "desc":"Launch forward a splittable fireball with a fixed projectile spread",
           "stats":[["CASTING","Burst Projectile"],["CHARGES","6"],["CHARGE SPEED","Instantly recover all Fire Cluster energy after not using Fire Cluster for 1s"],["FIRE RATE","0.5s per round"],["PROJECTILE SPEED","150m/s"],["SHOT DAMAGE","5.5 per round"],["DAMAGE FALLOFF","Falloff begins at 15m, decreasing to 60% at 20m."],["CROSSHAIR SPREAD RADIUS (AT 10M)","0.33m"],["CRITICAL HIT","Yes"]]
         },
         {
@@ -2721,7 +2721,7 @@ window.OFFICIAL_STATS = {
           "key":"shift",
           "type":"ability",
           "desc":"Gather psionic energy and then cast it, upon impact or pressing the Ability key again, it erupts into a psionic vortex, continuously drawing in enemies and causing damage",
-          "stats":[["CASTING","Single-cast projectile with delayed impact that also generates a spell field"],["PROJECTILE SPEED","80 m/s"],["SPELL FIELD RANGE","5m radius"],["SPELL FIELD DAMAGE","35/sec"],["SPELL FIELD DURATION","4s"],["SPECIAL EFFECT","Applies a slow effect to enemies within the spell field; the closer they are to the center of the field, the greater the slow effect"],["SLOW RATE","Center 50%, Edge 0"],["COOLDOWN","12s"]]
+          "stats":[["CASTING","Single-cast projectile with delayed impact that also generates a spell field"],["PROJECTILE SPEED","80 m/s"],["SPELL FIELD RANGE","5m radius"],["SPELL FIELD DAMAGE","35/sec"],["SPELL FIELD DURATION","4s"],["SPECIAL EFFECT","Applies a slow effect to enemies within the spell field; the closer they are to the center of the field, the greater the slow effect"],["SLOW RATE","Center 40%, Edge 20%"],["COOLDOWN","12s"]]
         },
         {
           "name":"FORCE PHYSICS",
@@ -2749,7 +2749,7 @@ window.OFFICIAL_STATS = {
           "key":"space",
           "type":"ability",
           "desc":"Generate a force field at your feet, stepping on it propels her into the Invisible state",
-          "stats":[["COOLDOWN","6s"],["SPECIAL EFFECT","For the first 1s after entering Invisible state, taking damage will no longer break stealth"]]
+          "stats":[["COOLDOWN","8s"],["SPECIAL EFFECT","For the first 1s after entering Invisible state, taking damage will no longer break stealth"]]
         },
         {
           "name":"FANTASTI-FORCE",
@@ -3119,15 +3119,15 @@ window.OFFICIAL_STATS = {
           "name":"SPARKLE MARK",
           "key":"passive",
           "type":"ability",
-          "desc":"Hitting targets with Dazzling Detonation and Firework Finale applies a Sparkle Mark. Energy Plasmoids can detonate marks, granting allies a Healing Boost and Bonus Health, while dealing burst damage to enemies",
-          "stats":[["BONUS HEALTH","50"],["HEALING BOOST","20% for 3s"],["ONE-TIME DAMAGE","25"]]
+          "desc":"Hitting targets with Dazzling Detonation and Firework Finale applies a Sparkle Mark. Energy Plasmoids can detonate marks, granting allies Bonus Health, while dealing burst damage to enemies",
+          "stats":[["BONUS HEALTH","50"],["ONE-TIME DAMAGE","25"]]
         },
         {
           "name":"FIREWORK FINALE",
           "key":"Q",
           "type":"ability",
           "desc":"Charge up and unleash a massive ring of outward-flying firework clusters, Knocking Back nearby enemies. These clusters then orbit you, creating a field that damages enemies and heals allies. Expanding the cluster radius outward will Launch Up struck enemies",
-          "stats":[["ENERGY COST","4300"],["ABILITY DURATION","10s"],["SPELL FIELD RANGE","Inner circle radius 6m; Outer circle radius 10m"],["SPELL FIELD DAMAGE","20/s"],["SPELL FIELD HEALING","180/s"],["FIREWORK CLUSTER RANGE","2m radius"],["FIREWORK CLUSTER HEALING AMOUNT","40 per hit"],["FIREWORK CLUSTER DAMAGE","25 per hit"],["FIREWORK CLUSTER","20 m/s"],["FIREWORK CLUSTER AMOUNT","5"]]
+          "stats":[["ENERGY COST","4300"],["ABILITY DURATION","10s"],["SPELL FIELD RANGE","Inner circle radius 6m; Outer circle radius 10m"],["SPELL FIELD DAMAGE","20/s"],["SPELL FIELD HEALING","190/s"],["FIREWORK CLUSTER RANGE","2m radius"],["FIREWORK CLUSTER HEALING AMOUNT","40 per hit"],["FIREWORK CLUSTER DAMAGE","25 per hit"],["FIREWORK CLUSTER","25 m/s"],["FIREWORK CLUSTER AMOUNT","5"]]
         }
       ],
       "teamups":[
@@ -3142,7 +3142,7 @@ window.OFFICIAL_STATS = {
           "name":"VAMPIRIC KIN",
           "key":"C",
           "desc":"Base Effect: Deploy a Vampiric Field. Allies standing within the field gain Life Steal when attacking enemies.\nEnhanced Effect: When teaming up with Blade, allies inside the field receive an additional Continuous Healing effect.",
-          "base":[["COOLDOWN","15s"],["FIELD RANGE","12m spherical radius spell field"],["ABILITY DURATION","6s"],["LIFESTEAL RATE","30%"],["HEALING OVER TIME","15/s"]],
+          "base":[["COOLDOWN","15s"],["FIELD RANGE","12m spherical radius spell field"],["ABILITY DURATION","6s"],["LIFESTEAL RATE (SELF AND ALLIES WITHIN RANGE)","40%"],["HEALING OVER TIME","15/s"]],
           "enhanced":[["HEALING OVER TIME","25/s"]]
         }
       ]
@@ -3204,29 +3204,29 @@ window.OFFICIAL_STATS = {
           "key":"mouse-right",
           "type":"ability",
           "desc":"Become Invisible and conjure an Illusion to deceive enemies",
-          "stats":[["CASTING","Instant Cast"],["SPECIAL EFFECT","Loki leaves an illusion in his place and becomes invisible while continuously healing himself. This invisibility has no time limit, but any actions other than casting Devious Exchange, reloading, or casting Doppelganger will render him visible"],["HEALING AMOUNT","Health regenerates at a rate of 30 Health per second while invisible"],["COOLDOWN","15s"]]
+          "stats":[["CASTING","Instant Cast"],["SPECIAL EFFECT","Loki leaves an illusion in his place and becomes invisible while continuously healing himself. This invisibility has no time limit, but any actions other than casting Devious Exchange, reloading, or casting Doppelganger will render him visible"],["HEALING AMOUNT","Health regenerates at a rate of 30 Health per second while invisible"],["COOLDOWN","18s"]]
         },
         {
           "name":"DEIFIC BLESSING",
           "key":"shift",
           "type":"unused",
-          "desc":"Mantis enhances Groot's wooden walls and Loki's Rune Stones with life energy. Groot can additionally unleash a Flower Wall, which, when in Flora Colossus state, restores health to random nearby allies and grants them Damage Reduction. Loki's Rune Stones grant allies within Regeneration Domain a Damage Boost",
-          "stats":[["RANGE","A cylindrical spell field with a radius of 6.5m and a height of 2m."],["MAXIMUM DURATION FOR SUMMONS","5s"],["CONVERSION RATE","30%"],["HEALING AMOUNT","100/s"],["RUNE STONE HEALTH","100"],["COOLDOWN","30s"],["DAMAGE BOOST","15%"]]
+          "desc":"Mantis enhances Groot's wooden walls and Loki's Rune Stones with life energy. Groot can additionally unleash a Flower Wall, which, when in Flora Colossus state, restores health to random nearby allies and grants them Damage Reduction. Loki's Regeneration Domain no longer grants allies within it a Damage Boost",
+          "stats":[["RANGE","A cylindrical spell field with a radius of 6.5m and a height of 2m."],["MAXIMUM DURATION FOR SUMMONS","5s"],["CONVERSION RATE","30%"],["HEALING AMOUNT","100/s"],["RUNE STONE HEALTH","100"],["COOLDOWN","30s"]]
         }
       ],
       "teamups":[
         {
           "name":"VILLAIN'S ILLUSION",
           "key":"C",
-          "desc":"Base Effect: Gain a new ability to target fallen heroes (friend or foe), letting Loki assume their form for a set time (cannot cast their Ultimate Ability).\nEnhanced Effect: When teaming up with Hela, Loki's transformation lasts slightly longer. Furthermore, taking lethal damage while transformed or in his Ultimate Ability state will merely revert him back to Loki with a sliver of Health, preventing a KO.",
+          "desc":"Base Effect: Gain a new ability to target fallen heroes (friend or foe), letting Loki assume their form for a set time (cannot cast their Ultimate Ability). When Hela is selected as the Team-Up partner, each destroyed Illusion reduces the cooldowns of Doppelganger and Devious Exchange by 1s each.\nEnhanced Effect: When teaming up with Hela, Loki's transformation lasts slightly longer. Furthermore, taking lethal damage while transformed or in his Ultimate Ability state will merely revert him back to Loki with a sliver of Health, preventing a KO.",
           "base":[["COOLDOWN","30"],["ABILITY DURATION","6s"]],
           "enhanced":[["ABILITY DURATION","8s"],["HEALTH RETAINED ON DEATH","150"]]
         },
         {
           "name":"VIBRANT VITALITY",
           "key":"shift",
-          "desc":"Base Effect: Gain a new ability to target fallen heroes (friend or foe), letting Loki assume their form for a set time (cannot cast their Ultimate Ability).\nEnhanced Effect: When teaming up with Hela, Loki's transformation lasts slightly longer. Furthermore, taking lethal damage while transformed or in his Ultimate Ability state will merely revert him back to Loki with a sliver of Health, preventing a KO",
-          "base":[["COOLDOWN","30s"],["SUMMON HEALTH BAR","100"],["DURATION","5s"],["FIELD RANGE","6.5m radius"],["DAMAGE BOOST RATE","15%"]],
+          "desc":"Base Effect: The Runestone triggers a psychic catalysis, expanding Regeneration Domain's radius.\nEnhanced Effect: When teaming up with Mantis, deploying Regeneration Domain emits a shockwave of psychic energy that damages enemies within the radius and slightly Launches them up.",
+          "base":[["COOLDOWN","30s"],["SUMMON HEALTH BAR","100"],["DURATION","5s"],["FIELD RANGE","6.5m radius"]],
           "enhanced":[["ONE-TIME DAMAGE","45"]]
         }
       ]
@@ -3274,7 +3274,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-right",
           "type":"ability",
           "desc":"Cast a clump of ice to Freeze the hit enemy and restore Health",
-          "stats":[["CASTING","Single-cast projectile with delayed impact"],["PROJECTILE SPEED","80m/s"],["DAMAGE","50"],["SPECIAL EFFECT","Freeze enemies for 2.7s. However, if they are attacked during the last 2.2s of the freeze, the effect will be canceled. Grants 50 Bonus Health per enemy hit"],["COOLDOWN","12s"]]
+          "stats":[["CASTING","Single-cast projectile with delayed impact"],["PROJECTILE SPEED","80m/s"],["DAMAGE","50"],["SPECIAL EFFECT","Freeze enemies for a total of 1.5s; attacking them can end the freeze early. Grants 50 Bonus Health per enemy hit"],["COOLDOWN","12s"]]
         },
         {
           "name":"CRYO HEART",
@@ -3308,23 +3308,23 @@ window.OFFICIAL_STATS = {
           "name":"SPIRIT FOX ACCORD",
           "key":"C",
           "type":"unused",
-          "desc":"White Fox grants Luna Snow a spirit fox for protection. Luna can activate it for a burst of speed and fire it forward, healing allies in its path while applying Charm to enemies",
-          "stats":[["PROJECTILE SPEED","60 m/s"],["DAMAGE AREA RADIUS","3m"],["CHARM AREA RADIUS","0.8m"],["DAMAGE","35"],["HEALING AMOUNT","60"],["CHARM DURATION","0.4s"],["COOLDOWN","20s"],["MOVEMENT BOOST (SELF)","30% for 4s"]]
+          "desc":"White Fox grants Luna Snow a spirit fox for protection. Luna can activate it for a burst of speed and fire it forward, healing allies in its path and damaging enemies without applying Charm",
+          "stats":[["PROJECTILE SPEED","60 m/s"],["DAMAGE AREA RADIUS","3m"],["DAMAGE","45"],["HEALING AMOUNT","80"],["COOLDOWN","20s"],["MOVEMENT BOOST (SELF)","30% for 4s"]]
         }
       ],
       "teamups":[
         {
           "name":"ATLAS BOND",
           "key":"C",
-          "desc":"Base Effect: Unleash a spirit fox forward that Charms enemies while healing any allies in its path. Activating the ability instantly cleanses all negative status effects on Luna Snow.\nEnhanced Effect: When teaming up with White Fox, the spirit fox automatically returns after reaching its maximum distance, and the self-cleanse is retained.",
-          "base":[["COOLDOWN","12s"],["HEALING AMOUNT","70"],["CHARM DURATION","0.35s"],["FLIGHT SPEED","60 m/s"],["MAXIMUM FLIGHT DISTANCE","40m"],["DAMAGE","35"],["DAMAGE RADIUS","3m"],["CHARM RADIUS","0.8m"]],
+          "desc":"Base Effect: Unleash a spirit fox forward that damages enemies without applying Charm while healing any allies in its path. Activating the ability instantly cleanses all negative status effects on Luna Snow.\nEnhanced Effect: When teaming up with White Fox, the spirit fox automatically returns after reaching its maximum distance, and the self-cleanse is retained.",
+          "base":[["COOLDOWN","12s"],["HEALING AMOUNT","80"],["FLIGHT SPEED","60 m/s"],["MAXIMUM FLIGHT DISTANCE","40m"],["DAMAGE","45"],["DAMAGE RADIUS","3m"]],
           "enhanced":[["COOLDOWN","10"]]
         },
         {
           "name":"DUALITY DANCE",
           "key":"C",
           "desc":"Base Effect: Cast Soul Bond to tether all characters within range. Attacking tethered enemies or healing linked allies restores your Health.\nEnhanced Effect: When teaming up with Adam Warlock, scoring critical hits with Light & Dark Ice reduces the cooldowns of Absolute Zero and Ice Arts.",
-          "base":[["COOLDOWN","15s"],["ABILITY DURATION","6s"],["CHAIN CAST DETECTION RANGE","20m radius"],["MAX CHAIN DISTANCE","25m"],["DAMAGE DEALT TO SELF-HEALING RATIO","50%"],["ALLY HEALING TO SELF-HEALING RATIO","25%"]],
+          "base":[["COOLDOWN","15s"],["ABILITY DURATION","6s"],["CHAIN CAST DETECTION RANGE","20m radius"],["MAX CHAIN DISTANCE","25m"],["DAMAGE DEALT TO SELF-HEALING RATIO","50%"],["ALLY HEALING TO SELF-HEALING RATIO","35%"]],
           "enhanced":[["ICE ARTS CD REDUCTION PER CRIT","1.5s"],["ABSOLUTE ZERO CD REDUCTION PER CRIT","0.5s"]]
         }
       ]
@@ -3564,8 +3564,8 @@ window.OFFICIAL_STATS = {
           "name":"LIFE ENERGY BLAST",
           "key":"mouse-left",
           "type":"normal",
-          "desc":"Fire an energy thorn and regain one Life Orb after a critical hit.",
-          "stats":[["CASTING","Single-cast projectile with delayed impact"],["DAMAGE","55 damage per round"],["PROJECTILE SPEED","150m/s"],["DAMAGE FALLOFF","No falloff"],["FIRE RATE","2.5 rounds per second"],["AMMO","15"],["CRITICAL HIT","Yes"],["SPECIAL EFFECT","Critical hit generates 1 Life Orb"]]
+          "desc":"Fire an energy thorn and regain one Life Orb after a critical hit or 0.3 Life Orbs after a non-critical hit.",
+          "stats":[["CASTING","Single-cast projectile with delayed impact"],["DAMAGE","55 damage per round"],["PROJECTILE SPEED","150m/s"],["DAMAGE FALLOFF","No falloff"],["FIRE RATE","2.5 rounds per second"],["AMMO","15"],["CRITICAL HIT","Yes"],["SPECIAL EFFECT","Critical hit generates 1 Life Orb; a non-critical hit generates 0.3 Life Orbs"]]
         },
         {
           "name":"SOUL RESURGENCE",
@@ -3579,14 +3579,14 @@ window.OFFICIAL_STATS = {
           "key":"shift",
           "type":"ability",
           "desc":"Throw a spore to Sedate the nearest enemy",
-          "stats":[["CASTING","Single-cast projectile with delayed impact that also generates a spell field"],["DAMAGE","10"],["RANGE","3m spherical radius"],["SEDATION DURATION","3.5s"],["SPECIAL EFFECT","A Mantis illusions will manifest beside the sedated heroes. Allies can attack this illusion to awaken the affected hero"],["ILLUSION HEALTH","100"],["COOLDOWN","15s"]]
+          "stats":[["CASTING","Single-cast projectile with delayed impact that also generates a spell field"],["DAMAGE","10"],["RANGE","3m spherical radius"],["SEDATION DURATION","1.5s"],["SPECIAL EFFECT","A Mantis illusions will manifest beside the sedated heroes. Allies can attack this illusion to awaken the affected hero"],["ILLUSION HEALTH","100"],["COOLDOWN","15s"]]
         },
         {
           "name":"ALLIED INSPIRATION",
           "key":"E",
           "type":"ability",
           "desc":"Consume Life Orbs to grant allies a Damage Boost",
-          "stats":[["CASTING","Targeted"],["DAMAGE BOOST","8%"],["MOVEMENT BOOST","1m/s"],["DURATION","8s (16s maximum duration)"],["COOLDOWN","Consume 1 Life Orb"]]
+          "stats":[["CASTING","Targeted"],["DAMAGE BOOST","8%"],["MOVEMENT BOOST","1m/s"],["DURATION","8s (16s maximum duration)"],["COOLDOWN","Consume 2 Life Orbs"]]
         },
         {
           "name":"NATURAL ANGER",
@@ -3607,13 +3607,13 @@ window.OFFICIAL_STATS = {
           "key":"passive",
           "type":"ability",
           "desc":"Receive a Movement Boost when not injured and Healing Over Time when consuming Life Orbs",
-          "stats":[["TIME REQUIRED TO LEAVE COMBAT","3s"],["OUT-OF-COMBAT MOVEMENT SPEED","7.5m/s"],["SPECIAL EFFECT","Consume Life Orbs to receive Healing Over Time"],["HEALING AMOUNT","12.5 per second"],["DURATION","8s"]]
+          "stats":[["TIME REQUIRED TO LEAVE COMBAT","3s"],["OUT-OF-COMBAT MOVEMENT SPEED","7.5m/s"],["SPECIAL EFFECT","Consume Life Orbs to receive Healing Over Time"],["HEALING AMOUNT","8 per second"],["DURATION","8s"]]
         },
         {
           "name":"HEAVENLY GUARDIAN",
           "key":"passive",
           "type":"unused",
-          "desc":"Mantis enhances Groot's wooden walls and Loki's Rune Stones with life energy. Groot can additionally unleash a Flower Wall, which, when in Flora Colossus state, restores health to random nearby allies and grants them Damage Reduction. Loki's Rune Stones grant allies within Regeneration Domain a Damage Boost",
+          "desc":"Mantis enhances Groot's wooden walls and Loki's Rune Stones with life energy. Groot can additionally unleash a Flower Wall, which, when in Flora Colossus state, restores health to random nearby allies and grants them Damage Reduction. The Flower Wall is also affected by the Flora Colossus passive, in the same way as Thornlash Wall. Loki's Regeneration Domain no longer grants allies within it a Damage Boost",
           "stats":[["TEAM-UP BONUS","10% Healing Boost"]]
         }
       ],
@@ -3872,6 +3872,83 @@ window.OFFICIAL_STATS = {
         }
       ]
     },
+    "Nightcrawler":{
+      "id":"2mpwiwa9ct6hn",
+      "roles":["Strategist"],
+      "variants":[
+        {
+          "name":"NIGHTCRAWLER",
+          "stats":[["HEALTH","275"],["MOVEMENT SPEED","600"]]
+        }
+      ],
+      "skills":[
+        {
+          "name":"FORGED BRIMSTONE",
+          "key":"mouse-left",
+          "type":"normal",
+          "desc":"Toss 3 consecutive grenades forward that explode on impact, damaging enemies while healing allies.",
+          "stats":[["DAMAGE","10 on impact, 15 in the spell field"],["ATTACK INTERVAL","0.9s per 3 shots"],["HEALING AMOUNT","10 on impact, 30 in the spell field"]]
+        },
+        {
+          "name":"THREE-SWORD STYLE",
+          "key":"mouse-right",
+          "type":"ability",
+          "desc":"Strike forward with continuous thrusts using two cutlasses and the Hopesword. Can deal critical damage.",
+          "stats":[["MAXIMUM ENERGY","60"],["ENERGY COST","20/s"],["ENERGY RECOVERY SPEED","10/s"],["DAMAGE","11 per thrust"],["CRITICAL DAMAGE","150%"],["MAXIMUM RANGE","7m"],["THRUST FREQUENCY","9 thrusts/s"]]
+        },
+        {
+          "name":"SWIFT INTERVENTION",
+          "key":"shift",
+          "type":"ability",
+          "desc":"Target an ally and teleport to their side, granting them a one-time heal, Healing Boost, and Healing Over Time.",
+          "stats":[["COOLDOWN","2 charges, with each charge taking 12s to recharge."],["INTERVAL BETWEEN USES","2s"],["MAXIMUM TARGETING RANGE","20m"],["INSTANT HEALING TO ALLY","50"],["HEALING OVER TIME TO SELF AND ALLY","25/sec for 4 seconds"],["HEALING BOOST","20% for 4s"],["INVINCIBILITY DURATION","0.5s"]]
+        },
+        {
+          "name":"SMOKE SHIFT",
+          "key":"E",
+          "type":"ability",
+          "desc":"Mark your starting point with brimstone smoke and dash forward in a spinning slash to deal damage. The dash creates a smoke blast that damages and Launches enemies while healing allies. Can be recast shortly after; the third activation teleports you back to the initial mark.",
+          "stats":[["COOLDOWN","15s"],["DASH DISTANCE","10m"],["SLASH DAMAGE","45"],["DASH DAMAGE","15"],["SMOKE EXPLOSION DAMAGE","15"],["SMOKE HEALING TO ALLIES","50"],["SLASH RANGE","6m radius"],["RECAST WINDOW","4s"]]
+        },
+        {
+          "name":"TANDEM TELEPORT",
+          "key":"F",
+          "type":"ability",
+          "desc":"Send an invitation to an ally. Upon confirmation, teleport to their side and pull them back to your original location, granting both instant Healing and Healing Over Time.",
+          "stats":[["COOLDOWN","15s"],["MAXIMUM SELECT DISTANCE","20m"],["INSTANT HEALING TO ALLY","50"],["HEALING OVER TIME AMOUNT","25/sec for 4 seconds"],["SPEED BOOST","20% for 4s"],["INVINCIBILITY DURATION","1s"],["MAXIMUM TELEPORT DISTANCE","25m"]]
+        },
+        {
+          "name":"CRAWLER CLING",
+          "key":"passive",
+          "type":"ability",
+          "desc":"Press the Jump key to crawl on vertical surfaces.",
+          "stats":[["EFFECT","Can cling to walls and crawl freely."]]
+        },
+        {
+          "name":"PHASING FINALE",
+          "key":"Q",
+          "type":"ability",
+          "desc":"Select a target location to teleport all nearby allies there one by one, granting them Damage Boost and Healing Over Time while creating a Smoke Domain at the destination. Cast again to teleport to and slash all enemies within the Smoke Domain, pulling them to your location.",
+          "stats":[["ENERGY COST","4500"],["MAXIMUM SELECT DISTANCE","30m"],["TELEPORT RANGE","20m radius"],["LANDING SPREAD RADIUS","Vanguards 4m / Duelists 2.5m / Strategists 0.75m"],["DAMAGE BOOST","20% for 10s"],["BONUS HEALTH","200; an additional 200 upon landing after teleportation"],["HEALING OVER TIME AMOUNT","50/sec for 10 seconds"],["ENEMY TELEPORT RANGE","15m radius"],["SECOND-STAGE DAMAGE","60"]]
+        }
+      ],
+      "teamups":[
+        {
+          "name":"PROTECTIVE SIBLINGS",
+          "key":"C",
+          "desc":"Base Effect: Rogue infuses Nightcrawler with Chronovium Power. Upon activation, briefly vanish, and the energy radiates outward from your vanishing point, damaging enemies and healing allies. After a short delay, reappear above your original location, slamming down with three swords to deal secondary damage and apply a Slow to enemies in range.\nEnhanced Effect: When teaming up with Rogue, the Chronovium Power is recalled after the downward thrust. The recall heals allies, damages enemies, and Launches enemies toward you.",
+          "base":[["COOLDOWN","15s"],["DAMAGE","15"],["HEALING AMOUNT","50"],["RANGE","5m radius"],["SLAM DOWN DAMAGE","40"],["SLAM DOWN RANGE","3m radius"]],
+          "enhanced":[["DAMAGE","30"],["HEALING AMOUNT","30"],["RANGE","8m radius"]]
+        },
+        {
+          "name":"DEMON DISCIPLE",
+          "key":"passive",
+          "desc":"Base Effect: Magik empowers Nightcrawler with Limbo's demonic magic. Each spatial warp (all 3 stages of Smoke Shift, both stages of Tandem Teleport, or the single stage of Swift Intervention) generates a spell field that damages enemies and heals allies.\nEnhanced Effect: When teaming up with Magik, every warp also coalesces demonic armor, granting Bonus Health.",
+          "base":[["DAMAGE","10"],["HEALING AMOUNT","40"],["RANGE","8m radius"]],
+          "enhanced":[["BONUS HEALTH","25"]]
+        }
+      ]
+    },
     "Peni Parker":{
       "id":"3d57v7spb7z92",
       "roles":["Vanguard"],
@@ -3887,7 +3964,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Launch forward a Cyber-Web Cluster",
-          "stats":[["CASTING","Rapid-fire, delayed projectile that is accompanied by a spell field"],["PROJECTILE SPEED","150m/s"],["RANGE","1.5m spherical radius"],["FIRE RATE","4 rounds per second"],["DAMAGE","Projectile Damage: 15; Spell Field Damage: 15"],["CRITICAL HIT","Yes"]]
+          "stats":[["CASTING","Rapid-fire, delayed projectile that is accompanied by a spell field"],["PROJECTILE SPEED","150m/s"],["RANGE","1.5m spherical radius"],["FIRE RATE","4 rounds per second"],["DAMAGE","Projectile Damage: 15; Spell Field Damage: 12"],["CRITICAL HIT","Yes"]]
         },
         {
           "name":"SPIDER-SWEEPER",
@@ -3978,7 +4055,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Launch a fiery projectile forward, applying 1 Spark to enemies hit. Critical hits apply 2 Sparks. At 3 Sparks, Phoenix triggers a fiery explosion that applies 1 Spark to enemies around and Healing Over Time to self. Sparks from explosions will not stack within a brief period",
-          "stats":[["DAMAGE","65"],["DAMAGE FALLOFF","Falloff begins at 10m, decreasing to 65% at 30m"],["FIRE RATE","0.435s per round"],["SPECIAL EFFECT","Apply 1 Spark to enemies hit. Critical hits apply 2 Sparks. At 3 Sparks, Phoenix triggers a fiery explosion that applies 1 Spark to enemies around. Sparks from explosions will not stack within a brief period."],["EXPLOSION DIRECT DAMAGE","45"],["EXPLOSION RANGE DAMAGE","20"],["EXPLOSION RANGE","4m spherical radius spell field"],["SELF BONUS HEALTH AFTER THE EXPLOSION","5/s for 4 s"]]
+          "stats":[["DAMAGE","65"],["DAMAGE FALLOFF","Falloff begins at 10m, decreasing to 65% at 30m"],["FIRE RATE","0.435s per round"],["SPECIAL EFFECT","Apply 1 Spark to enemies hit. Critical hits apply 2 Sparks. At 3 Sparks, Phoenix triggers a fiery explosion that applies 1 Spark to enemies around. Sparks from explosions will not stack within a brief period."],["EXPLOSION DIRECT DAMAGE","40"],["EXPLOSION RANGE DAMAGE","15"],["EXPLOSION RANGE","4m spherical radius spell field"],["SELF BONUS HEALTH AFTER THE EXPLOSION","5/s for 4 s"]]
         },
         {
           "name":"TELEKINESIS BURST",
@@ -4005,8 +4082,8 @@ window.OFFICIAL_STATS = {
           "name":"ENDSONG INFERNO",
           "key":"Q",
           "type":"ability",
-          "desc":"Soar into the sky with the Phoenix and crash down onto a selected area, dealing devastating damage to enemies while creating a shockwave that destroys enemy summons, shields, and any Bonus Health. Enemies hit are applied with 1 Spark",
-          "stats":[["ENERGY COST","3100"],["EXPLOSION DAMAGE","150"],["EXPLOSION RANGE","10m spherical radius spell field"],["SHOCKWAVE DAMAGE","50"],["SUMMONS' HEALTH","500"],["SPECIAL EFFECT","The shockwave destroys enemy summons, shields, and any Bonus Health. Enemies hit by the spell field and the shockwave are applied with 2 Spark."],["SELF HEALING AMOUNT","250"]]
+          "desc":"Soar into the sky with the Phoenix and crash down onto a selected area, dealing devastating damage to enemies while creating a shockwave that destroys enemy summons, shields, and any Bonus Health. Enemies hit by the explosion spell field are applied with 2 Sparks; enemies hit by the shockwave are applied with 1 Spark",
+          "stats":[["ENERGY COST","3100"],["EXPLOSION DAMAGE","150"],["EXPLOSION RANGE","10m spherical radius spell field"],["SHOCKWAVE DAMAGE","50"],["SUMMONS' HEALTH","500"],["SPECIAL EFFECT","The shockwave destroys enemy summons, shields, and any Bonus Health. Enemies hit by the explosion spell field are applied with 2 Sparks; enemies hit by the shockwave are applied with 1 Spark."],["SELF HEALING AMOUNT","250"]]
         },
         {
           "name":"MIND'S GRACE",
@@ -4118,14 +4195,14 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Fire energy projectiles that deal damage",
-          "stats":[["CASTING","Rapid-fire, delayed projectile"],["DAMAGE","16 damage per round"],["PROJECTILE SPEED","180 m/s"],["DAMAGE FALLOFF","Falloff begins at 10m, decreasing to 40% at 20m"],["FIRE RATE","12.05 rounds per second"],["AMMO","45"],["CRITICAL HIT","Yes"]]
+          "stats":[["CASTING","Rapid-fire, delayed projectile"],["DAMAGE","16 damage per round"],["PROJECTILE SPEED","180 m/s"],["DAMAGE FALLOFF","Falloff begins at 15m, decreasing to 55% at 30m"],["FIRE RATE","12.05 rounds per second"],["AMMO","45"],["CRITICAL HIT","Yes"]]
         },
         {
           "name":"REPAIR MODE",
           "key":"mouse-right",
           "type":"normal",
           "desc":"Shoot bouncing spheres to heal allies",
-          "stats":[["CASTING","Single-cast projectile with delayed impact that also generates a spell field"],["HEALING AMOUNT (ALLY)","50/s"],["ONE-TIME HEALING AMOUNT","55"],["HEALING AMOUNT (SELF)","30/s"],["PROJECTILE SPEED","80 m/s"],["RANGE","5m spherical radius"],["FIRE RATE","2 rounds per second"],["AMMO","8"],["DURATION","5s"],["SPECIAL EFFECT","One-time healing for allies when projectile hits them，Bouncing Spheres will bounce off surfaces upon contact, with a maximum of 10 bounces. When they approach injured allies, their speed will reduce"],["PROJECTILE SPEED REDUCTION","7 m/s"]]
+          "stats":[["CASTING","Single-cast projectile with delayed impact that also generates a spell field"],["HEALING AMOUNT (ALLY)","50/s"],["ONE-TIME HEALING AMOUNT","50"],["HEALING AMOUNT (SELF)","20/s"],["PROJECTILE SPEED","80 m/s"],["RANGE","5m spherical radius"],["FIRE RATE","2 rounds per second"],["AMMO","8"],["DURATION","5s"],["SPECIAL EFFECT","One-time healing for allies when projectile hits them，Bouncing Spheres will bounce off surfaces upon contact, with a maximum of 10 bounces. When they approach injured allies, their speed will reduce"],["PROJECTILE SPEED REDUCTION","7 m/s"]]
         },
         {
           "name":"C.Y.A.",
@@ -4138,7 +4215,7 @@ window.OFFICIAL_STATS = {
           "name":"JETPACK DASH",
           "key":"shift",
           "type":"ability",
-          "desc":"Dash forward",
+          "desc":"Dash forward, granting yourself 25 Bonus Health with each cast",
           "stats":[["CASTING","Dash"],["DASH DIRECTION","Crosshair Direction"],["DASH DISTANCE","8m"],["COOLDOWN","2 charges, with each charge taking 10s to recharge"]]
         },
         {
@@ -4202,14 +4279,14 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Punch forward with both fists",
-          "stats":[["CASTING","Melee"],["DAMAGE","The first two strikes deal 35 damage, while the third strike deals 45 damage"],["MAXIMUM DISTANCE","4.5m"],["ATTACK SPEED","The first two strikes: 0.33s/hit; the third strike: 0.73s/hit"]]
+          "stats":[["CASTING","Melee"],["DAMAGE","The first two strikes deal 40 damage, while the third strike deals 45 damage"],["MAXIMUM DISTANCE","4.5m"],["ATTACK SPEED","The first two strikes: 0.33s/hit; the third strike: 0.73s/hit"]]
         },
         {
           "name":"DEFENSIVE STANCE",
           "key":"mouse-right",
           "type":"ability",
           "desc":"Absorb nearby projectiles and reduce incoming damage; absorbed damage powers up your next Southern Brawl",
-          "stats":[["DAMAGE REDUCTION","60%"],["MAXIMUM ENERGY","100"],["ENERGY RECOVERY SPEED","25/s"],["ENERGY CONSUMPTION","60/s"],["ENERGY REQUIRED TO ACTIVATE THE ABILITY","30"],["SPECIAL EFFECT","The reduced damage transforms into backlash energy that powers up the next Southern Brawl."],["REDUCED DAMAGE-BACKLASH ENERGY CONVERSION RATIO","0.55"],["MAXIMUM BACKLASH ENERGY","100"],["MAXIMUM BACKLASH ENERGY FALLOFF","20/s"]]
+          "stats":[["DAMAGE REDUCTION","60%"],["MAXIMUM ENERGY","100"],["ENERGY RECOVERY SPEED","25/s"],["ENERGY CONSUMPTION","60/s"],["ENERGY REQUIRED TO ACTIVATE THE ABILITY","30"],["SPECIAL EFFECT","The reduced damage transforms into backlash energy that powers up the next Southern Brawl."],["REDUCED DAMAGE-BACKLASH ENERGY CONVERSION RATIO","0.6"],["MAXIMUM BACKLASH ENERGY","100"],["MAXIMUM BACKLASH ENERGY FALLOFF","20/s"]]
         },
         {
           "name":"SOUTHERN BRAWL",
@@ -4230,14 +4307,14 @@ window.OFFICIAL_STATS = {
           "key":"shift",
           "type":"ability",
           "desc":"Dash forward. Press again to unleash a burst of Chronovium Power, dealing continuous damage to nearby foes; after a delay, the energy retracts, pulling all enemies towards Rogue",
-          "stats":[["DASH DISTANCE","10m"],["DASH DAMAGE","30"],["SPECIAL EFFECT","Launch up enemies hit"],["SPREADING SPELL FIELD RANGE","Cylindrical Spell Field with a height of 3m, whose radius will expand to 8m after 0.8s"],["SPREADING SPELL FIELD DAMAGE","40/s"],["RETRIEVE SPELL FIELD DAMAGE","30"],["COOLDOWN","12s"]]
+          "stats":[["DASH DISTANCE","10m"],["DASH DAMAGE","30"],["SPECIAL EFFECT","Launch up enemies hit"],["SPREADING SPELL FIELD RANGE","Cylindrical Spell Field with a height of 3m, whose radius will expand to 8m after 0.8s"],["SPREADING SPELL FIELD DAMAGE","40/s"],["RETRIEVE SPELL FIELD DAMAGE","30"],["COOLDOWN","10s"]]
         },
         {
           "name":"ABILITY ABSORPTION",
           "key":"F",
           "type":"ability",
           "desc":"Dash forward to knock down your target and absorb their energy; after absorbing, replace Ability Absorption with one of their abilities or refresh Fatal Attraction. Also absorb Health and stats based on their role",
-          "stats":[["DASH DISTANCE","10m"],["SPECIAL EFFECT","Knock down the target. Rogue becomes Unstoppable during the absorption."],["ABSORPTION DAMAGE OVER TIME","30/s"],["ABSORPTION HEALING OVER TIME","60/s"],["ABSORBED ABILITY DURATION","10s"],["BOOST FROM VANGUARD ABILITY ABSORPTION","150 Maximum Health"],["DEBUFF TO THE VANGUARD ABSORPTION TARGET","Reduce 20 Maximum Health"],["BOOST FROM DUELIST ABILITY ABSORPTION","20% Damage Boost"],["DEBUFF TO THE DUELIST ABSORPTION TARGET","Reduce 3% damage dealt"],["BOOST FROM STRATEGIST ABILITY ABSORPTION","Self healing 20/s"],["DEBUFF TO THE STRATEGIST ABSORPTION TARGET","Reduce 4% healing dealt"],["ABSORPTION PROCESS","0.75s"],["SPECIAL EFFECT","After absorbing, replace Ability Absorption with one of their abilities or refresh Fatal Attraction."],["COOLDOWN","25s"]]
+          "stats":[["DASH DISTANCE","8m"],["SPECIAL EFFECT","Knock down the target. Rogue becomes Unstoppable during the absorption."],["ABSORPTION DAMAGE OVER TIME","30/s"],["ABSORPTION HEALING OVER TIME","60/s"],["ABSORBED ABILITY DURATION","10s"],["BOOST FROM VANGUARD ABILITY ABSORPTION","150 Maximum Health"],["DEBUFF TO THE VANGUARD ABSORPTION TARGET","Reduce 20 Maximum Health"],["BOOST FROM DUELIST ABILITY ABSORPTION","20% Damage Boost"],["DEBUFF TO THE DUELIST ABSORPTION TARGET","Reduce 3% damage dealt"],["BOOST FROM STRATEGIST ABILITY ABSORPTION","Self healing 20/s"],["DEBUFF TO THE STRATEGIST ABSORPTION TARGET","Reduce 4% healing dealt"],["ABSORPTION PROCESS","0.75s"],["SPECIAL EFFECT","After absorbing, replace Ability Absorption with one of their abilities or refresh Fatal Attraction."],["COOLDOWN","25s"]]
         },
         {
           "name":"HEARTBREAKER",
@@ -4251,7 +4328,7 @@ window.OFFICIAL_STATS = {
           "key":"C",
           "type":"unused",
           "desc":"Gambit shares kinetic energy with Magneto and Rogue. When Magneto activates this ability, Iron Volley is replaced with Ace Greatsword, which detonates upon striking enemies. The explosion leaves residual kinetic energy within the target, inflicting secondary damage after a brief delay. When Rogue activates the ability, each of her attacks causes a kinetic explosion that damages nearby enemies and heals nearby allies",
-          "stats":[["SPELL FIELD DURATION","8s"],["COOLDOWN","30s"],["SPELL FIELD DAMAGE","5+targets' 2% Maximum Health"],["SPELL FIELD HEALING","25"],["SPELL FIELD RANGE","8m radius spherical spell field"]]
+          "stats":[["SPELL FIELD DURATION","8s"],["COOLDOWN","15s"],["SPELL FIELD DAMAGE","3+targets' 1% Maximum Health"],["SPELL FIELD HEALING","10"],["SPELL FIELD RANGE","8m radius spherical spell field"]]
         }
       ],
       "teamups":[
@@ -4259,7 +4336,7 @@ window.OFFICIAL_STATS = {
           "name":"MR. & MRS. X",
           "key":"C",
           "desc":"Base Effect: After activation, every attack triggers a kinetic explosion, dealing area damage to surrounding enemies while simultaneously healing nearby allies.\nEnhanced Effect: When teaming up with Gambit, Rogue remains permanently locked in the \"Hearts as One\" state.",
-          "base":[["COOLDOWN","30s"],["DURATION","8s"],["SPELL FIELD RANGE","8m spherical radius"],["DAMAGE","5+Target's 1% Maximum Health"],["HEALING","15"]],
+          "base":[["COOLDOWN","15s"],["DURATION","8s"],["SPELL FIELD RANGE","8m spherical radius"],["DAMAGE","3+Target's 1% Maximum Health"],["HEALING","10"]],
           "enhanced":[["SPECIAL EFFECT","Permanently maintains the Hearts as One state"]]
         },
         {
@@ -4286,7 +4363,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Unleash Chaos Magic on enemies to deal damage and restore Chaos Energy. Concurrently damages any enemies within range bearing a Chaos Magic mark",
-          "stats":[["CASTING","Cylindrical Spell Field"],["RANGE","A cylindrical spell field with a radius of 3m and a height of 20m"],["FIRE RATE","0.1s per hit"],["DAMAGE","8.5 per hit"],["DAMAGE FALLOFF","Falloff begins at 10m, decreasing to 90% at 20m"],["CHTHONIAN BURST RECHARGE PER HIT","0.15 per hit"],["AMMO","Infinite"],["CRITICAL HIT","No"],["SPECIAL EFFECT 1","Attack the nearest enemy within range"],["SPECIAL EFFECT 2","Hitting with Chaos Control charges Chthonian Burst"],["MARKED ENEMY PULL-IN RANGE","120° cone"]]
+          "stats":[["CASTING","Cylindrical Spell Field"],["RANGE","A cylindrical spell field with a radius of 3m and a height of 20m"],["FIRE RATE","0.1s per hit"],["DAMAGE","7.5 per hit"],["DAMAGE FALLOFF","Falloff begins at 10m, decreasing to 90% at 20m"],["CHTHONIAN BURST RECHARGE PER HIT","0.15 per hit"],["AMMO","Infinite"],["CRITICAL HIT","No"],["SPECIAL EFFECT 1","Attack the nearest enemy within range"],["SPECIAL EFFECT 2","Hitting with Chaos Control charges Chthonian Burst"],["MARKED ENEMY PULL-IN RANGE","120° cone"]]
         },
         {
           "name":"REALITY ERASURE",
@@ -4300,7 +4377,7 @@ window.OFFICIAL_STATS = {
           "key":"shift",
           "type":"ability",
           "desc":"Enter the Phased state for free-flight. Press again to exit early",
-          "stats":[["CASTING","Dash"],["DURATION","1.5s"],["MOVEMENT BOOST","50%"],["CHARGES","2"],["RECHARGE SPEED","12s per charge"],["SPECIAL EFFECT","During this period, Scarlet Witch enters the Projection state, can be healed by teammates"]]
+          "stats":[["CASTING","Dash"],["DURATION","1.5s"],["MOVEMENT BOOST","35%"],["CHARGES","2"],["RECHARGE SPEED","12s per charge"],["SPECIAL EFFECT","During this period, Scarlet Witch enters the Projection state, can be healed by teammates"]]
         },
         {
           "name":"DARK SEAL",
@@ -4482,7 +4559,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Shoot bouncing Burst Acorns",
-          "stats":[["CASTING","Arced projectile that generates a spell field upon impact"],["PROJECTILE SPEED","80 m/s"],["SPELL FIELD RANGE","3m spherical radius"],["SPELL FIELD DAMAGE","110"],["DAMAGE FALLOFF","70% falloff at 3m"],["FIRE RATE","1.49 acorns per second"],["AMMO","12"],["CRITICAL HIT","No"]]
+          "stats":[["CASTING","Arced projectile that generates a spell field upon impact"],["PROJECTILE SPEED","80 m/s"],["SPELL FIELD RANGE","3m spherical radius"],["SPELL FIELD DAMAGE","95"],["DAMAGE FALLOFF","Damage decreases to 60% at 3m"],["FIRE RATE","1.49 acorns per second"],["AMMO","12"],["CRITICAL HIT","No"]]
         },
         {
           "name":"UNBEATABLE SQUIRREL TSUNAMI",
@@ -4495,22 +4572,22 @@ window.OFFICIAL_STATS = {
           "name":"TAIL BOUNCE",
           "key":"shift",
           "type":"ability",
-          "desc":"Rocket upwards with a bounce of her tail",
+          "desc":"Rocket upwards with a bounce of her tail, gaining 25 Bonus Health upon activation",
           "stats":[["JUMP HEIGHT","9m"],["COOLDOWN","8s"]]
         },
         {
           "name":"MAMMAL BOND",
           "key":"E",
           "type":"ability",
-          "desc":"Reload Burst Acorns and can use an ability without cooldown once in a short duration",
+          "desc":"Reload Burst Acorns and can use an ability without cooldown once in a short duration. Upon activation, gain a 100% Attack Speed Boost for 5s. During this time, Burst Acorn projectile speed increases to 150 m/s, damage per acorn is 65% of normal, and projectiles are unaffected by gravity. This boost persists until its duration ends, even after using the refreshed ability",
           "stats":[["MAXIMUM DURATION","5s"],["COOLDOWN","12s"]]
         },
         {
           "name":"SQUIRREL BLOCKADE",
           "key":"mouse-right",
           "type":"ability",
-          "desc":"Launch an acorn to unleash Squirrel Guards, Imprisoning the first hit enemy",
-          "stats":[["CASTING","Charged projectile with an arced trajectory"],["MAXIMUM CHARGE TIME","1.5s"],["PROJECTILE SPEED","20 - 60 m/s (Maximum speed is achieved after 0.7s of charging)"],["DAMAGE","50"],["IMPRISON DURATION","1.33s"],["COOLDOWN","8s"]]
+          "desc":"Launch an acorn to unleash Squirrel Guards, Imprisoning the first hit enemy. Upon hitting, create an acorn rain centered on the enemy's current position, continuously damaging and Slowing enemies within the area",
+          "stats":[["CASTING","Charged projectile with an arced trajectory"],["MAXIMUM CHARGE TIME","1.5s"],["PROJECTILE SPEED","60 - 90 m/s (Maximum speed is achieved after 0.7s of charging)"],["DAMAGE","25"],["IMPRISON DURATION","0.8s"],["COOLDOWN","8s"]]
         },
         {
           "name":"SQUIRREL MISSILE",
@@ -4559,7 +4636,7 @@ window.OFFICIAL_STATS = {
           "key":"Q",
           "type":"ability",
           "desc":"Engage in free-flight and lock onto enemies in sight",
-          "stats":[["CASTING","Rapid-fire projectile."],["DAMAGE","6.5 damage per round"],["DAMAGE FALLOFF","Falloff begins at 25m, decreasing to 75% at 40m"],["FIRE RATE","40 rounds per second"],["AMMO","40"],["CRITICAL HIT","No"],["DURATION","8s"],["MOVEMENT BOOST","20%"],["RELOAD TIME REDUCTION","70%"],["MAXIMUM LOCKING DISTANCE","40m"],["ENERGY COST","3100"],["SPECIAL MECHANIC","During this period, Star-Lord's Reload Speed increases significantly"]]
+          "stats":[["CASTING","Rapid-fire projectile."],["DAMAGE","6.5 damage per round"],["DAMAGE FALLOFF","Falloff begins at 25m, decreasing to 75% at 40m"],["FIRE RATE","40 rounds per second"],["AMMO","50"],["CRITICAL HIT","No"],["DURATION","8s"],["MOVEMENT BOOST","20%"],["RELOAD TIME REDUCTION","70%"],["MAXIMUM LOCKING DISTANCE","40m"],["ENERGY COST","3100"],["SPECIAL MECHANIC","During this period, Star-Lord's Reload Speed increases significantly"]]
         },
         {
           "name":"ROCKET PROPULSION",
@@ -4602,7 +4679,7 @@ window.OFFICIAL_STATS = {
           "name":"STAR-SOUL",
           "key":"C",
           "desc":"Base Effect: Gain a new ability to place a Telekinetic Beacon. You can teleport back to the location where the beacon is deployed from anywhere on the map. Upon defeat, Star-Lord will cocoon and respawn at the Telekinetic Beacon's coordinates.\nEnhanced Effect: When teaming up with Adam Warlock, every time Star-Lord participates in a KO, Telekinetic Beaconcooldown is reduced.",
-          "base":[["COOLDOWN","30s"],["COOLDOWN TO RESPAWN","120s"],["COOLDOWN TO REPLACE AFTER CANCELING TELEKINETIC BEACON","5s"]],
+          "base":[["COOLDOWN","25s"],["COOLDOWN TO RESPAWN","105s"],["COOLDOWN TO REPLACE AFTER CANCELING TELEKINETIC BEACON","5s"]],
           "enhanced":[["ABILITY CD REDUCTION PER KO","10s"]]
         }
       ]
@@ -5056,7 +5133,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-right",
           "type":"ability",
           "desc":"Deploy drones to an ally marked by Imperative: Patch, granting them increased Speed and Damage. Additionally, all allies within range of you and the chosen teammate receive Bonus Health.",
-          "stats":[["CASTING","Instant Cast"],["BONUS HEALTH TO ULTRON","40"],["BONUS HEALTH TO ALLIES NEAR ULTRON AND THE DRONES","40"],["COOLDOWN","12s"],["RANGE","8m spherical radius spell field"],["BONUS HEALTH FALLOFF BEGINS AT","3s"],["BONUS HEALTH FALLOFF SPEED","40/s"],["SPECIAL EFFECT","Grant bonus health to Ultron and Allies within range, centered around Ultron and the drones; the selected ally gains a 20% Movement Speed and 10% Damage boost"],["SELF HEALING AMOUNT","20 per second"],["SELF HEALING DURATION","3s"]]
+          "stats":[["CASTING","Instant Cast"],["BONUS HEALTH TO ULTRON","40"],["BONUS HEALTH TO ALLIES NEAR ULTRON AND THE DRONES","25"],["COOLDOWN","12s"],["RANGE","8m spherical radius spell field"],["BONUS HEALTH FALLOFF BEGINS AT","3s"],["BONUS HEALTH FALLOFF SPEED","40/s"],["SPECIAL EFFECT","Grant bonus health to Ultron and Allies within range, centered around Ultron and the drones; the selected ally gains a 10% Movement Speed and 10% Damage boost"],["SELF HEALING AMOUNT","20 per second"],["SELF HEALING DURATION","3s"]]
         },
         {
           "name":"IMPERATIVE: PATCH",
@@ -5118,7 +5195,7 @@ window.OFFICIAL_STATS = {
           "name":"DARK PREDATION",
           "key":"mouse-left",
           "type":"normal",
-          "desc":"Unleash tentacles forward to attack enemies",
+          "desc":"Unleash tentacles forward to attack enemies; projectile detection radius is slightly increased",
           "stats":[["CASTING","Quad-cast delayed spell field"],["RANGE","15m"],["ATTACK INTERVAL","0.9s, with a 0.1s interval between each tendril"],["DAMAGE","20"],["CRITICAL HIT","Yes"]]
         },
         {
@@ -5140,14 +5217,14 @@ window.OFFICIAL_STATS = {
           "key":"E",
           "type":"ability",
           "desc":"Generate Bonus Health against damage. The lower Venom's Health, the greater the Bonus Health generated",
-          "stats":[["CASTING","Instant Cast"],["COOLDOWN","15s"],["SPECIAL EFFECT","Grant 100 Bonus Health and convert 110% of lost Health into Bonus Health"]]
+          "stats":[["CASTING","Instant Cast"],["COOLDOWN","15s"],["SPECIAL EFFECT","Grant 75 Bonus Health and convert 100% of lost Health into Bonus Health"]]
         },
         {
           "name":"FRENZIED ARRIVAL",
           "key":"F",
           "type":"ability",
           "desc":"Dash to the target location from a certain height. Upon landing, damage nearby enemies, launching them up toward the landing point",
-          "stats":[["CASTING","Targeted"],["MAXIMUM DISTANCE","40m"],["MINIMUM DISTANCE","3m"],["RANGE","6m spherical radius"],["DAMAGE","65 damage, with damage falloff starting at 2m from the center of the spell field and decreasing to 40% at 6m"],["COOLDOWN","8s"],["SPECIAL EFFECT","Knocks enemies inward, with an inward knockback angle of 75°"]]
+          "stats":[["CASTING","Targeted"],["MAXIMUM DISTANCE","40m"],["MINIMUM DISTANCE","3m"],["RANGE","6m spherical radius"],["DAMAGE","65 damage, with damage falloff starting at 3m from the center of the spell field and decreasing to 60% at 6m"],["COOLDOWN","8s"],["SPECIAL EFFECT","Knocks enemies inward, with an inward knockback angle of 75°"]]
         },
         {
           "name":"CELLULAR CORROSION",
@@ -5214,28 +5291,28 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"While Awakened, slash forward with a flurry of attacks",
-          "stats":[["ATTACK INTERVAL","0.45s per use"],["DAMAGE","35 per hit"],["ATTACK RANGE","4m"]]
+          "stats":[["ATTACK INTERVAL","0.45s per use"],["DAMAGE","40 per hit"],["ATTACK RANGE","4m"]]
         },
         {
           "name":"SPECTRAL SURGE",
           "key":"mouse-right",
           "type":"ability",
-          "desc":"Consume one Spirit Tail to send a spectral fox forward. It heals and grants invulnerability to allies it passes through, damages and Charms enemies, forcing foes to move toward White Fox",
-          "stats":[["PROJECTILE SPEED","60m/s"],["DAMAGE/HEALING RADIUS","3m"],["CHARM/INVINCIBILITY RADIUS","0.6m"],["DAMAGE","65"],["HEALING AMOUNT","65"],["COOLDOWN","6s"],["CHARM DURATION","0.4s"],["ALLIES' INVINCIBILITY DURATION","0.4s"],["MAXIMUM DISTANCE","35m"],["SELF HEALING AMOUNT","50"]]
+          "desc":"Consume one Spirit Tail to send a spectral fox forward. It heals allies it passes through without granting invulnerability, damages and Charms enemies, forcing foes to move toward White Fox",
+          "stats":[["PROJECTILE SPEED","60m/s"],["DAMAGE/HEALING RADIUS","3m"],["CHARM RADIUS","0.4m"],["DAMAGE","65"],["HEALING AMOUNT","65"],["COOLDOWN","6s"],["CHARM DURATION","0.4s"],["MAXIMUM DISTANCE","35m"],["SELF HEALING AMOUNT","50"]]
         },
         {
           "name":"FOX FORM AWAKENING",
           "key":"E",
           "type":"ability",
           "desc":"Enter Awakened state, transforming Spirit Tails into physical tails. While active, continuously drain Spirit Tail energy and heal nearby allies. Striking enemies provides additional area healing",
-          "stats":[["COOLDOWN","15s"],["ATTACK GENERATED HEALING SPELL FIELD RANGE","10m radius spherical spell field"],["HEALING AMOUNT","40 per hit"],["HEALING SPELL FIELD THAT SURROUNDS THE CASTER","10m radius spherical spell field"],["HEALING AMOUNT","25/s"],["ABILITY DURATION","Transform 3 tails: 9s; 2 tails: 8s; 1 tail: 7s"]]
+          "stats":[["COOLDOWN","15s"],["ATTACK GENERATED HEALING SPELL FIELD RANGE","10m radius spherical spell field"],["HEALING AMOUNT","40 per hit"],["HEALING SPELL FIELD THAT SURROUNDS THE CASTER","10m radius spherical spell field"],["HEALING AMOUNT","25/s"],["ABILITY DURATION","Base duration: 8s; each Spirit Tail extends the duration by 2s, up to a maximum of 12s"]]
         },
         {
           "name":"SPIRIT SANCTUARY",
           "key":"shift",
           "type":"ability",
           "desc":"Teleport to a chosen ally, instantly healing allies in the area while generating a shield",
-          "stats":[["COOLDOWN","15s"],["SUMMON HEALTH","200"],["ONE-TIME HEALING AMOUNT","50"],["MAXIMUM DISTANCE","30m"],["HEALING SPELL FIELD RANGE","5m radius spherical spell field"],["MAXIMUM DURATION FOR SUMMONS","5s"],["SPECIAL EFFECT","While the shield is active, it provides 20/s Healing Over Time to allies (including White Fox) within the shield's range"]]
+          "stats":[["COOLDOWN","15s"],["SUMMON HEALTH","100"],["ONE-TIME HEALING AMOUNT","50"],["MAXIMUM DISTANCE","30m"],["HEALING SPELL FIELD RANGE","5m radius spherical spell field"],["MAXIMUM DURATION FOR SUMMONS","5s"],["SPECIAL EFFECT","While the shield is active, it provides 20/s Healing Over Time to allies (including White Fox) within the shield's range"]]
         },
         {
           "name":"TAIL SWEEP",
@@ -5249,20 +5326,20 @@ window.OFFICIAL_STATS = {
           "key":"shift",
           "type":"ability",
           "desc":"While Awakened, dash forward. Hit an enemy to slow them, enabling a second dash that knocks back enemies",
-          "stats":[["COOLDOWN","6s"],["DASH DURATION","10m"],["DAMAGE","40"],["Predatory Pounce Second Unleash",""],["KEY","Shift"],["COOLDOWN","6s"],["DASH DURATION","15m"],["DAMAGE","40"]]
+          "stats":[["COOLDOWN","4s"],["DASH DURATION","10m"],["DAMAGE","40"],["Predatory Pounce Second Unleash",""],["KEY","Shift"],["COOLDOWN","4s"],["DASH DURATION","15m"],["DAMAGE","40"]]
         },
         {
           "name":"KUMIHO UNLEASHED",
           "key":"Q",
           "type":"ability",
-          "desc":"Manifest the full Nine-Tailed Fox form and continuously heal nearby allies. Cannot receive healing effects from others while in this form",
-          "stats":[["ENERGY COST","4300"],["MAXIMUM HEALTH","1200"],["CONTINUOUS HEALING SPELL FIELD RANGE","10m radius spherical spell field"],["HEALING AMOUNT","85/s"],["SPECIAL EFFECT","After casting, automatically apply the Blessed by the Nine effect to all allies within a 10m radius for 3s."]]
+          "desc":"Manifest the full Nine-Tailed Fox form and continuously heal nearby allies.",
+          "stats":[["ENERGY COST","4300"],["MAXIMUM HEALTH","1000"],["CONTINUOUS HEALING SPELL FIELD RANGE","10m radius spherical spell field"],["HEALING AMOUNT","85/s"],["SPECIAL EFFECT","After casting, automatically apply the Blessed by the Nine effect to all allies within a 10m radius for 3s."]]
         },
         {
           "name":"SPIRIT FOX WARD",
           "key":"passive",
           "type":"unused",
-          "desc":"White Fox grants Luna Snow a spirit fox for protection. Luna can activate it for a burst of speed and fire it forward, healing allies in its path while applying Charm to enemies",
+          "desc":"White Fox grants Luna Snow a spirit fox for protection. Luna can activate it for a burst of speed and fire it forward, healing allies in its path and damaging enemies without applying Charm",
           "stats":[["TEAM-UP BONUS","10% Healing Boost"]]
         },
         {
@@ -5299,7 +5376,7 @@ window.OFFICIAL_STATS = {
           "name":"PSIONIC FOX",
           "key":"passive",
           "desc":"Base Effect: Activating Fox Form Awakening no longer consumes Spirit Tail energy, and grants the maximum possible duration immediately upon use.\nEnhanced Effect: When teaming up with Psylocke, the cooldown for Fox Form Awakening is drastically reduced.",
-          "base":[["FOX FORM AWAKENING CD","15s"],["DURATION","10s"]],
+          "base":[["FOX FORM AWAKENING CD","15s"],["DURATION","12s"]],
           "enhanced":[["FOX FORM AWAKENING CD","12s"]]
         }
       ]
@@ -5319,7 +5396,7 @@ window.OFFICIAL_STATS = {
           "key":"mouse-left",
           "type":"normal",
           "desc":"Fire explosive rounds with his blaster, Roterstern, damaging the target hit and enemies behind them.",
-          "stats":[["CASTING","Straight-line projectile that generates a spell field upon impact"],["PROJECTILE SPEED","180 m/s"],["PROJECTILE DAMAGE","80"],["RANGE","Cone-shaped spell field with a 5m radius and an apex angle of 90°"],["SPELL FIELD DAMAGE","45"],["DAMAGE FALLOFF","Falloff begins at 20m, decreasing to 70% at 40m"],["FIRE RATE","2.5 rounds per second"],["AMMO","3"],["CRITICAL HIT","Projectile: Yes; Spell Field: No"],["SPECIAL MECHANIC","Enemies that take damage from the projectile will no longer receive damage from the spell field"]]
+          "stats":[["CASTING","Straight-line projectile that generates a spell field upon impact"],["PROJECTILE SPEED","180 m/s"],["PROJECTILE DAMAGE","80"],["RANGE","Cone-shaped spell field with a 5m radius and an apex angle of 90°"],["SPELL FIELD DAMAGE","40"],["DAMAGE FALLOFF","Falloff begins at 20m, decreasing to 65% at 30m"],["FIRE RATE","2.5 rounds per second"],["AMMO","3"],["CRITICAL HIT","Projectile: Yes; Spell Field: No"],["SPECIAL MECHANIC","Enemies that take damage from the projectile will no longer receive damage from the spell field"]]
         },
         {
           "name":"KRAKEN IMPACT",
@@ -5403,14 +5480,14 @@ window.OFFICIAL_STATS = {
           "key":"Q",
           "type":"ability",
           "desc":"Knock enemies ahead airborne and spiral through the air, sweeping up enemies along the path and delivering a devastating impact at the landing point",
-          "stats":[["KNOCKBACK RANGE","8m spherical radius"],["KNOCKBACK DAMAGE","50"],["SNATCHING DAMAGE OVER TIME","20/s"],["IMPACT RANGE","8m spherical radius"],["IMPACT BASE DAMAGE","50"],["IMPACT PERCENTAGE DAMAGE","Deal damage equal to 10% of the target's Max Health, with an extra 0.3% damage for each point of Rage"],["KNOCKDOWN TIME","0.75s"],["ENERGY COST","2800"]]
+          "stats":[["KNOCKBACK RANGE","8m spherical radius"],["KNOCKBACK DAMAGE","50"],["SNATCHING DAMAGE OVER TIME","20/s"],["IMPACT RANGE","8m spherical radius"],["IMPACT BASE DAMAGE","50"],["IMPACT PERCENTAGE DAMAGE","Deal damage equal to 10% of the target's Max Health, with an extra 0.2% damage for each point of Rage"],["KNOCKDOWN TIME","0.75s"],["ENERGY COST","2800"]]
         },
         {
           "name":"FERAL LEAP",
           "key":"shift",
           "type":"ability",
           "desc":"Leap like an animal to snatch the first enemy upon impact and Smash them to the ground. Unleashing this ability will enhance his normal attack to Berserk Claw Strike for a brief period",
-          "stats":[["SNATCH DAMAGE","35"],["SMASH DAMAGE","35"],["KNOCKDOWN DURATION","0.75s"],["BERSERK CLAW STRIKE DURATION","5s"],["BERSERK CLAW STRIKE BASE DAMAGE","8 damage per strike"],["BERSERK CLAW STRIKE PERCENTAGE DAMAGE","Deal damage equal to 1% of the target's Max Health, with an extra 0.025% damage for each point of Rage"],["BERSERK CLAW STRIKE MAXIMUM DISTANCE","3.5m"],["BERSERK CLAW STRIKE ATTACK INTERVAL","5.88 strikes per second"],["COOLDOWN","12s"]]
+          "stats":[["SNATCH DAMAGE","35"],["SMASH DAMAGE","35"],["KNOCKDOWN DURATION","0.75s"],["BERSERK CLAW STRIKE DURATION","5s"],["BERSERK CLAW STRIKE BASE DAMAGE","8 damage per strike"],["BERSERK CLAW STRIKE PERCENTAGE DAMAGE","Deal damage equal to 1% of the target's Max Health, with an extra 0.025% damage for each point of Rage"],["BERSERK CLAW STRIKE MAXIMUM DISTANCE","3.5m"],["BERSERK CLAW STRIKE ATTACK INTERVAL","5.88 strikes per second"],["COOLDOWN","15s"]]
         },
         {
           "name":"UNDYING ANIMAL",
