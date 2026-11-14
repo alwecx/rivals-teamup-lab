@@ -333,6 +333,11 @@
     let h = `<div class="lb-crumbs"><button data-act="home">Library</button><span>›</span><button data-act="nav" data-f="root">${esc(doc.name || "Folder")}</button>${tr.map(([fid, n]) => `<span>›</span><button data-act="nav" data-f="${fid}">${esc(n)}</button>`).join("")}${syncPill(id)}</div>`;
     const here = view.folder === "root" ? doc.name : doc.folders[view.folder].name;
     h += `<div class="lb-title"><h4>${esc(here || "Folder")}</h4><button data-act="rename" title="Rename">✎</button><button data-act="share" title="Copy a link to this folder">🔗 Share</button><button data-act="delfolder" class="lb-danger" title="Delete">🗑</button></div>`;
+    if (view.shareFor === id + ":" + view.folder && m && m.cloud) {
+      h += `<div class="lb-sharebox"><label class="lb-lab" for="lbShareLink">Folder link - send it to your friends</label>
+        <div class="lb-row"><input id="lbShareLink" readonly value="${esc(folderLink(id, view.folder))}" onfocus="this.select()"><button class="lb-primary" data-act="sharecopy">Copy</button>${navigator.share ? `<button data-act="sharenative">Share…</button>` : ""}<button data-act="shareclose" aria-label="Hide link">✕</button></div>
+        <p class="lb-small">Anyone with this link can view this folder, add teams and comment - changes show up for everyone instantly.</p></div>`;
+    }
     const saveName = compTitle || "";
     h += `<div class="lb-save${view.saving ? " hot" : ""}"><input id="lbSaveName" maxlength="48" placeholder="Team name" value="${esc(saveName)}"><button class="lb-primary" data-act="save">Save current team here</button></div>`;
     h += `<div class="lb-row"><input id="lbNewSub" maxlength="60" placeholder="New subfolder name"><button data-act="newsub">＋ Subfolder</button></div>`;
@@ -430,11 +435,23 @@
       case "share": {
         const m = meta(id);
         if (!CLOUD) { view.showSetup = true; go(null); toast("Folder sharing needs the live database - see the setup steps. Team links already work (Copy link on a team).", true); break; }
-        const doCopy = () => copy(folderLink(id, view.folder), "Folder link copied - anyone with it can view, add and comment, live.");
-        if (m && !m.cloud) { if (sure("This folder is only in your browser. Upload it so it can be shared?")) uploadRoot(id).then(ok => { if (ok) doCopy(); }); }
-        else doCopy();
+        // Always show the link on screen (clipboard access is blocked in some browsers),
+        // and try to copy it straight away too.
+        const show = () => {
+          view.shareFor = id + ":" + view.folder; render();
+          copy(folderLink(id, view.folder), "Folder link copied - anyone with it can view, add and comment, live.");
+        };
+        if (m && !m.cloud) { toast("Uploading this folder so it can be shared…"); uploadRoot(id).then(ok => { if (ok) show(); }); }
+        else show();
         break;
       }
+      case "sharecopy": copy(folderLink(id, view.folder), "Folder link copied."); break;
+      case "sharenative": {
+        const url = folderLink(id, view.folder);
+        if (navigator.share) navigator.share({ title: `${(doc && doc.name) || "Folder"} - Team-Up Lab`, url }).catch(() => {});
+        break;
+      }
+      case "shareclose": view.shareFor = null; render(); break;
       case "load": if (team) loadTeam(team, id, tid); break;
       case "tupdate":
         if (!team) break;
@@ -551,7 +568,10 @@
   .lb-rules{position:relative;margin-top:6px}
   .lb-rules pre{max-height:180px;overflow:auto;font-size:11px;line-height:1.4;background:#0b0f20;border:1px solid var(--line);border-radius:7px;padding:8px;color:#bcc6e6}
   .lb-rules button{position:absolute;top:6px;right:6px}
-  .lb-small{font-size:11.5px;color:var(--faint)}`;
+  .lb-small{font-size:11.5px;color:var(--faint)}
+  .lb-sharebox{border:1px solid var(--strat);background:color-mix(in srgb,var(--strat) 8%,transparent);border-radius:10px;padding:8px 10px;margin-bottom:10px}
+  .lb-sharebox .lb-lab{margin-top:0;color:#bff3e2}
+  .lb-sharebox input{font-size:12px}`;
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
   const dr = document.createElement("aside");
   dr.className = "lib-drawer"; dr.id = "libDrawer"; dr.setAttribute("aria-label", "Library"); dr.setAttribute("aria-hidden", "true");
